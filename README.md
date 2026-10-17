@@ -89,7 +89,7 @@ The [long dialog briefing](docs/previews/dialog-1.html) demonstrates heading foc
 
 The [native family state audit](docs/native-states.md) maps native examples to relevant states and remaining platform verification.
 
-After changing guides, live recipe sources or site generators, run `python3 tools/build_docs.py` to rebuild the complete static site, then `python3 tools/test_docs.py`. See [documentation authoring](docs/site.md). The shared navigation is About, Components, Docs, Themes and Tests; recipes and the gallery remain accessible through Docs and the examples hub.
+After changing guides, live recipe sources, site generators or `js/docs-preview.js`, run `python3 tools/build_docs.py` to rebuild the complete static site, then `python3 tools/test_docs.py`. See [documentation authoring](docs/site.md). The shared navigation is About, Components, Docs, Themes and Tests; recipes and the gallery remain accessible through Docs and the examples hub.
 
 ## License
 

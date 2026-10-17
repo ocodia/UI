@@ -34,7 +34,7 @@ Install behavior before hiding content or applying compound-widget ARIA roles. O
 
 Run `python3 tools/check_docs.py` after docs/catalogue changes. After editing `docs/components.json`, run `python3 tools/build_catalog.py`; it owns `docs/components.md` and `examples/components.html`. Use `--check` to detect stale output. Keep these generated files in version control.
 
-Run `python3 tools/build_docs.py` after changing Markdown, catalogue, recipe sources or documentation generators. It owns `index.html`, `docs/*.html`, `docs/components/*.html`, `docs/previews/*.html` and the catalogue outputs. `build_catalog.py` also builds component/example pages; the full docs command refreshes everything. Run `python3 tools/test_docs.py` for renderer/source integrity and use the documentation checks in the browser harness for navigation, examples and reflow.
+Run `python3 tools/build_docs.py` after changing Markdown, catalogue, recipe sources, documentation generators or `js/docs-preview.js` (its content fingerprint appears in generated preview URLs). It owns `index.html`, `docs/*.html`, `docs/components/*.html`, `docs/previews/*.html` and the catalogue outputs. `build_catalog.py` also builds component/example pages; the full docs command refreshes everything. Run `python3 tools/test_docs.py` for renderer/source integrity and use the documentation checks in the browser harness for navigation, examples and reflow.
 
 For runtime changes, serve with `python3 -m http.server 8765` and run relevant checks in `tests/accessibility.html`. Record actual browser/manual results. Do not treat axe as proof of WCAG conformance or hide findings with exclusions. Do not mark roadmap release gates complete without evidence.
 

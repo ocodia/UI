@@ -19,7 +19,7 @@ python3 tools/check_docs.py
 python3 -m http.server 8765
 ```
 
-Commit generated files with their sources. The static site can be served from a subdirectory; generated links are relative. `build_catalog.py` still builds the catalogue views and component/example pages; `build_docs.py` builds those plus the complete guides and About page. `check_docs.py` checks freshness for the whole site, local links, unique IDs and registration agreement.
+Rebuild after editing Markdown, recipe sources, generators or `js/docs-preview.js`; the preview script fingerprint is generated from its contents. Commit generated files with their sources. The static site can be served from a subdirectory; generated links are relative. `build_catalog.py` still builds the catalogue views and component/example pages; `build_docs.py` builds those plus the complete guides and About page. `check_docs.py` checks freshness for the whole site, local links, unique IDs and registration agreement.
 
 The small Python renderer supports the Markdown used here: headings, paragraphs, lists, code fences, inline code/emphasis, links and tables. Raw HTML is escaped. It is a documentation renderer, not a general CommonMark engine or an untrusted-content service. Extend it deliberately when introducing a new syntax, then check the rendered page. Do not add a browser Markdown dependency to display checked-in guides.
 
@@ -29,7 +29,7 @@ Each live example has a named iframe, a native Code disclosure, a standalone des
 
 The frame sandbox allows same-origin access, scripts and forms for native behavior and accessibility checks, but does not grant top navigation or popups. These flags are not a security boundary for arbitrary same-origin code; reviewed repository examples are the trust boundary. Do not introduce untrusted scripts or remote user HTML into this runner.
 
-Inside the documentation runner, the host example heading replaces the frame’s visually hidden document heading. Other embeddings, including test frames, retain that document heading.
+Inside the documentation runner, the host example heading replaces the frame’s visually hidden document heading. Other embeddings, including test frames, retain that document heading inside the preview’s main landmark. Generated previews include a content fingerprint on the preview-script URL so changed markup and heading/submit behavior load together instead of reusing a cached older script.
 
 The host synchronizes its root theme, brand, reading direction and explicit focus-token overrides into each loaded preview, including subsequent root changes. Other application CSS stays isolated. Standalone previews follow the system theme unless given their own root attributes.
 

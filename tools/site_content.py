@@ -1,6 +1,7 @@
 """Component pages and trusted example documents for the UI documentation site."""
 from html import escape
-from site_shell import document, sidebar, relative
+from hashlib import sha256
+from site_shell import ROOT, document, sidebar, relative
 from component_contracts import PURPOSE, api_table
 
 
@@ -24,6 +25,7 @@ def example_markup(key, index, recipe, page):
 
 def previews(recipes):
     pages = {}
+    preview_version = sha256((ROOT/'js/docs-preview.js').read_bytes()).hexdigest()[:12]
     for key, examples in recipes.items():
         for index, recipe in enumerate(examples):
             title = escape(recipe['title'])
@@ -32,9 +34,9 @@ def previews(recipes):
             pages[f'docs/previews/{key}-{index}.html'] = f'''<!doctype html>
 <!-- Generated from docs/recipes.json. Trusted repository examples only. -->
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{title} — UI example</title>
-<link rel="stylesheet" href="../../css/ui.css"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/components.js" defer></script><script src="../../js/docs-preview.js" defer></script>
+<link rel="stylesheet" href="../../css/ui.css"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/components.js" defer></script><script src="../../js/docs-preview.js?v={preview_version}" defer></script>
 <style>body {{ padding: 1.5rem 2rem 1.5rem 1.5rem; }} body > main {{ max-inline-size: none; inline-size: auto; margin: 0; padding: 0; }} h1 {{ position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); }} output {{ display: block; margin-block-start: 1rem; }} .table-scroll table {{ min-inline-size: 38rem; }} :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) {{ display: none; }}</style></head>
-<body><h1>{title}</h1><main aria-label="{title} example">{recipe['code']}{nojs}</main>{script}</body></html>
+<body><main aria-label="{title} example"><h1>{title}</h1>{recipe['code']}{nojs}</main>{script}</body></html>
 '''
     return pages
 

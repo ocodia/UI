@@ -11,9 +11,15 @@ from site_shell import ROOT, markdown
 class Content(HTMLParser):
     def __init__(self, text):
         super().__init__(); self.text = []; self.tags = []
+        self.in_main = False; self.heading_in_main = []
         self.feed(text)
     def handle_data(self, text): self.text.append(text)
-    def handle_starttag(self, tag, attrs): self.tags.append((tag,dict(attrs)))
+    def handle_starttag(self, tag, attrs):
+        self.tags.append((tag,dict(attrs)))
+        if tag == 'main': self.in_main = True
+        if tag == 'h1': self.heading_in_main.append(self.in_main)
+    def handle_endtag(self, tag):
+        if tag == 'main': self.in_main = False
 
 
 class DocumentationTests(unittest.TestCase):
@@ -58,6 +64,12 @@ class DocumentationTests(unittest.TestCase):
                 self.assertIn(recipe['code'],preview)
                 if recipe.get('script'): self.assertIn(recipe['script'],preview)
                 self.assertNotIn('customElements.define',preview)
+
+    def test_preview_document_headings_belong_to_main(self):
+        # Standalone and no-script previews need a document heading in a landmark.
+        for path, page in self.pages.items():
+            if path.startswith('docs/previews/'):
+                self.assertEqual([True], Content(page).heading_in_main, path)
 
     def test_nested_lists_and_code_link_labels(self):
         body,_ = markdown('- Parent\n  - Child\n- Next\n\n[`controls`](controls.md)','docs/index.md','docs/index.html')
