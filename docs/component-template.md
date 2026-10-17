@@ -2,6 +2,8 @@
 
 Copy this structure into `docs/specs/<component>.md` before implementing a planned widget. Replace every placeholder with a decision. Link the resulting specification from the catalogue; a proposed name alone is not an API.
 
+Use the [shared lifecycle and ownership contract](lifecycle.md) to assign each responsibility and record any component-specific exception. Add a repository-relative `specification` path such as `docs/specs/popup.md` to the catalogue entry; the generators link its rendered page and source. Specifications remain proposals until implementation and evidence exist.
+
 ## Identity and purpose
 
 Name, status (proposal / experimental / stable / deprecated), owner, roadmap phase, intended task and when a simpler native pattern is preferable. List baseline native HTML and supported modes. Explain why a custom element is needed.

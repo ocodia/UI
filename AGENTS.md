@@ -13,7 +13,8 @@ UI is an HTML-first UI system in development. This file applies to the entire re
 ## Current implementation
 
 - Library CSS: `css/ui.css`, named `ui` layer and low-specificity native styles.
-- Library behavior: `js/components.js`, registers **only `ui-form` and `ui-error-summary`**.
+- Combined library entry: generated `js/ui.js` from `js/components.js`, `js/popup.js`, `js/enhance.js`. Registers **only `ui-form` and `ui-error-summary`**, plus `UI.enhance(root)` / `UI.destroy(root)` and `UI.popup.attach`. Standard native overlay patterns opt in with `data-ui`; see `docs/enhancement.md`. The original form/geometry entries remain compatible.
+- Optional experimental geometry: `js/popup.js`, exposes `UIPopup.attach` for native auto popovers; no registration; also included in `js/ui.js`. See `docs/popup.md`.
 - CSS-only elements: `ui-stack`, `ui-cluster`, `ui-grid`, `ui-sidebar`, `ui-panel`, `ui-field`, `ui-hint`, `ui-error`, `ui-skip-link`.
 - Optional brand: `themes/forest.css`, root `data-brand="forest"`.
 - Application/demo code: `js/examples.js`, `js/workspace.js`, `css/workspace.css`, `examples/`. Do not include these as library entry points.
@@ -32,9 +33,9 @@ Install behavior before hiding content or applying compound-widget ARIA roles. O
 
 ## Validation and generated files
 
-Run `python3 tools/check_docs.py` after docs/catalogue changes. After editing `docs/components.json`, run `python3 tools/build_catalog.py`; it owns `docs/components.md` and `examples/components.html`. Use `--check` to detect stale output. Keep these generated files in version control.
+Run `python3 tools/build_ui.py` after editing combined-entry sources (or the full docs build, which also regenerates it). `js/ui.js` is generated and checked in; do not edit it directly. Run `python3 tools/check_docs.py` after docs/catalogue changes. After editing `docs/components.json`, run `python3 tools/build_catalog.py`; it owns `docs/components.md` and `examples/components.html`. Use `--check` to detect stale output. Keep these generated files in version control.
 
-Run `python3 tools/build_docs.py` after changing Markdown, catalogue, recipe sources, documentation generators or `js/docs-preview.js` (its content fingerprint appears in generated preview URLs). It owns `index.html`, `docs/*.html`, `docs/components/*.html`, `docs/previews/*.html` and the catalogue outputs. `build_catalog.py` also builds component/example pages; the full docs command refreshes everything. Run `python3 tools/test_docs.py` for renderer/source integrity and use the documentation checks in the browser harness for navigation, examples and reflow.
+Run `python3 tools/build_docs.py` after changing Markdown, catalogue, recipe sources, documentation generators or a recipe dependency such as `js/popup.js` or `js/docs-preview.js` (their content fingerprints appear in generated preview URLs). It also regenerates `js/ui.js` before computing preview fingerprints. It owns `index.html`, `docs/*.html`, `docs/components/*.html`, `docs/specs/*.html`, `docs/previews/*.html` and the catalogue outputs. `build_catalog.py` also builds component/example pages; the full docs command refreshes everything. Run `python3 tools/test_docs.py` for renderer/source integrity and use the documentation checks in the browser harness for navigation, examples and reflow.
 
 For runtime changes, serve with `python3 -m http.server 8765` and run relevant checks in `tests/accessibility.html`. Record actual browser/manual results. Do not treat axe as proof of WCAG conformance or hide findings with exclusions. Do not mark roadmap release gates complete without evidence.
 

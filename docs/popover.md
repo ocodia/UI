@@ -1,5 +1,17 @@
 # Native popover recipe
 
+## Standard shared setup
+
+Load `js/ui.js` once and use the [shared enhancement markup](enhancement.md). Standard opening, focus, fallback and cleanup are library-owned; no application initialization script is required. The [single-copy example](previews/enhancement-2.html) keeps its content readable without JavaScript. `UI.enhance(root)` / `UI.destroy(root)` cover dynamic insertion and teardown.
+
+```html
+<script src="js/ui.js" defer></script>
+```
+
+The first interactive example below uses this shared path. The remaining material documents the lower-level adapter or earlier manual recipe for advanced integration and compatibility.
+
+## Advanced manual integration
+
 Phase 1 native recipe with partial evidence. Native `popover="auto"` presents optional information while the surrounding page remains available. Use a visible label and concise persistent instructions beside the task. The help in these examples neither saves answers nor changes project access.
 
 The [short help](previews/popover-0.html) and [long help](previews/popover-1.html) share the same page enhancement in [recipes.json](recipes.json). The browser owns toggle state, sequential keyboard navigation, Escape and light dismissal. There is no registered popover element; the library behavior still registers only ui-form and ui-error-summary. Read the [current API](reference.md) for those actual entry points.

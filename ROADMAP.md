@@ -44,7 +44,7 @@ This phase begins now and runs ahead of higher-level widgets.
 - [x] Implement comfortable/compact density scopes for composed layouts and forms, with nested reset, local token precedence and independent control sizes; document the [density contract](docs/density.md) and browser evidence.
 - [ ] Define shared feedback component variants. Complete manual zoom, touch/target and platform verification before a stable release.
 - [x] Make focus tokens consistent across controls, links, header/workspace navigation, summaries and skip links; add shared width and system-color overrides with rendered palette/contrast checks. Manual forced-colors and assistive-technology verification remains in the release gate.
-- [ ] Specify reusable lifecycle, event, focus, locale and overlay ownership rules. Extract helpers only as actual implementations need them.
+- [x] Specify reusable lifecycle, event, focus, locale and overlay ownership rules in the [shared contract](docs/lifecycle.md), with existing implementation limits distinguished from requirements for new components. Extract helpers only as actual implementations need them.
 - [ ] Measure CSS/JS payload and choose regression budgets; retain the earlier 5 KB gzip CSS-foundation goal as a proposal, not a claimed current measurement. Optional features get separate budgets.
 - [ ] Establish per-component maturity (proposal/experimental/stable), dated evidence and migration notes before v1.
 
@@ -80,7 +80,7 @@ Exit: native primitives have reusable recipes and evidence, rather than merely m
 
 Depends on Phase 0 state/focus contracts and Phase 1 recipes. Build one compound family at a time.
 
-1. Shared positioning/dismissal utility (**Popup**), using platform features with a documented fallback strategy.
+1. Shared positioning utility (**Popup**), implemented experimentally in `js/popup.js` with the [anchored-help consumer](docs/popup.md) and [specification](docs/specs/popup.md). Native visibility/dismissal and consumer semantics/focus retain separate owners; readable fallback remains required.
 2. **Accordion / Accordion Item**, **Tab Group / Tab / Tab Panel**, **Pagination**, **Stepper / Step**.
 3. **Dropdown / Dropdown Item** command menus, **Drawer**, **Tooltip**, **Copy Button**, **Switch**.
 4. **Badge**, **Callout**, **Progress Ring**, **Skeleton**, **Spinner**, **Tag**, **Toast / Toast Item**.
@@ -134,7 +134,7 @@ These remain optional extensions, not mandatory dependencies of the foundation.
 - [ ] Use Intl and readable server fallback text for formatting. Define timezone, locale and hydration policy.
 - [ ] Prefer native CSS/JS APIs for observers and animation. Keep helper elements optional; specify timer/observer teardown and loop protection.
 - [ ] Markdown and Include need explicit sanitization, trusted-origin, failure and script policies. Do not add remote content execution as a default.
-- [ ] Ship per-component modules and an optional all-components entry while preserving copyable CSS/JS.
+- [ ] Ship per-component modules while preserving copyable CSS/JS. The combined classic-script entry `js/ui.js` and [shared initialization API](docs/enhancement.md) are implemented; module distribution remains planned.
 - [ ] Add versioned npm distribution, generated custom-element metadata, token metadata, SSR/framework integration recipes and release automation after the actual public entry points exist.
 - [ ] Produce stable v1 documentation, migration guidance, complete release evidence and a public accessibility statement with known limitations.
 
@@ -157,4 +157,8 @@ The target is [WCAG 2.2 AA](https://www.w3.org/WAI/WCAG22/quickref/). [APG](http
 
 ## Next implementation slice
 
-Focus on **Phase 1 — native component completeness**. The first native dialog recipe is implemented; finish its outstanding manual/platform evidence alongside the implemented grouped hints/errors and date/time/file/range recipe. The [native family state audit](docs/native-states.md) now covers the relevant authored states; continue with outstanding manual/platform verification of the implemented panel/scroll and multiple-select recipe, including RTL and forced colors. Keep the remaining Phase 0 evidence, lifecycle and payload work open alongside these recipes. Tabs and other compound widgets follow in Phase 2.
+The [shared UI entry and declarative setup](docs/enhancement.md) now cover existing forms/summaries, native dialogs, popovers and anchored Popup help, including scoped teardown/resume. Planned widgets are not initialized.
+
+The first **Phase 2 Popup geometry utility** and anchored-help consumer are implemented experimentally; follow the [integration guide](docs/popup.md), [specification](docs/specs/popup.md) and [lifecycle and ownership contract](docs/lifecycle.md). Native Popover remains an implemented Phase 1 recipe; Popup adds anchored placement rather than replacing its semantics or dismissal. Keep remaining geometry/platform evidence open before stable maturity. Next specify the native-disclosure-based Accordion family before adding its compound behavior.
+
+Continue the remaining Phase 0/1 manual browser, assistive-technology, touch, forced-colors and release evidence alongside this work. Shared feedback, payload budgets and maturity/migration work remain open. Tabs and other compound widgets require their own specifications after the positioning slice.

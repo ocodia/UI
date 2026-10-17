@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 from urllib.parse import unquote, urlsplit
 from build_docs import ROOT, generate
+from build_ui import generate as combined_ui
 
 class Page(HTMLParser):
     def __init__(self, text):
@@ -46,6 +47,8 @@ def anchors(path):
 
 def main():
     errors=[]
+    if not (ROOT/'js/ui.js').exists() or (ROOT/'js/ui.js').read_text() != combined_ui():
+        errors.append('js/ui.js: stale combined entry; run python3 tools/build_ui.py or tools/build_docs.py')
     data=json.loads((ROOT/'docs/components.json').read_text())
     implemented={item['id'] for item in data['uiComponents']}
     registered=set(re.findall(r"customElements\.define\(['\"]([^'\"]+)", (ROOT/'js/components.js').read_text()))

@@ -1,6 +1,6 @@
 # Current UI API
 
-This reference describes the implementation that exists today. For the complete system direction, see [the roadmap](../ROADMAP.md). Proposed catalogue entries are not public APIs.
+This reference describes the implementation that exists today. For the complete system direction, see [the roadmap](../ROADMAP.md). Proposed catalogue entries are not public APIs. The [lifecycle and ownership contract](lifecycle.md) guides future implementations; the optional experimental [Popup adapter](popup.md) implements anchored geometry separately from native popover semantics.
 
 The current HTML-first foundation and optional form behavior. No classes required for documents, forms, and native elements.
 
@@ -13,6 +13,14 @@ Open [the examples](../examples/index.html) or [the complete form](../form.html)
 UI ships as plain CSS. There is no required build step, JavaScript, or dependency.
 
 See the [roadmap](../ROADMAP.md) for planned custom elements and interface conventions.
+
+## Shared JavaScript entry
+
+Load optional `js/ui.js` once for all currently shipped behavior. It registers the same two form elements and exposes `UI.enhance(root = document)` and `UI.destroy(root = document)`. Both are synchronous/idempotent and return undefined. Roots include their descendants and must belong to the current document. The bundle initializes static marked patterns after parsing; applications explicitly enhance newly inserted overlays and destroy before removal/replacement. Forms retain their native custom-element connection lifecycle.
+
+Use `data-ui="dialog"` on an authored open native dialog, or `data-ui="popover|popup"` on one readable inline help container. Hidden native buttons provide the opening/closing relationships. UI installs standard focus/fallback/cleanup before hiding baseline content or revealing actions. `UI.popup.attach` aliases the existing lower-level `UIPopup.attach` geometry API. See [shared UI JavaScript](enhancement.md) for exact markup, lifecycle, limits and no-script fallback. Planned widgets and CSS-only elements gain no placeholder behavior.
+
+`js/components.js` and `js/popup.js` remain smaller compatible entries. Mixed/repeated loading keeps one set of constructors and geometry ownership. Generate the combined file from its sources with `tools/build_ui.py` or the full documentation build; there is no runtime loader or module import.
 
 ## HTML conventions
 
@@ -164,7 +172,7 @@ See the [native family state audit](native-states.md) for authored default, long
 
 ## Reusable forms
 
-Load `js/components.js` and wrap exactly one native form in `ui-form`. An optional summary can sit anywhere inside that wrapper, including above the page heading. Without a supplied summary, UI creates one with the English heading “There is a problem”. Supply an authored summary to choose another heading or language.
+Load `js/ui.js` (or the smaller compatible `js/components.js`) and wrap exactly one native form in `ui-form`. An optional summary can sit anywhere inside that wrapper, including above the page heading. Without a supplied summary, UI creates one with the English heading “There is a problem”. Supply an authored summary to choose another heading or language.
 
 ```html
 <ui-form>
@@ -287,6 +295,12 @@ A modal dialog can be opened with the browser's `showModal()` API. Close it with
 The [native dialog recipe](dialog.md) documents initial/returned focus, Escape and backdrop policy, close results, form ownership, lifecycle limits and readable no-script/unsupported/open-failure behavior. [Try it](../examples/patterns.html#modal). The recipe is application code; it adds no library element or registration.
 
 `js/examples.js` powers only the native gallery's theme selector, dialog opener, and validation demonstration. Do not include it in an application. The CSS does not depend on it. The [native popover recipe](popover.md) supplies short and long optional help with capability checks, complete inline fallback, native dismissal and non-modal background editing. Its page script installs before revealing the native opener; without it, the help remains inline. See the [focused checks](../tests/popover.html) and dated evidence.
+
+## Optional anchored geometry
+
+Load `js/popup.js` separately to use the experimental `UIPopup.attach({ anchor, surface, placement, gap, padding, onUnavailable })` adapter. It returns `update()` and idempotent `destroy()` methods. Defaults are block-end-start placement and 8 CSS pixels for gap/padding. It adds no custom element, semantic role, open state, focus policy or dismissal listener. Native popover visibility remains authoritative.
+
+See the [Popup integration guide](popup.md) for complete option validation, capability requirements, style ownership, observation/teardown, unsupported-context fallback and the anchored-help consumer. The original unpositioned native popover recipe remains independent. This optional classic script has no module import, package or per-component loader.
 
 ## Migration
 

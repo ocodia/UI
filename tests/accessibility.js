@@ -140,14 +140,14 @@ auditButton.addEventListener('click', async () => {
   const report = [];
   frame.hidden = false;
   try {
-    for (const route of ['../index.html', '../gallery.html', '../docs/controls.html', '../docs/components/checkbox.html', '../form.html', '../workspace.html', '../examples/index.html', '../examples/components.html', '../examples/patterns.html', '../examples/themes.html', '../examples/server-errors.html', '../examples/form-integration.html', '../examples/native-inputs.html', '../examples/composition.html', '../docs/native-states.html', '../docs/dialog.html', '../docs/components/dialog.html', '../docs/previews/dialog-1.html', '../docs/popover.html', '../docs/components/popover.html', '../docs/previews/popover-0.html', '../docs/previews/popover-1.html', ...['date-input', 'time-input', 'number-input', 'select', 'option', 'textarea', 'slider', 'details', 'breadcrumb', 'breadcrumb-item', 'card'].map(key => `../docs/components/${key}.html`)]) {
+    for (const route of ['../index.html', '../gallery.html', '../docs/controls.html', '../docs/components/checkbox.html', '../form.html', '../workspace.html', '../examples/index.html', '../examples/components.html', '../examples/patterns.html', '../examples/themes.html', '../examples/server-errors.html', '../examples/form-integration.html', '../examples/native-inputs.html', '../examples/composition.html', '../docs/native-states.html', '../docs/dialog.html', '../docs/components/dialog.html', '../docs/previews/dialog-1.html', '../docs/popover.html', '../docs/components/popover.html', '../docs/previews/popover-0.html', '../docs/previews/popover-1.html', '../docs/popup.html', '../docs/components/popup.html', '../docs/previews/popup-0.html', '../docs/enhancement.html', '../docs/specs/enhancement.html', ...[0, 1, 2, 3].map(index => `../docs/previews/enhancement-${index}.html`), ...['date-input', 'time-input', 'number-input', 'select', 'option', 'textarea', 'slider', 'details', 'breadcrumb', 'breadcrumb-item', 'card'].map(key => `../docs/components/${key}.html`)]) {
       const win = await loadExample(frame, route);
-      for (const brand of (route.endsWith('/themes.html') || route.endsWith('/dialog-1.html') || /\/previews\/popover-[01]\.html$/.test(route)) ? ['default', 'forest'] : ['default']) {
+      for (const brand of (route.endsWith('/themes.html') || (route.endsWith('/dialog-1.html') || route.endsWith('/enhancement-1.html')) || /\/previews\/(?:popover-[01]|popup-0|enhancement-[23])\.html$/.test(route)) ? ['default', 'forest'] : ['default']) {
         if (brand === 'default') delete win.document.documentElement.dataset.brand;
         else win.document.documentElement.dataset.brand = brand;
         for (const theme of ['light', 'dark']) {
           win.document.documentElement.dataset.theme = theme;
-          if (route.endsWith('/dialog-1.html')) win.document.documentElement.dir = 'ltr';
+          if ((route.endsWith('/dialog-1.html') || route.endsWith('/enhancement-1.html'))) win.document.documentElement.dir = 'ltr';
           for (const palette of route.endsWith('/themes.html') ? ['default', 'blue'] : ['default']) {
             if (route.endsWith('/themes.html')) {
               win.document.querySelector('#brand').value = brand;
@@ -183,12 +183,16 @@ auditButton.addEventListener('click', async () => {
               report.push(`  REVIEW ${review.id}: ${review.help}`);
               for (const node of review.nodes) report.push(`    ${JSON.stringify(node.target)}`);
             }
-            if (/\/previews\/popover-[01]\.html$/.test(route)) {
-              const panel = win.document.querySelector('#project-help');
+            if (/\/previews\/(?:popover-[01]|popup-0|enhancement-[23])\.html$/.test(route)) {
+              const declarative = /enhancement-[23]\.html$/.test(route);
+              const positioned = route.endsWith('/popup-0.html') || route.endsWith('/enhancement-3.html');
+              const panel = win.document.querySelector(declarative ? '#enhance-help' : positioned ? '#reference-help' : '#project-help');
               for (const dir of ['ltr', 'rtl']) {
                 win.document.documentElement.dir = dir;
-                win.document.querySelector('#help-open').click();
+                win.document.querySelector(declarative ? '#enhance-open' : positioned ? '#reference-open' : '#help-open').click();
+                if (positioned) await new Promise(resolve => win.setTimeout(resolve, 60));
                 assert(panel.matches(':popover-open') && !panel.matches(':modal'), 'Popover audit requires open non-modal native help');
+                if (positioned) assert(panel.style.position === 'fixed', 'Popup audit requires active anchored geometry');
                 panel.scrollTop = 0;
                 for (const position of ['start', 'end']) {
                   if (position === 'end') [...panel.querySelectorAll('button')].at(-1).focus();
@@ -207,18 +211,19 @@ auditButton.addEventListener('click', async () => {
               }
               win.document.documentElement.dir = 'ltr';
             }
-            if (route.endsWith('/dialog-1.html')) {
-              const dialog = win.document.querySelector('#briefing-dialog');
+            if ((route.endsWith('/dialog-1.html') || route.endsWith('/enhancement-1.html'))) {
+              const declarative = route.endsWith('/enhancement-1.html');
+              const dialog = win.document.querySelector(declarative ? '#enhance-dialog' : '#briefing-dialog');
               for (const dir of ['ltr', 'rtl']) {
                 win.document.documentElement.dir = dir;
-                win.document.querySelector('#briefing-open').click();
-                assert(dialog.matches(':modal') && win.document.activeElement === win.document.querySelector('#briefing-title'), 'Long dialog audit requires a real modal with heading focus');
+                win.document.querySelector(declarative ? '#enhance-open' : '#briefing-open').click();
+                assert(dialog.matches(':modal') && win.document.activeElement === win.document.querySelector(declarative ? '#enhance-title' : '#briefing-title'), 'Long dialog audit requires a real modal with heading focus');
                 for (const position of ['start', 'end']) {
                   if (position === 'end') [...dialog.querySelectorAll('button')].at(-1).focus();
                   const longAudit = await win.axe.run(win.document, {
                     runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] }
                   });
-                  report.push(`Long dialog ${position} (${brand}, ${theme}, ${dir}): ${longAudit.violations.length} violations; ${longAudit.incomplete.length} need manual review`);
+                  report.push(`${route} dialog ${position} (${brand}, ${theme}, ${dir}): ${longAudit.violations.length} violations; ${longAudit.incomplete.length} need manual review`);
                   for (const [label, findings] of [['', longAudit.violations], ['REVIEW ', longAudit.incomplete]]) {
                     for (const finding of findings) {
                       report.push(`  ${label}${finding.id}: ${finding.help}`);
@@ -229,11 +234,12 @@ auditButton.addEventListener('click', async () => {
                 await new Promise(resolve => { dialog.addEventListener('close', resolve, { once: true }); dialog.close(); });
               }
             }
-            if (/\/docs\/components\/(date-input|time-input|number-input|select|option|textarea)\.html$/.test(route)) {
+            if (route.endsWith('/enhancement-0.html') || /\/docs\/components\/(date-input|time-input|number-input|select|option|textarea)\.html$/.test(route)) {
               const preview = previews.find(frame => frame.contentDocument.querySelector('ui-form'));
-              const editor = preview.contentDocument.querySelector('ui-form');
+              const content = preview ? preview.contentDocument : win.document;
+              const editor = content.querySelector('ui-form');
               editor.form.requestSubmit();
-              assert(preview.contentDocument.activeElement === editor.querySelector('ui-error-summary'), 'Native state preview errors must focus their summary');
+              assert(content.activeElement === editor.querySelector('ui-error-summary'), 'Native state preview errors must focus their summary');
               const invalidAudit = await win.axe.run(win.document, {
                 runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] }
               });

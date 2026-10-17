@@ -10,6 +10,8 @@ Ordinary navigation is a named `nav` with links and `aria-current="page"`. Neste
 
 Tabs switch panels within one context; they are not page navigation or a step-by-step form. Enhance fragment links and readable sections only when the widget can supply the full keyboard/state contract. Arrow keys move within composite widgets; Tab moves between widgets. Never add a positive tabindex.
 
+For standard behavior, use the [shared UI entry](enhancement.md) and declarative native overlay markup. Applications own business actions; CSS-only/native controls need no extra initializer.
+
 ## Forms
 
 Ask one question per `ui-field`. Use a fieldset/legend for related choices. Labels remain visible. State which answers are optional; keep hints concise and associate them with `aria-describedby`. Prefer meaningful autocomplete and input types. Use text rather than number inputs for identifiers, phone numbers and codes.
@@ -23,6 +25,8 @@ Checkboxes collect choices, radios choose one from a set, selects conserve space
 Use native dialog for modal tasks and native popover for non-modal contextual content. Modal content has an accessible title, sensible initial focus, explicit close action, Escape policy, background inertness and focus return. Popover semantics follow its content. A positioning utility must never infer that content is a menu or dialog.
 
 Tooltips add non-interactive supplemental descriptions; essential instructions stay visible. Menus, tooltips and drawers must work with keyboard, touch and pointer. Do not make hover the only discovery mechanism. Restore focus to a logical survivor when a focused item is removed.
+
+Use the [lifecycle and ownership contract](lifecycle.md) when specifying dynamic removal, nested events, disconnect/reconnect, locale and surviving focus. The experimental [Popup utility](popup.md) handles anchored geometry only; consumers own their complete interaction.
 
 ## Visual states and variants
 

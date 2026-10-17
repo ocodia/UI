@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Legacy and combined entry fixture — UI</title><link rel="stylesheet" href="../css/ui.css"></head>
+<body><main>
+<h1>Legacy and combined entry fixture</h1>
+<ui-form id="mixed-editor"><form><label>Name <input name="project" required></label><button type="submit">Submit locally</button></form></ui-form>
+<button id="mixed-open" type="button" popovertarget="mixed-help" hidden>Open mixed-entry help</button>
+<div id="mixed-help" data-ui="popup"><h2 tabindex="-1" data-ui-focus>Mixed-entry help</h2><p>One native task keeps one geometry owner.</p><button type="button" popovertarget="mixed-help" popovertargetaction="hide" hidden>Close help</button></div>
+<section id="before-start"><button type="button" popovertarget="paused-help" hidden>Open paused help</button><div id="paused-help" data-ui="popover"><h2 tabindex="-1" data-ui-focus>Initially paused help</h2><p>Readable before the automatic pass.</p><button type="button" popovertarget="paused-help" popovertargetaction="hide" hidden>Close paused help</button></div></section>
+</main>
+<script src="../js/components.js?entry=shared-v1"></script><script src="../js/popup.js?entry=shared-v1"></script>
+<script>window.entryBefore = { form: customElements.get('ui-form'), summary: customElements.get('ui-error-summary'), popup: UIPopup };</script>
+<script src="../js/ui.js?entry=shared-v1"></script>
+<script>UI.destroy(document.querySelector('#before-start'));</script>
+<script src="../js/components.js?entry=shared-v1"></script><script src="../js/popup.js?entry=shared-v1"></script><script src="../js/ui.js?entry=shared-v1"></script>
+</body></html>

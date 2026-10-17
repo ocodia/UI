@@ -7,6 +7,7 @@
 - [Agent instructions](AGENTS.md): repository rules and actual entry points.
 - [Documentation site](docs/index.html): rendered guides and individual component references with resizable examples; authored sources remain Markdown and docs/recipes.json.
 - [Current API](docs/reference.md): implemented layouts, form and summary behavior, tokens.
+- [Shared UI JavaScript](docs/enhancement.md): combined js/ui.js, declarative native overlays and scoped UI.enhance/UI.destroy; smaller entries remain compatible.
 - [Machine-readable catalogue](docs/components.json): native/foundation/planned statuses; proposed names are not available APIs.
 - [Architecture](docs/architecture.md): native ownership, lifecycle, light DOM and future packaging.
 - [Form integration](docs/forms.md): external ownership, shared questions, translated feedback and application-owned async submission.

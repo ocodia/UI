@@ -2,9 +2,11 @@
 """Source/rendering integrity checks for the documentation generator."""
 from html.parser import HTMLParser
 import json
+from hashlib import sha256
 import re
 import unittest
 from build_docs import generate
+from build_ui import generate as combined_ui
 from site_shell import ROOT, markdown
 
 
@@ -37,7 +39,7 @@ class DocumentationTests(unittest.TestCase):
 
     def test_full_guides_retain_source_text_and_fences(self):
         # Rendering must preserve authored content, including every code fence.
-        for source in (ROOT/'docs').glob('*.md'):
+        for source in [*(ROOT/'docs').glob('*.md'), *(ROOT/'docs/specs').glob('*.md')]:
             body,_ = markdown(source.read_text(),source.relative_to(ROOT).as_posix(),'docs/test.html')
             rendered = ' '.join(Content(body).text)
             for fence in re.findall(r'```[^\n]*\n(.*?)```',source.read_text(),re.S):
@@ -56,6 +58,39 @@ class DocumentationTests(unittest.TestCase):
         self.assertIn('href="forms.html#localization"',body)
         self.assertIn('href=&quot;forms.md&quot;',body)
 
+    def test_proposals_link_rendered_specifications_and_sources(self):
+        data = json.loads((ROOT/'docs/components.json').read_text())
+        for item in data['components']:
+            source = item.get('specification')
+            if not source: continue
+            page = self.pages[source[:-3]+'.html']
+            parsed = Content(page)
+            links = [attrs['href'] for tag,attrs in parsed.tags if tag=='a' and 'href' in attrs]
+            self.assertIn('../lifecycle.html', links)
+            self.assertIn('../../css/site.css', page)
+            self.assertIn('popup.md', links)
+            component = self.pages[f'docs/components/{item["id"]}.html']
+            self.assertIn('../specs/popup.html', component)
+            if item['status'] == 'planned':
+                self.assertIn('not implemented', component)
+                self.assertNotIn('data-example', component)
+
+    def test_combined_entry_is_current_and_preview_assets_match_sources(self):
+        self.assertEqual(combined_ui(), (ROOT/'js/ui.js').read_text())
+        for path, page in self.pages.items():
+            if not path.startswith('docs/previews/'): continue
+            for asset in ['js/ui.js', 'css/ui.css']:
+                version = sha256((ROOT/asset).read_bytes()).hexdigest()[:12]
+                self.assertIn(f'../../{asset}?v={version}', page, path)
+
+    def test_standard_examples_need_no_application_initialization_script(self):
+        examples = json.loads((ROOT/'docs/recipes.json').read_text())['enhancement']
+        self.assertEqual(4, len(examples))
+        for example in examples:
+            self.assertFalse(example['script'])
+        for component in ['ui-form', 'ui-error-summary', 'dialog', 'popover', 'popup']:
+            self.assertIn('id="shared-setup"', self.pages[f'docs/components/{component}.html'])
+
     def test_every_preview_and_drawer_use_the_same_recipe(self):
         recipes=json.loads((ROOT/'docs/recipes.json').read_text())
         for key, examples in recipes.items():
@@ -64,6 +99,17 @@ class DocumentationTests(unittest.TestCase):
                 self.assertIn(recipe['code'],preview)
                 if recipe.get('script'): self.assertIn(recipe['script'],preview)
                 self.assertNotIn('customElements.define',preview)
+
+    def test_optional_recipe_dependencies_are_versioned_before_initialization(self):
+        recipes = json.loads((ROOT/'docs/recipes.json').read_text())
+        for key, examples in recipes.items():
+            for index, recipe in enumerate(examples):
+                page = self.pages[f'docs/previews/{key}-{index}.html']
+                for source in recipe.get('dependencies', []):
+                    version = sha256((ROOT/source).read_bytes()).hexdigest()[:12]
+                    tag = f'<script src="../../{source}?v={version}"></script>'
+                    self.assertIn(tag, page)
+                    self.assertLess(page.index(tag), page.index(recipe['script']))
 
     def test_preview_document_headings_belong_to_main(self):
         # Standalone and no-script previews need a document heading in a landmark.

@@ -11,10 +11,10 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 GUIDES = [
-    ('Start here', [('index', 'Documentation'), ('getting-started', 'Getting started'), ('reference', 'Current API')]),
-    ('Build interfaces', [('controls', 'Buttons & control sizes'), ('forms', 'Form integration'), ('native-states', 'Native family states'), ('dialog', 'Native dialog'), ('popover', 'Native popover'), ('density', 'Density'), ('conventions', 'Interaction conventions')]),
+    ('Start here', [('index', 'Documentation'), ('getting-started', 'Getting started'), ('enhancement', 'Shared UI JavaScript'), ('reference', 'Current API')]),
+    ('Build interfaces', [('controls', 'Buttons & control sizes'), ('forms', 'Form integration'), ('native-states', 'Native family states'), ('dialog', 'Native dialog'), ('popover', 'Native popover'), ('popup', 'Anchored Popup help'), ('density', 'Density'), ('conventions', 'Interaction conventions')]),
     ('Customize', [('theming', 'Theming & tokens')]),
-    ('Project', [('architecture', 'Architecture'), ('accessibility', 'Accessibility & evidence'), ('roadmap', 'Roadmap'), ('contributing', 'Contributing'), ('component-template', 'Specification template'), ('site', 'Documentation authoring')]),
+    ('Project', [('architecture', 'Architecture'), ('lifecycle', 'Lifecycle & ownership'), ('accessibility', 'Accessibility & evidence'), ('roadmap', 'Roadmap'), ('contributing', 'Contributing'), ('component-template', 'Specification template'), ('site', 'Documentation authoring')]),
 ]
 TOP = [('About', 'index.html'), ('Components', 'examples/components.html'), ('Docs', 'docs/index.html'), ('Themes', 'examples/themes.html'), ('Tests', 'tests/accessibility.html')]
 
@@ -36,7 +36,7 @@ def sidebar(page, data):
     groups.append(f'<p><a href="{relative("examples/index.html", page)}">Examples & recipes</a></p>')
     for category in dict.fromkeys(item['category'] for item in data['components']):
         items = [item for item in data['components'] if item['category'] == category]
-        links = ''.join(f'<li><a href="{relative("docs/components/"+item["id"]+".html", page)}"'+(' aria-current="page"' if page.endswith('/'+item['id']+'.html') else '')+f'>{item["name"]}'+(' <small>Planned</small>' if item['status'] == 'planned' else '')+'</a></li>' for item in items)
+        links = ''.join(f'<li><a href="{relative("docs/components/"+item["id"]+".html", page)}"'+(' aria-current="page"' if page == 'docs/components/'+item['id']+'.html' else '')+f'>{item["name"]}'+(' <small>Planned</small>' if item['status'] == 'planned' else '')+'</a></li>' for item in items)
         opened = ' open' if any(page.endswith('/'+i['id']+'.html') for i in items) else ''
         groups.append(f'<details{opened}><summary>{category}</summary><ul>{links}</ul></details>')
     links = ''.join(f'<li><a href="{relative("docs/components/"+item["id"]+".html", page)}"'+(' aria-current="page"' if page.endswith('/'+item['id']+'.html') else '')+f'>{item["id"]}</a></li>' for item in data['uiComponents'])

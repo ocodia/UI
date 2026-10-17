@@ -1,0 +1,54 @@
+<!doctype html>
+<!-- Generated from docs/recipes.json. Trusted repository examples only. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Anchored project reference help — UI example</title>
+<link rel="stylesheet" href="../../css/ui.css?v=0fac3cf5abba"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/ui.js?v=ede5405309c2" defer></script><script src="../../js/docs-preview.js?v=ca0c3101df0e" defer></script>
+<style>body { padding: 1.5rem 2rem 1.5rem 1.5rem; } body > main { max-inline-size: none; inline-size: auto; margin: 0; padding: 0; } h1 { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); } output { display: block; margin-block-start: 1rem; } .table-scroll table { min-inline-size: 38rem; } :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) { display: none; }</style></head>
+<body><main aria-label="Anchored project reference help example"><h1>Anchored project reference help</h1><section>
+  <h2>Project reference</h2>
+  <p id="reference-hint">Keep the original visit reference beside your field notes. Optional help does not save or publish answers.</p>
+  <button id="reference-open" type="button" popovertarget="reference-help" hidden>Open reference help</button>
+  <div id="reference-inline"><h3 tabindex="-1">Finding the project reference</h3>
+  <p>Use the reference from the original visit record. Keep it beside your field notes so the coordinator can match later observations to the same place.</p>
+  <h4>Keep useful context</h4>
+  <p>Describe the route and the purpose of the visit in ordinary words. Keep private contact details in the agreed private channel. Editing this draft does not publish it or change project access.</p>
+  <h4>Check the next visit</h4>
+  <p>Before arranging another visit, compare the reference with the original notes and explain any changes in the project description. Preserve earlier observations rather than replacing them with a new interpretation.</p>
+  <p><a href="../forms.html">Read the form integration guide</a> for native values and application responsibilities.</p></div>
+  <div id="reference-help" popover="auto" hidden>
+    <button type="button" popovertarget="reference-help" popovertargetaction="hide">Close reference help</button>
+    <h3 tabindex="-1">Finding the project reference</h3>
+  <p>Use the reference from the original visit record. Keep it beside your field notes so the coordinator can match later observations to the same place.</p>
+  <h4>Keep useful context</h4>
+  <p>Describe the route and the purpose of the visit in ordinary words. Keep private contact details in the agreed private channel. Editing this draft does not publish it or change project access.</p>
+  <h4>Check the next visit</h4>
+  <p>Before arranging another visit, compare the reference with the original notes and explain any changes in the project description. Preserve earlier observations rather than replacing them with a new interpretation.</p>
+  <p><a href="../forms.html">Read the form integration guide</a> for native values and application responsibilities.</p>
+    <button type="button" popovertarget="reference-help" popovertargetaction="hide">Close reference help</button>
+  </div>
+  <label for="project-reference">Reference for the original coastal research visit</label>
+  <input id="project-reference" name="reference" value="COAST-01" aria-describedby="reference-hint">
+</section></main><script src="../../js/popup.js?v=b0e33bbbc6d9"></script><script>
+(() => {
+  const opener = document.querySelector('#reference-open');
+  const panel = document.querySelector('#reference-help');
+  const fallback = document.querySelector('#reference-inline');
+  if (!opener || !panel || !fallback || typeof globalThis.UIPopup?.attach !== 'function' ||
+      opener.popoverTargetElement !== panel || !panel.querySelectorAll('button').length ||
+      [...panel.querySelectorAll('button')].some(button => button.popoverTargetElement !== panel)) return;
+  const events = new AbortController();
+  let positioner;
+  function inline() {
+    const recover = panel.contains(document.activeElement) || document.activeElement === opener;
+    events.abort();
+    if (panel.matches(':popover-open')) panel.hidePopover();
+    positioner?.destroy();
+    panel.hidden = true; opener.hidden = true; fallback.hidden = false;
+    if (recover) fallback.querySelector('h3').focus();
+  }
+  try { positioner = UIPopup.attach({ anchor: opener, surface: panel, onUnavailable: inline }); }
+  catch { return; }
+  opener.addEventListener('click', () => opener.focus(), { signal: events.signal });
+  window.addEventListener('pagehide', event => { if (!event.persisted) { positioner.destroy(); events.abort(); } }, { signal: events.signal });
+  panel.hidden = false; fallback.hidden = true; opener.hidden = false;
+})();
+</script></body></html>

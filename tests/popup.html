@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Popup geometry checks — UI</title>
+  <link rel="stylesheet" href="../css/ui.css">
+  <script src="popup.js" defer></script>
+</head>
+<body>
+  <header><a href="accessibility.html">UI browser checks</a></header>
+  <main>
+    <h1>Popup geometry checks</h1>
+    <p>Exercise anchored placement, clipping/collision, native focus scrolling, missing-capability fallback, authored style preservation and resource cleanup. These checks simulate enlarged text; real keyboard, browser zoom, screen readers and touch need separate verification.</p>
+    <p><a href="../docs/previews/popup-0.html">Open anchored reference help on its own</a> for actual zoom and keyboard checks. Popover content remains non-modal; the background page stays available. Escape and outside pointer dismissal need direct input checks.</p>
+    <button id="run" type="button">Run Popup geometry checks</button>
+    <h2 id="results-title" tabindex="-1">Results</h2>
+    <p id="results" role="status">No checks run yet.</p>
+    <details><summary>Assertions</summary><ol id="assertions"></ol></details>
+    <iframe id="popup-frame" src="../docs/previews/popup-0.html" title="Popup geometry under test" style="inline-size: 100%; block-size: 600px"></iframe>
+  </main>
+  <script>
+    function assert(condition, message) { if (!condition) throw new Error(message); }
+    const frame = document.querySelector('#popup-frame');
+    async function load(route, nojs = false, setup = '') {
+      frame.removeAttribute('srcdoc');
+      if (nojs) frame.setAttribute('sandbox', 'allow-same-origin'); else frame.removeAttribute('sandbox');
+      if (setup) {
+        const html = await (await fetch(route)).text();
+        await new Promise(resolve => {
+          frame.onload = resolve;
+          frame.srcdoc = html.replace('<head>', `<head><base href="${new URL(route, location.href).href}"><script>${setup}<\/script>`);
+        });
+      } else await new Promise(resolve => { frame.onload = resolve; frame.src = route; });
+      return frame.contentWindow;
+    }
+    document.querySelector('#run').addEventListener('click', async event => {
+      const button = event.currentTarget; button.disabled = true;
+      document.querySelector('#assertions').replaceChildren();
+      try {
+        const passed = await runPopupChecks(load, frame);
+        document.querySelector('#results').textContent = `PASS: ${passed.length} popup checks.`;
+        for (const message of passed) {
+          const item = document.createElement('li'); item.textContent = message; document.querySelector('#assertions').append(item);
+        }
+      } catch (error) { document.querySelector('#results').textContent = `FAIL: ${error.message}`; }
+      finally {
+        frame.style.inlineSize = '100%'; frame.style.blockSize = '600px';
+        button.disabled = false; document.querySelector('#results-title').focus();
+      }
+    });
+  </script>
+</body>
+</html>

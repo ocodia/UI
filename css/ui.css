@@ -284,6 +284,14 @@
     }
     :where(dialog > :first-child, [popover] > :first-child) { margin-block-start: 0; }
     dialog::backdrop { background: #0009; }
+    :where(dialog[open][data-ui="dialog"]:not([data-ui-ready])) {
+      position: static;
+      inline-size: auto;
+      max-inline-size: 100%;
+      max-block-size: none;
+      margin-inline: 0;
+      box-shadow: none;
+    }
   }
 
   @layer forms {

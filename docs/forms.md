@@ -1,5 +1,7 @@
 # Integrating forms
 
+Use `js/ui.js` for the combined behavior entry, or keep the compatible form-only `js/components.js`. No per-form initialization is required. The [shared lifecycle API](enhancement.md) can suspend/resume existing forms and summaries while preserving native values; application validators, localization and transport remain configured here.
+
 `ui-form` coordinates native validation, field feedback, linked summaries and recovery. It does not own values, network requests, business rules or translations. Use [the current API](reference.md#reusable-forms) and the [working integration example](../examples/form-integration.html).
 
 ## Native ownership and dynamic markup

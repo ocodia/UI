@@ -55,6 +55,12 @@ async function runDocumentationChecks(load, frame) {
   check(copied === code.querySelector('code').textContent && example.querySelector('[data-copy-status]').textContent === 'Code copied.', 'Copy action uses the displayed example source and reports success.');
   win = await load('../docs/components/combobox.html'); doc=win.document;
   check(!doc.querySelector('[data-example]') && doc.querySelector('#proposal').nextElementSibling.textContent.includes('not implemented'), 'Planned component pages expose proposals without pretend live controls.');
+  win = await load('../docs/components/popup.html'); doc=win.document;
+  check(doc.querySelector('a[href="../specs/popup.html"]') && doc.querySelector('a[href="../specs/popup.md"]') && doc.querySelector('[data-example]'), 'Experimental Popup links its specification, source and actual anchored-help example.');
+  win = await load('../docs/specs/popup.html'); doc=win.document;
+  check(doc.querySelector('link[href="../../css/site.css"]') && doc.querySelector('a[href="../lifecycle.html"]') && doc.querySelector('.doc-source a[href="popup.md"]') && !doc.querySelector('.docs-sidebar a[href="../components/popup.html"][aria-current]'), 'Nested specifications retain site assets, shared contracts and source links without marking a different page current.');
+  win = await load('../docs/enhancement.html'); doc=win.document;
+  check(doc.querySelectorAll('[data-example]').length === 4 && [...doc.querySelectorAll('[data-example] details code')].every(code => code.textContent.includes('js/ui.js') && !code.textContent.includes('addEventListener') && !code.textContent.includes('UIPopup.attach')), 'Shared-entry examples use the combined script and declarative markup without application initialization code.');
   win = await load('../docs/previews/input-0.html'); doc=win.document;
   check(!doc.querySelector('body > main > h1').hidden && doc.querySelector('h1').closest('main'), 'Standalone previews keep their document heading within the main landmark when embedded outside the documentation runner.');
   const form=doc.querySelector('form'); form.requestSubmit();
@@ -70,7 +76,7 @@ async function runDocumentationChecks(load, frame) {
   const range=doc.querySelector('input'); range.stepUp(); range.form.requestSubmit();
   check(range.value==='55' && doc.querySelector('#preview-result').textContent.includes('volume=55'), 'Range preview retains native stepping and numeric serialization.');
   frame.style.inlineSize='320px';
-  for (const route of ['../index.html','../docs/index.html','../docs/controls.html','../docs/forms.html','../docs/native-states.html','../docs/components/checkbox.html','../docs/components/combobox.html']) {
+  for (const route of ['../index.html','../docs/index.html','../docs/controls.html','../docs/forms.html','../docs/native-states.html','../docs/components/checkbox.html','../docs/components/combobox.html','../docs/lifecycle.html','../docs/specs/popup.html','../docs/popup.html','../docs/enhancement.html']) {
     win=await load(route,true); doc=win.document;
     for (const dir of ['ltr','rtl']) {
       doc.documentElement.dir=dir;

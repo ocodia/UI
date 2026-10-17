@@ -1,5 +1,17 @@
 # Native dialog recipe
 
+## Standard shared setup
+
+Load `js/ui.js` once and use the [shared enhancement markup](enhancement.md). Standard opening, focus, fallback and cleanup are library-owned; no application initialization script is required. The [single-copy example](previews/enhancement-1.html) keeps its content readable without JavaScript. `UI.enhance(root)` / `UI.destroy(root)` cover dynamic insertion and teardown.
+
+```html
+<script src="js/ui.js" defer></script>
+```
+
+The first interactive example below uses this shared path. The remaining material documents the lower-level adapter or earlier manual recipe for advanced integration and compatibility.
+
+## Advanced manual integration
+
 Phase 1 native recipe, with partial evidence; not a new custom element or a stable-release claim. Use a modal for a short task that needs the user's attention before they continue. Prefer an inline section, details or a separate page when blocking the current task adds no value.
 
 The [working recipe](../examples/patterns.html#modal) uses `css/ui.css` and application code in [recipes.js](../examples/recipes.js). It needs no component registration. The [HTML dialog contract](https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element) supplies modal behavior; [APG's dialog guidance](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/) informs content and focus decisions. Test the actual browser and assistive technology combination.

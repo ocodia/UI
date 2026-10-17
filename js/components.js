@@ -24,6 +24,7 @@
 
   class UIErrorSummary extends HTMLElement {
     connectedCallback() {
+      if (this._uiSuspended) return;
       this._events?.abort();
       this._events = new AbortController();
       this.refresh();
@@ -44,6 +45,13 @@
     }
 
     disconnectedCallback() { this._events?.abort(); }
+
+    _uiSuspend() { this._uiSuspended = true; this.disconnectedCallback(); this.closest('ui-form')?.refresh?.(); }
+    _uiResume() {
+      if (this._uiSuspended) { this._uiSuspended = false; if (this.isConnected) this.connectedCallback(); }
+      else this.refresh();
+      this.closest('ui-form')?.refresh?.();
+    }
 
     refresh() {
       this.setAttribute('tabindex', '-1');
@@ -79,6 +87,8 @@
 
   class UIForm extends HTMLElement {
     connectedCallback() {
+      if (this._uiSuspended || this._uiActive) return;
+      this._uiActive = true;
       this._managed = new Map();
       this._errorElements = new WeakMap();
       this._errors = [];
@@ -98,10 +108,19 @@
     }
 
     disconnectedCallback() {
+      if (!this._uiActive) return;
+      this._uiActive = false;
       this._observer?.disconnect();
       this.clear();
       for (const control of this._hints.keys()) this._removeHints(control);
       this._unbind();
+    }
+
+    _uiSuspend() { this._uiSuspended = true; this.disconnectedCallback(); }
+    _uiResume() {
+      this._uiSuspended = false;
+      if (this.isConnected && !this._uiActive) this.connectedCallback();
+      else this.refresh();
     }
 
     get form() { return this._form || null; }
@@ -113,7 +132,7 @@
     }
 
     refresh() {
-      if (!this.isConnected) return;
+      if (!this.isConnected || this._uiSuspended) return;
       const forms = [...this.querySelectorAll('form')].filter((form) => form.closest('ui-form') === this);
       const form = forms.length === 1 ? forms[0] : null;
       if (form !== this._form) {
@@ -152,7 +171,7 @@
       this._summary = summary;
       summary.refresh?.();
       // Do not turn off the browser's UI unless the replacement can render errors.
-      this._ready = typeof summary.show === 'function' && !!summary.querySelector('h2') && !!summary.querySelector('ul');
+      this._ready = !summary._uiSuspended && typeof summary.show === 'function' && !!summary.querySelector('h2') && !!summary.querySelector('ul');
       form.noValidate = this._ready ? true : this._nativeNoValidate;
       this._syncHints();
       for (const control of this._controls()) {

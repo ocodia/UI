@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "reviewed": "2026-10-16",
   "reference": "https://webawesome.com/docs/components",
-  "description": "Scope mapping, not feature parity. native means a platform recipe; foundation means an existing UI primitive; planned means unimplemented. No entry is a certified accessibility claim. Proposed names may change.",
+  "description": "Scope mapping, not feature parity. native means a platform recipe; foundation means an existing UI primitive or adapter; planned means unimplemented. No entry is a certified accessibility claim. Proposed names may change.",
   "components": [
     {
       "id": "button",
@@ -359,10 +359,10 @@
       "ui": "dialog with showModal()",
       "status": "native",
       "phase": 1,
-      "contract": "Use an accessible title, explicit close action and browser modal behavior. Application code opens it, clears stale results and retains inline information when enhancement is unavailable. Long structured content starts with heading focus and scrolls as one native surface. See docs/dialog.md and its long-briefing recipe.",
+      "contract": "Use an accessible title, explicit close action and browser modal behavior. Application code opens it, clears stale results and retains inline information when enhancement is unavailable. Long structured content starts with heading focus and scrolls as one native surface. See docs/dialog.md and its long-briefing recipe. Standard setup is available through js/ui.js and explicit data-ui markup; see docs/enhancement.md.",
       "acceptance": "Browser assertions cover short/long modal focus, scroll bounds, both close actions, reopening at the start, background focus blocking, close results, return focus after trigger changes and unsupported/open-failure/no-script fallback. Verify remaining browser/mobile, zoom, forced colors, touch and screen-reader combinations before release; see dated manual evidence in ACCESSIBILITY.md.",
       "example": "<button id=\"open-information\" type=\"button\" hidden>Open information</button>\n<section id=\"information-fallback\"><h2>Project information</h2><p>Keep equivalent information available before enhancement.</p></section>\n<dialog id=\"information\" aria-labelledby=\"information-title\" hidden>\n  <h2 id=\"information-title\">Project information</h2>\n  <p>Keep equivalent information available before enhancement.</p>\n  <form method=\"dialog\"><button type=\"submit\" value=\"close\" autofocus>Close information</button></form>\n</dialog>\n<!-- Install application handlers before revealing the modal opener or hiding fallback. See docs/dialog.md. -->",
-      "exampleNote": "[Native dialog contract and fallback recipe](dialog.md) · [Working example](../examples/patterns.html#modal)."
+      "exampleNote": "[Shared UI setup and scoped lifecycle](enhancement.md). [Native dialog contract and fallback recipe](dialog.md) · [Working example](../examples/patterns.html#modal)."
     },
     {
       "id": "divider",
@@ -974,21 +974,24 @@
       "ui": "native popover and popovertarget",
       "status": "native",
       "phase": 1,
-      "contract": "Use native auto popover and declarative invokers for optional non-modal information. Capability/target checks retain complete inline help when enhancement is unavailable. See docs/popover.md; content keeps its native semantics.",
+      "contract": "Use native auto popover and declarative invokers for optional non-modal information. Capability/target checks retain complete inline help when enhancement is unavailable. See docs/popover.md; content keeps its native semantics. Standard setup is available through js/ui.js and explicit data-ui markup; see docs/enhancement.md.",
       "acceptance": "Browser assertions cover toggle/close, non-modal editing, native target relationships, focus restoration, disabled actions, auto-popover coordination, long-content bounds and missing-support/no-script fallback. Verify real Escape, light dismissal, keyboard traversal, zoom, mobile, forced colors and screen readers; see dated evidence in ACCESSIBILITY.md.",
       "example": "<button id=\"help-open\" type=\"button\" popovertarget=\"project-help\" hidden>Open project help</button>\n<div id=\"help-inline\"><h3>Project help</h3><p>Keep the full help available inline before enhancement.</p></div>\n<div id=\"project-help\" popover=\"auto\" hidden><h3>Project help</h3><p>Keep the full help available inline before enhancement.</p><button type=\"button\" popovertarget=\"project-help\" popovertargetaction=\"hide\">Close project help</button></div>\n<!-- Install the matching capability/target checks before revealing the opener or hiding inline help. See docs/popover.md. -->",
-      "exampleNote": "[Native popover contract and examples](popover.md) · [Focused checks](../tests/popover.html)."
+      "exampleNote": "[Shared UI setup and scoped lifecycle](enhancement.md). [Native popover contract and examples](popover.md) · [Focused checks](../tests/popover.html)."
     },
     {
       "id": "popup",
       "name": "Popup",
       "category": "Helpers",
       "reference": "https://webawesome.com/docs/components/popup/",
-      "ui": "shared positioning utility (proposed; no public element required)",
-      "status": "planned",
+      "ui": "UIPopup.attach geometry adapter (optional js/popup.js)",
+      "status": "foundation",
       "phase": 2,
-      "contract": "Keep low-level positioning separate from semantics; shared layer supports menus, tooltips, and popovers.",
-      "acceptance": "Viewport collision, scrolling, zoom, RTL, cleanup, and native anchor-positioning fallback strategy."
+      "contract": "Experimental measured positioning for one native auto-popover surface and a same-document anchor. Native visibility/dismissal and consumer focus/semantics remain independent; see docs/popup.md. Standard setup is available through js/ui.js and explicit data-ui markup; see docs/enhancement.md.",
+      "acceptance": "Verify measured edge collision, clipping, zoom/visual viewport, RTL, nested scrolling/dialogs, inline fallback, resource teardown and authored style preservation. Dated evidence and unresolved platform/assistive-technology checks remain in ACCESSIBILITY.md.",
+      "specification": "docs/specs/popup.md",
+      "maturity": "experimental",
+      "exampleNote": "[Shared UI setup and scoped lifecycle](enhancement.md). [Experimental adapter contract](popup.md) · [Specification](specs/popup.md) · [Focused geometry checks](../tests/popup.html)."
     },
     {
       "id": "random-content",
@@ -1102,5 +1105,20 @@
       "contract": "Native skip anchor with visible focused presentation.",
       "example": "<ui-skip-link><a href=\"#main\">Skip to main content</a></ui-skip-link>\n<main id=\"main\" tabindex=\"-1\"><h1>Projects</h1></main>"
     }
-  ]
+  ],
+  "entryPoints": {
+    "combined": "js/ui.js",
+    "sources": [
+      "js/components.js",
+      "js/popup.js",
+      "js/enhance.js"
+    ],
+    "api": [
+      "UI.enhance(root)",
+      "UI.destroy(root)",
+      "UI.popup.attach(options)"
+    ],
+    "guide": "docs/enhancement.md",
+    "specification": "docs/specs/enhancement.md"
+  }
 }

@@ -1,6 +1,6 @@
 # Getting started
 
-Copy `css/ui.css` into your project. Include it before application styles. Add `js/components.js` only if using enhanced forms or error summaries. `js/examples.js` and `js/workspace.js` are demonstration application code, not library entry points.
+Copy `css/ui.css` into your project. Include it before application styles. Add optional `js/ui.js` for enhanced forms/error summaries and declarative native dialog/popover/Popup patterns. Use the [shared enhancement guide](enhancement.md) for copyable markup and dynamic lifecycle calls. The smaller `js/components.js` form entry remains compatible. `js/examples.js` and `js/workspace.js` are demonstration application code, not library entry points.
 
 ```html
 <!doctype html>
@@ -9,7 +9,7 @@ Copy `css/ui.css` into your project. Include it before application styles. Add `
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/ui.css">
-    <script src="js/components.js" defer></script>
+    <script src="js/ui.js" defer></script>
     <title>Projects</title>
   </head>
   <body>

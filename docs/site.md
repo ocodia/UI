@@ -1,14 +1,16 @@
 # Documentation authoring
 
+The full build regenerates `js/ui.js` from its three behavior sources before rendering examples. Preview URLs fingerprint the combined script and foundation CSS as well as recipe dependencies; rebuild after those sources change. Code drawers include the combined entry required for the markup.
+
 The documentation site uses UI's own foundation: `css/ui.css`, `ui-sidebar`, `ui-stack`, `ui-grid`, `ui-panel`, `ui-cluster`, native controls and native details. The site-specific shell and example runner are application code in `css/site.css`, `js/docs.js` and `js/docs-preview.js`. They are not library entry points and register no elements.
 
 ## Sources and generated pages
 
-Markdown in `docs/` remains the source for the complete guides, including controls, density, forms, theming, architecture and the current reference. Root accessibility, roadmap and contributing documents are rendered too. Pages contain static HTML, section links, a guide/component sidebar and an on-page contents list. Content does not depend on fetching Markdown in the browser.
+Markdown in `docs/` remains the source for the complete guides, including controls, density, forms, theming, architecture and the current reference. Markdown specifications under `docs/specs/` render to matching `docs/specs/*.html` pages. Root accessibility, roadmap and contributing documents are rendered too. Pages contain static HTML, section links, a guide/component sidebar and an on-page contents list. Content does not depend on fetching Markdown in the browser.
 
-`docs/components.json` owns component identity, status, contract and acceptance work. `tools/site_content.py` and `tools/component_contracts.py` add component-specific native integration notes and API tables. Every catalogue entry and existing UI primitive gets its own page in `docs/components/`. Native/foundation routes have authored live examples where assets are available. Planned entries show their proposal and acceptance work without pretending to be implemented.
+`docs/components.json` owns component identity, status, contract and acceptance work. An optional repository-relative `specification` path links the rendered proposal and its source from the component page and catalogue. `tools/site_content.py` and `tools/component_contracts.py` add component-specific native integration notes and API tables. Every catalogue entry and existing UI primitive gets its own page in `docs/components/`. Native/foundation routes have authored live examples where assets are available. Planned entries show their proposal and acceptance work without pretending to be implemented.
 
-`docs/recipes.json` owns each live example's title, HTML, optional application JavaScript and explanatory note. Each example generates a standalone file in `docs/previews/`; its source is also escaped into the code drawer. The same source drives the preview and the drawer. Never edit generated HTML to change a recipe.
+`docs/recipes.json` owns each live example's title, HTML, optional application JavaScript and explanatory note. Each example generates a standalone file in `docs/previews/`; its source is also escaped into the code drawer. The same source drives the preview and the drawer. An optional `dependencies` array lists trusted repository-relative `js/*.js` files loaded synchronously before that recipe's application script; generated previews fingerprint those files. The code drawer shows those dependencies too. Rebuild after editing a dependency such as `js/popup.js`. Never edit generated HTML to change a recipe.
 
 ## Build and verify
 

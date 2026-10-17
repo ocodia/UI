@@ -11,6 +11,7 @@ LABELS = {'native': 'Native recipe', 'foundation': 'Foundation', 'planned': 'Pla
 def example_markup(key, index, recipe, page):
     identity = f'{key}-{index}'
     source = recipe['code'] + ('\n<script>\n'+recipe['script']+'\n</script>' if recipe.get('script') else '')
+    source = '<script src="js/ui.js" defer></script>\n' + ''.join(f'<script src="{path}"></script>\n' for path in recipe.get('dependencies', [])) + source
     path = relative(f'docs/previews/{identity}.html', page)
     return f'''<section aria-labelledby="{identity}-title">
 <h3 id="{identity}-title">{escape(recipe['title'])}</h3>
@@ -26,15 +27,24 @@ def example_markup(key, index, recipe, page):
 def previews(recipes):
     pages = {}
     preview_version = sha256((ROOT/'js/docs-preview.js').read_bytes()).hexdigest()[:12]
+    ui_version = sha256((ROOT/'js/ui.js').read_bytes()).hexdigest()[:12]
+    ui_style_version = sha256((ROOT/'css/ui.css').read_bytes()).hexdigest()[:12]
     for key, examples in recipes.items():
         for index, recipe in enumerate(examples):
             title = escape(recipe['title'])
             script = '<script>\n'+recipe['script']+'\n</script>' if recipe.get('script') else ''
+            dependencies = ''
+            for path in recipe.get('dependencies', []):
+                if not path.startswith('js/') or not path.endswith('.js') or '..' in path.split('/') or not (ROOT/path).is_file():
+                    raise ValueError(f'Invalid trusted recipe dependency: {path}')
+                version = sha256((ROOT/path).read_bytes()).hexdigest()[:12]
+                dependencies += f'<script src="{relative(path, f"docs/previews/{key}-{index}.html")}?v={version}"></script>'
+            script = dependencies + script
             nojs = '<noscript><p>Enable JavaScript to inspect values locally. Inputs remain editable. A production form needs a real server action.</p></noscript>' if '<form' in recipe['code'] and 'method="dialog"' not in recipe['code'] else ''
             pages[f'docs/previews/{key}-{index}.html'] = f'''<!doctype html>
 <!-- Generated from docs/recipes.json. Trusted repository examples only. -->
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{title} — UI example</title>
-<link rel="stylesheet" href="../../css/ui.css"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/components.js" defer></script><script src="../../js/docs-preview.js?v={preview_version}" defer></script>
+<link rel="stylesheet" href="../../css/ui.css?v={ui_style_version}"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/ui.js?v={ui_version}" defer></script><script src="../../js/docs-preview.js?v={preview_version}" defer></script>
 <style>body {{ padding: 1.5rem 2rem 1.5rem 1.5rem; }} body > main {{ max-inline-size: none; inline-size: auto; margin: 0; padding: 0; }} h1 {{ position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); }} output {{ display: block; margin-block-start: 1rem; }} .table-scroll table {{ min-inline-size: 38rem; }} :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) {{ display: none; }}</style></head>
 <body><main aria-label="{title} example"><h1>{title}</h1>{recipe['code']}{nojs}</main>{script}</body></html>
 '''
@@ -65,14 +75,24 @@ def component_page(item, data, recipes):
     title = item.get('name', key)
     route = item.get('ui', key)
     body = f'<p class="eyebrow"><a href="../../examples/components.html">Components</a> / {escape(item.get("category", "UI primitives"))}</p><h1>{escape(title)}</h1><ui-cluster class="component-meta"><code>{escape(route)}</code><span>{LABELS[status]}</span><span>'+ (f'Phase {item["phase"]}' if 'phase' in item else escape(item['mode']))+f'</span></ui-cluster><p class="component-lead">{escape(PURPOSE.get(key,item["contract"]))}</p>'
+    if item.get('maturity'):
+        body += '<p>Implementation maturity: '+escape(item['maturity'])+'. See dated evidence and remaining release gates.</p>'
     sections = []
     def section(identity, title, content):
         sections.append((identity,title))
         return f'<h2 id="{identity}">{title}</h2>{content}'
     if status == 'planned':
         body += section('proposal', 'Proposed direction', '<ui-panel><p>This component is not implemented. Its proposed name is not a registered element or a supported API. There is no live demonstration to initialize.</p></ui-panel><p>Use the native or readable baseline described above while the component is specified. Delivery depends on the roadmap and a complete interaction contract.</p>')
+        if item.get('specification'):
+            spec = item['specification']
+            body += '<p>Read the <a href="'+escape(relative(spec[:-3]+'.html', page), quote=True)+'">proposed specification</a> or its <a href="'+escape(relative(spec, page), quote=True)+'">Markdown source</a>. This is design work, not an implemented API.</p>'
         body += section('acceptance', 'Acceptance work', '<p>'+escape(item['acceptance'])+'</p><p>Before implementation, specify markup, keyboard/focus behavior, native value ownership, missing-API fallback, late children, nesting and cleanup. APIs, tokens and events will be documented only when implemented.</p>')
     else:
+        if item.get('specification'):
+            body += '<p>Read the <a href="'+escape(relative(item['specification'][:-3]+'.html', page), quote=True)+'">component specification</a> and its <a href="'+escape(relative(item['specification'], page), quote=True)+'">Markdown source</a>.</p>'
+        shared_index = {'ui-form': 0, 'ui-error-summary': 0, 'dialog': 1, 'popover': 2, 'popup': 3}.get(key)
+        if shared_index is not None:
+            body += section('shared-setup', 'Shared UI setup', '<p>Load <code>js/ui.js</code> once. Use the <a href="../enhancement.html">shared enhancement API</a> for standard setup and scoped cleanup; application business rules remain separate.</p>'+example_markup('enhancement', shared_index, recipes['enhancement'][shared_index], page))
         body += section('examples', 'Examples', ''.join(example_markup(key,i,r,page) for i,r in enumerate(recipes.get(key, []))) or '<p>No verified media demo is shipped. The catalogue documents illustrative markup; supply verified media, captions and transcript before presenting a working example.</p>')
         keyboard, values = FORM_NOTES.get(key, (
             'Use native children for semantics and interaction. Layout wrappers add no keyboard behavior or implicit roles. Keep visual order consistent with DOM reading order, including in RTL.',
@@ -94,7 +114,7 @@ def component_page(item, data, recipes):
             body += '<p>The <a href="../../examples/composition.html">survey briefing recipe</a> combines nested panels, native multiple selection and named scroll regions. Read its <a href="../reference.html#panels-scroll-regions-and-multiple-selection">composition and selection contract</a>.</p>'
         if key in PURPOSE:
             body += '<p>See the <a href="../native-states.html">native family state audit</a> for default, long-content, disabled/read-only, invalid, busy and fallback coverage, including states that do not apply.</p>'
-        guide = 'forms' if key in FORM_NOTES or key in ['ui-form','ui-error-summary','ui-field','ui-hint','ui-error'] else key if key in ['dialog', 'popover'] else 'controls' if key in ['button','button-group'] else 'reference'
+        guide = 'forms' if key in FORM_NOTES or key in ['ui-form','ui-error-summary','ui-field','ui-hint','ui-error'] else key if key in ['dialog', 'popover', 'popup'] else 'controls' if key in ['button','button-group'] else 'reference'
         body += section('api', 'API & styling', api_table(key)+f'<p>Use the <a href="../{guide}.html">implemented {guide} contract</a> for the full integration rules and supported cases. Native attributes retain their standard meanings. Only <code>ui-form</code> and <code>ui-error-summary</code> register behavior.</p><p>Styles come from <code>css/ui.css</code> in the <code>ui</code> layer. Geometry and semantic colors use <a href="../theming.html">UI theme variables</a>. <a href="../density.html">Density</a> and <a href="../controls.html">control sizes</a> have separate scopes; they do not apply to every element.</p>')
         if item.get('example'):
             body += section('minimal-markup', 'Catalogue markup', '<p>This minimal structure describes the route. Live examples above add the context needed to try it.</p><details><summary>Minimal markup</summary><pre><code>'+escape(item['example'])+'</code></pre></details>')

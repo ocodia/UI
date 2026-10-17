@@ -82,6 +82,8 @@ exampleButton.addEventListener('click', async () => {
     passed.push(...await runDialogFallbackChecks(load));
     passed.push(...await runLongDialogChecks(load, frame));
     passed.push(...await runPopoverChecks(load, frame));
+    passed.push(...await runPopupChecks(load, frame));
+    passed.push(...await runEnhancementChecks(load, frame));
     win = await load('../examples/server-errors.html');
     doc = win.document;
     const serverForm = doc.querySelector('#server-form');

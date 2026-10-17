@@ -6,6 +6,7 @@ import json
 from build_catalog import generate as catalogue
 from site_shell import ROOT, document, sidebar, markdown, relative
 from site_content import example_markup
+from build_ui import generate as combined_ui
 
 
 def generate():
@@ -13,6 +14,7 @@ def generate():
     recipes = json.loads((ROOT/'docs/recipes.json').read_text())
     pages = catalogue()
     sources = {p.stem: p.relative_to(ROOT).as_posix() for p in (ROOT/'docs').glob('*.md') if p.stem not in ['README','components']}
+    sources.update({f'specs/{p.stem}': p.relative_to(ROOT).as_posix() for p in (ROOT/'docs/specs').glob('*.md')})
     sources.update({'index':'docs/README.md', 'accessibility':'ACCESSIBILITY.md', 'roadmap':'ROADMAP.md', 'contributing':'CONTRIBUTING.md'})
     for slug, source in sources.items():
         page = f'docs/{slug}.html'
@@ -21,7 +23,9 @@ def generate():
         body, toc = markdown(text, source, page)
         recipe_key = {'dialog':'dialog-guide'}.get(slug,slug)
         if recipe_key in recipes:
-            body += '<h2 id="interactive-examples">Interactive examples</h2>'+''.join(example_markup(recipe_key,i,r,page) for i,r in enumerate(recipes[recipe_key]))
+            shared_index = {'dialog': 1, 'popover': 2, 'popup': 3}.get(slug)
+            shared_example = example_markup('enhancement', shared_index, recipes['enhancement'][shared_index], page) if shared_index is not None else ''
+            body += '<h2 id="interactive-examples">Interactive examples</h2>'+shared_example+''.join(example_markup(recipe_key,i,r,page) for i,r in enumerate(recipes[recipe_key]))
             toc = toc.replace('</ul>', '<li><a href="#interactive-examples">Interactive examples</a></li></ul>')
         body += f'<p class="doc-source">Generated from <a href="{relative(source,page)}">{escape(source)}</a>. The source and this page share one contract.</p>'
         pages[page] = document(page,title,body,side=sidebar(page,data),toc=toc,scripts=['js/docs.js'])
@@ -42,6 +46,11 @@ def main():
     parser.add_argument('--check',action='store_true')
     args = parser.parse_args()
     stale = []
+    ui = ROOT/'js/ui.js'
+    if args.check:
+        if not ui.exists() or ui.read_text() != combined_ui(): stale.append('js/ui.js')
+    else:
+        ui.write_text(combined_ui())
     pages = generate()
     for name, content in pages.items():
         path = ROOT/name

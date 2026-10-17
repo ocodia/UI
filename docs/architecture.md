@@ -11,12 +11,12 @@ Use `ui-` as the project prefix. Keep native controls inside compound elements; 
 | Layer | Responsibility | Current files |
 | --- | --- | --- |
 | Foundation | Tokens, native styles, layouts, focus, print | `css/ui.css` |
-| Behavior | Optional light-DOM enhancement, lifecycle, state coordination | `js/components.js` |
+| Behavior | Optional light-DOM enhancement, lifecycle, state coordination | `js/ui.js` combined entry; sources `js/components.js`, `js/popup.js`, `js/enhance.js` |
 | Brand | Semantic palette overrides for system/light/dark | `themes/forest.css` |
 | Application | Persistence, routing, data loading, permissions, business rules | `js/workspace.js`, `css/workspace.css` |
 | Documentation | Current APIs, planned contracts, recipes and reference scope | `docs/`, `examples/` |
 
-The current script registers only `ui-form` and `ui-error-summary`. Nine additional `ui-` elements are CSS-only: stack, cluster, grid, sidebar, panel, field, hint, error and skip-link. Native form values stay on input/select/textarea. Standard labels, autofill, FormData, submitter, reset and validation eligibility remain platform-owned.
+The combined and form-only entries register only `ui-form` and `ui-error-summary`. Nine additional `ui-` elements are CSS-only: stack, cluster, grid, sidebar, panel, field, hint, error and skip-link. Native form values stay on input/select/textarea. Standard labels, autofill, FormData, submitter, reset and validation eligibility remain platform-owned.
 
 Do not wrap native elements in custom elements where HTML's content model forbids it: `option` stays inside `select`, `li` stays inside lists, and table rows/cells retain native parents. A wrapper surrounds a valid structure rather than replacing its required children.
 
@@ -34,6 +34,8 @@ The form observes relevant document mutations because native `form` associations
 
 The existing form implementation is the first behavior module, not a universal base class. Extract shared ID, focus, keyboard, locale and positioning helpers only after a second implementation establishes a real need. Keep low-level popup geometry separate from modal/dialog/menu semantics.
 
+The [lifecycle and ownership contract](lifecycle.md) defines initialization, reconciliation, nested events, cleanup, focus recovery, locale and async boundaries for new implementations. It records existing form and static-recipe limits separately from future requirements. The [Popup specification](specs/popup.md) applies that contract to the optional experimental `UIPopup.attach` geometry adapter in `js/popup.js`. It adds no registration; the [integration guide](popup.md) documents the actual API.
+
 ## Public API conventions for new components
 
 These are design rules for future work; they do not add APIs to existing elements.
@@ -49,7 +51,7 @@ These are design rules for future work; they do not add APIs to existing element
 
 ## Delivery shape
 
-Keep the current copyable files working. Later split behavior into optional per-component ES modules plus an explicit all-components entry, publish versioned packages and generated manifests, and support SSR markup without requiring a framework. Do not advertise imports, CDN URLs, package names, autoloaders or a `dist/` directory before they exist.
+Keep the current copyable files working. The generated `js/ui.js` combines existing form behavior, geometry and opt-in enhancement without runtime loading. `UI.enhance` and `UI.destroy` provide the [shared lifecycle API](enhancement.md); only implemented native overlay patterns are initialized. Later split behavior into optional per-component ES modules, publish versioned packages and generated manifests, and support SSR markup without requiring a framework. Do not advertise imports, CDN URLs, package names, autoloaders or a `dist/` directory before they exist.
 
 All visual tokens remain in the named `ui` cascade layer; unlayered application CSS can override them. Future sublayers and component styles must have declared order. Dependency selection requires a concrete benefit, license review, payload measurement and fallback plan; optional charts/Markdown/QR libraries must not enter the CSS foundation bundle.
 

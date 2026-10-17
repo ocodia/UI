@@ -11,7 +11,7 @@ For existing integrations, see the [rename and migration notes](docs/reference.m
 ```html
 <link rel="stylesheet" href="css/ui.css">
 <!-- Optional behavior for ui-form and ui-error-summary -->
-<script src="js/components.js" defer></script>
+<script src="js/ui.js" defer></script>
 
 <ui-form>
   <form action="/projects" method="post">
@@ -36,7 +36,7 @@ The native form owns submission. UI adds linked errors and focus management. Bas
 | Control presentation | Native button variants and control sizes; [contract](docs/controls.md). Comfortable/compact composition; [density](docs/density.md) |
 | Composition | `ui-stack`, `ui-cluster`, `ui-grid`, `ui-sidebar`, `ui-panel` |
 | Form structure | `ui-field`, `ui-hint`, `ui-error`, `ui-skip-link` |
-| Optional behavior | `ui-form`, `ui-error-summary` in `js/components.js`; [application integration](docs/forms.md) |
+| Optional behavior | Combined `js/ui.js`: forms/summaries and declarative dialog/popover/Popup setup; [shared API](docs/enhancement.md). Original smaller entries remain available. |
 | Themes | System/light/dark, spacing/type/radius scales, semantic state/focus tokens, an optional forest brand |
 | Examples | Element gallery, complete form, Fieldwork workspace, recipes, server error recovery, async form integration, native input values and theme workbench |
 
@@ -88,6 +88,10 @@ Run documentation checks with `python3 tools/check_docs.py`. After changing the 
 The [long dialog briefing](docs/previews/dialog-1.html) demonstrates heading focus, native scrolling, close actions at both ends and full inline fallback. See the [dialog contract](docs/dialog.md#long-briefing-and-scrolling) and [focused checks](tests/dialog.html).
 
 The [native popover recipe](docs/popover.md) adds short/long help, native disclosure and dismissal, background editing and complete inline fallback.
+
+The [shared UI JavaScript guide](docs/enhancement.md) shows single-copy declarative overlays and `UI.enhance(root)` / `UI.destroy(root)` for dynamic applications. Load `js/ui.js` once; standard component examples need no per-instance initialization script.
+
+The [lifecycle and ownership contract](docs/lifecycle.md) guides new behavior. The separate optional [Popup adapter](docs/popup.md) provides experimental anchored geometry with `js/popup.js`, native popover dismissal and complete inline fallback.
 
 The [native family state audit](docs/native-states.md) maps native examples to relevant states and remaining platform verification.
 

@@ -12,6 +12,8 @@ Every guide below is available as a rendered page in the documentation site. Bro
 4. [UI conventions](conventions.md): navigation, commands, content, choices and feedback.
 5. [Component catalogue](components.md): every reference component, UI approach, phase and acceptance work.
 
+[Shared UI JavaScript](enhancement.md) provides one script, declarative overlay markup, automatic static initialization and scoped enhance/destroy methods. Existing form APIs and smaller entry points remain compatible.
+
 [Buttons and control sizes](controls.md) documents the implemented `data-variant` and `data-size` attributes, native semantics and theme variables.
 
 [Form integration](forms.md) covers external/dynamic ownership, checkbox/radio questions, localization and application-owned asynchronous submission.
@@ -30,14 +32,14 @@ See the [native family state audit](native-states.md) for authored default, long
 
 ## Build UI
 
-Read [architecture](architecture.md) before implementation. Use the [component template](component-template.md) to define behavior before adding code. Follow [contributing](../CONTRIBUTING.md) and the [accessibility contract](../ACCESSIBILITY.md). The [roadmap](../ROADMAP.md) defines sequence and dependencies, not release dates.
+Read [architecture](architecture.md) and the [lifecycle and ownership contract](lifecycle.md) before implementation. The optional experimental [Popup adapter](popup.md) positions anchored help with native popover visibility, complete inline fallback and scoped cleanup. Its [specification](specs/popup.md) remains separate from richer menu/tooltip interactions. Use the [component template](component-template.md) to define behavior before adding code. Follow [contributing](../CONTRIBUTING.md) and the [accessibility contract](../ACCESSIBILITY.md). The [roadmap](../ROADMAP.md) defines sequence and dependencies, not release dates.
 
 To change this site, read [documentation authoring](site.md). The pages use UI's own layouts, native controls and disclosures. Guide content, examples and code drawers remain readable without the documentation script.
 
 ## Understand status
 
 - **Native recipe:** an existing HTML primitive styled by UI. It does not promise all features of another library's component.
-- **Foundation:** an existing UI composition primitive used as the starting point for that component.
+- **Foundation:** an existing UI primitive or optional adapter used as the starting point for that component. Popup also carries experimental maturity; foundation is not a stable-release claim.
 - **Planned:** no implementation is promised; names, attributes and methods are proposals.
 - **Release readiness:** tracked separately through evidence. Native/foundation does not mean audited or stable v1.
 

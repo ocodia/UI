@@ -3,7 +3,7 @@
 
 Reviewed 2026-10-16: [Web Awesome reference catalogue](https://webawesome.com/docs/components). 90 reference entries and 11 existing UI primitives.
 
-Scope mapping, not feature parity. native means a platform recipe; foundation means an existing UI primitive; planned means unimplemented. No entry is a certified accessibility claim. Proposed names may change.
+Scope mapping, not feature parity. native means a platform recipe; foundation means an existing UI primitive or adapter; planned means unimplemented. No entry is a certified accessibility claim. Proposed names may change.
 
 Delivery phases and the stable-release gate are in [ROADMAP.md](../ROADMAP.md). Examples are minimal structures, not complete applications. Native/foundation entries still need the listed release evidence. Proposed widgets have contracts instead of pretend live demos.
 
@@ -534,7 +534,7 @@ Use the browser disclosure for optional content; closed content must not contain
 
 **Native recipe · Phase 1.** UI route: `dialog with showModal()`.
 
-Use an accessible title, explicit close action and browser modal behavior. Application code opens it, clears stale results and retains inline information when enhancement is unavailable. Long structured content starts with heading focus and scrolls as one native surface. See docs/dialog.md and its long-briefing recipe.
+Use an accessible title, explicit close action and browser modal behavior. Application code opens it, clears stale results and retains inline information when enhancement is unavailable. Long structured content starts with heading focus and scrolls as one native surface. See docs/dialog.md and its long-briefing recipe. Standard setup is available through js/ui.js and explicit data-ui markup; see docs/enhancement.md.
 
 **Acceptance work:** Browser assertions cover short/long modal focus, scroll bounds, both close actions, reopening at the start, background focus blocking, close results, return focus after trigger changes and unsupported/open-failure/no-script fallback. Verify remaining browser/mobile, zoom, forced colors, touch and screen-reader combinations before release; see dated manual evidence in ACCESSIBILITY.md.
 
@@ -549,7 +549,7 @@ Use an accessible title, explicit close action and browser modal behavior. Appli
 <!-- Install application handlers before revealing the modal opener or hiding fallback. See docs/dialog.md. -->
 ```
 
-[Native dialog contract and fallback recipe](dialog.md) · [Working example](../examples/patterns.html#modal).
+[Shared UI setup and scoped lifecycle](enhancement.md). [Native dialog contract and fallback recipe](dialog.md) · [Working example](../examples/patterns.html#modal).
 
 [Reference component](https://webawesome.com/docs/components/dialog/) · [Specification template](component-template.md)
 
@@ -1156,7 +1156,7 @@ Keep internal observation private by default; optional declarative adapter must 
 
 **Native recipe · Phase 1.** UI route: `native popover and popovertarget`.
 
-Use native auto popover and declarative invokers for optional non-modal information. Capability/target checks retain complete inline help when enhancement is unavailable. See docs/popover.md; content keeps its native semantics.
+Use native auto popover and declarative invokers for optional non-modal information. Capability/target checks retain complete inline help when enhancement is unavailable. See docs/popover.md; content keeps its native semantics. Standard setup is available through js/ui.js and explicit data-ui markup; see docs/enhancement.md.
 
 **Acceptance work:** Browser assertions cover toggle/close, non-modal editing, native target relationships, focus restoration, disabled actions, auto-popover coordination, long-content bounds and missing-support/no-script fallback. Verify real Escape, light dismissal, keyboard traversal, zoom, mobile, forced colors and screen readers; see dated evidence in ACCESSIBILITY.md.
 
@@ -1167,17 +1167,21 @@ Use native auto popover and declarative invokers for optional non-modal informat
 <!-- Install the matching capability/target checks before revealing the opener or hiding inline help. See docs/popover.md. -->
 ```
 
-[Native popover contract and examples](popover.md) · [Focused checks](../tests/popover.html).
+[Shared UI setup and scoped lifecycle](enhancement.md). [Native popover contract and examples](popover.md) · [Focused checks](../tests/popover.html).
 
 [Reference component](https://webawesome.com/docs/components/popover/) · [Specification template](component-template.md)
 
 ### Popup
 
-**Planned · Phase 2.** UI route: `shared positioning utility (proposed; no public element required)`.
+**Foundation · Phase 2.** UI route: `UIPopup.attach geometry adapter (optional js/popup.js)`.
 
-Keep low-level positioning separate from semantics; shared layer supports menus, tooltips, and popovers.
+Experimental measured positioning for one native auto-popover surface and a same-document anchor. Native visibility/dismissal and consumer focus/semantics remain independent; see docs/popup.md. Standard setup is available through js/ui.js and explicit data-ui markup; see docs/enhancement.md.
 
-**Acceptance work:** Viewport collision, scrolling, zoom, RTL, cleanup, and native anchor-positioning fallback strategy.
+**Acceptance work:** Verify measured edge collision, clipping, zoom/visual viewport, RTL, nested scrolling/dialogs, inline fallback, resource teardown and authored style preservation. Dated evidence and unresolved platform/assistive-technology checks remain in ACCESSIBILITY.md.
+
+[Shared UI setup and scoped lifecycle](enhancement.md). [Experimental adapter contract](popup.md) · [Specification](specs/popup.md) · [Focused geometry checks](../tests/popup.html).
+
+[Component specification](specs/popup.md)
 
 [Reference component](https://webawesome.com/docs/components/popup/) · [Specification template](component-template.md)
 
