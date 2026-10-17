@@ -1,0 +1,11 @@
+<!doctype html>
+<!-- Generated from docs/recipes.json. Trusted repository examples only. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Empty, loading and failed content — UI example</title>
+<link rel="stylesheet" href="../../css/ui.css"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/components.js" defer></script><script src="../../js/docs-preview.js" defer></script>
+<style>body { padding: 1.5rem 2rem 1.5rem 1.5rem; } body > main { max-inline-size: none; inline-size: auto; margin: 0; padding: 0; } h1 { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); } output { display: block; margin-block-start: 1rem; } .table-scroll table { min-inline-size: 38rem; } :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) { display: none; }</style></head>
+<body><h1>Empty, loading and failed content</h1><main aria-label="Empty, loading and failed content example"><ui-stack>
+  <ui-panel><section aria-labelledby="empty-title"><h2 id="empty-title">No field notes yet</h2><p>Start with the observations from your first visit.</p><a href="#next-step">Read how to add notes</a></section></ui-panel>
+  <ui-panel><section aria-labelledby="loading-title"><h2 id="loading-title">Retrieving archived notes</h2><p>The current notes stay available while the archive is loading.</p><label for="archive-progress">Archive retrieval</label><progress id="archive-progress">Waiting</progress></section></ui-panel>
+  <ui-panel><section aria-labelledby="failure-title"><h2 id="failure-title">Archived notes could not be retrieved</h2><p>Your current notes are unchanged. Try again from the project when the service is available.</p><a href="#next-step">Read the recovery steps</a></section></ui-panel>
+</ui-stack>
+<section id="next-step"><h2>Next steps</h2><p>In your project, enter observations in the notes form. If the archive fails, keep working with current notes and retry later.</p></section></main></body></html>

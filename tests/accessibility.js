@@ -140,7 +140,7 @@ auditButton.addEventListener('click', async () => {
   const report = [];
   frame.hidden = false;
   try {
-    for (const route of ['../index.html', '../gallery.html', '../docs/controls.html', '../docs/components/checkbox.html', '../form.html', '../workspace.html', '../examples/index.html', '../examples/components.html', '../examples/patterns.html', '../examples/themes.html', '../examples/server-errors.html', '../examples/form-integration.html', '../examples/native-inputs.html', '../examples/composition.html']) {
+    for (const route of ['../index.html', '../gallery.html', '../docs/controls.html', '../docs/components/checkbox.html', '../form.html', '../workspace.html', '../examples/index.html', '../examples/components.html', '../examples/patterns.html', '../examples/themes.html', '../examples/server-errors.html', '../examples/form-integration.html', '../examples/native-inputs.html', '../examples/composition.html', '../docs/native-states.html', ...['date-input', 'time-input', 'number-input', 'select', 'option', 'textarea', 'slider', 'details', 'breadcrumb', 'breadcrumb-item', 'card'].map(key => `../docs/components/${key}.html`)]) {
       const win = await loadExample(frame, route);
       for (const brand of route.endsWith('/themes.html') ? ['default', 'forest'] : ['default']) {
         if (brand === 'default') delete win.document.documentElement.dataset.brand;
@@ -181,6 +181,24 @@ auditButton.addEventListener('click', async () => {
             for (const review of audit.incomplete) {
               report.push(`  REVIEW ${review.id}: ${review.help}`);
               for (const node of review.nodes) report.push(`    ${JSON.stringify(node.target)}`);
+            }
+            if (/\/docs\/components\/(date-input|time-input|number-input|select|option|textarea)\.html$/.test(route)) {
+              const preview = previews.find(frame => frame.contentDocument.querySelector('ui-form'));
+              const editor = preview.contentDocument.querySelector('ui-form');
+              editor.form.requestSubmit();
+              assert(preview.contentDocument.activeElement === editor.querySelector('ui-error-summary'), 'Native state preview errors must focus their summary');
+              const invalidAudit = await win.axe.run(win.document, {
+                runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] }
+              });
+              report.push(`${route} invalid (${theme}): ${invalidAudit.violations.length} violations; ${invalidAudit.incomplete.length} need manual review`);
+              for (const [label, findings] of [['', invalidAudit.violations], ['REVIEW ', invalidAudit.incomplete]]) {
+                for (const finding of findings) {
+                  report.push(`  ${label}${finding.id}: ${finding.help}`);
+                  for (const node of finding.nodes) report.push(`    ${JSON.stringify(node.target)}`);
+                }
+              }
+              editor.form.reset();
+              await new Promise(resolve => win.setTimeout(resolve, 0));
             }
             if (route.endsWith('/native-inputs.html') || route.endsWith('/composition.html')) {
               const editor = win.document.querySelector(route.endsWith('/composition.html') ? '#brief-editor' : '#visit-editor');

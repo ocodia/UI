@@ -30,6 +30,8 @@ Use elements for their meaning: links navigate, buttons perform actions, and lab
 
 Controls use native checked, disabled, read-only, and validation states. `:user-invalid` marks invalid controls after interaction. Applications can set `aria-invalid="true"` and associate an error message with `aria-describedby`. Color alone does not explain an error.
 
+Native progress bars are constrained to their container width, including inside narrow panels with enlarged text. Their value and indeterminate state remain native.
+
 UI supplies keyboard focus outlines and preserves native controls. It does not turn arbitrary elements into interactive widgets.
 
 ## Layout
@@ -157,6 +159,8 @@ An empty required selection produces one UI error. The linked summary focuses th
 Authored `selected` attributes define reset defaults; the current `selected` properties define current answers. An uncancelled native reset restores Coast, clears managed errors/title state and clears application inspection feedback. A cancelled reset leaves the current selection and feedback intact. Without JavaScript, selection, reset, landmarks, source order and both scroll regions remain available; only the local inspector stays hidden. A production form requires a real server action and submit button.
 
 Run [the complete browser checks](../tests/accessibility.html) or [focused composition display checks](../tests/composition.html). The focused page reports whether forced colors is active and only counts system-color checks when it is. Browser emulation does not replace Windows contrast themes, screen readers, touch, real zoom or platform keyboard evidence. See [the dated record](../ACCESSIBILITY.md).
+
+See the [native family state audit](native-states.md) for authored default, long-content, disabled/read-only, invalid, busy and fallback examples and their verification limits.
 
 ## Reusable forms
 

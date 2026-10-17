@@ -68,7 +68,7 @@ async function runDocumentationChecks(load, frame) {
   const range=doc.querySelector('input'); range.stepUp(); range.form.requestSubmit();
   check(range.value==='55' && doc.querySelector('#preview-result').textContent.includes('volume=55'), 'Range preview retains native stepping and numeric serialization.');
   frame.style.inlineSize='320px';
-  for (const route of ['../index.html','../docs/index.html','../docs/controls.html','../docs/forms.html','../docs/components/checkbox.html','../docs/components/combobox.html']) {
+  for (const route of ['../index.html','../docs/index.html','../docs/controls.html','../docs/forms.html','../docs/native-states.html','../docs/components/checkbox.html','../docs/components/combobox.html']) {
     win=await load(route,true); doc=win.document;
     for (const dir of ['ltr','rtl']) {
       doc.documentElement.dir=dir;
@@ -78,6 +78,7 @@ async function runDocumentationChecks(load, frame) {
     if (route.includes('checkbox.html')) check(!doc.querySelector('[data-example] summary').hidden && doc.querySelector('[data-example] pre').textContent.includes('checkbox') && doc.querySelector('[data-example] .example-tools').hidden, 'No-script component docs retain preview/source and hide script-only width/copy controls.');
   }
   frame.style.removeProperty('inline-size');
+  passed.push(...await runNativeStateChecks(load, frame));
   return passed;
 }
 

@@ -1,0 +1,15 @@
+<!doctype html>
+<!-- Generated from docs/recipes.json. Trusted repository examples only. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Required notes and error recovery — UI example</title>
+<link rel="stylesheet" href="../../css/ui.css"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/components.js" defer></script><script src="../../js/docs-preview.js" defer></script>
+<style>body { padding: 1.5rem 2rem 1.5rem 1.5rem; } body > main { max-inline-size: none; inline-size: auto; margin: 0; padding: 0; } h1 { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); } output { display: block; margin-block-start: 1rem; } .table-scroll table { min-inline-size: 38rem; } :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) { display: none; }</style></head>
+<body><h1>Required notes and error recovery</h1><main aria-label="Required notes and error recovery example"><ui-form>
+  <form>
+    <ui-field>
+      <label for="notes">Describe access needs and meeting arrangements for the whole research team</label>
+      <ui-hint id="notes-hint">Enter notes, up to 500 characters. Keep private details out of this demonstration.</ui-hint>
+      <textarea id="notes" name="notes" rows="4" maxlength="500" required aria-describedby="notes-hint"></textarea>
+    </ui-field>
+    <ui-cluster><button type="submit">Check notes</button><button type="reset" data-variant="secondary">Reset</button></ui-cluster>
+  </form>
+</ui-form><noscript><p>Enable JavaScript to inspect values locally. Inputs remain editable. A production form needs a real server action.</p></noscript></main></body></html>

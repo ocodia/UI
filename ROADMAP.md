@@ -62,7 +62,8 @@ Finish recipes and verification for existing platform building blocks. These alr
 | Navigation | Breadcrumb and Breadcrumb Item |
 | Feedback / helpers | Progress Bar and native Popover |
 
-- [ ] Document each family with default, long-label, disabled/read-only, invalid, busy and fallback cases as relevant.
+- [x] Document each family with default, long-label, disabled/read-only, invalid, busy and fallback cases as relevant.
+  - The [native family state audit](docs/native-states.md) maps component previews and integrated recipes, identifies inapplicable native states, and separates authored coverage from the open manual/platform release gates.
 - [ ] Complete native dialog opening/closing/focus-return recipes and support failure behavior; do not add a duplicate modal implementation.
   - Implemented the [dialog recipe](docs/dialog.md) with explicit initial focus, native close/Escape policy, stale-result cleanup, missing-trigger focus recovery and inline no-script/unsupported/open-failure fallback. Browser evidence is recorded in [ACCESSIBILITY.md](ACCESSIBILITY.md); the remaining manual/platform checks keep this item open.
 - [ ] Complete grouped hint/error contracts and date/time/file/range examples, including serialized form values and server responsibilities.
@@ -153,4 +154,4 @@ The target is [WCAG 2.2 AA](https://www.w3.org/WAI/WCAG22/quickref/). [APG](http
 
 ## Next implementation slice
 
-Focus on **Phase 1 — native component completeness**. The first native dialog recipe is implemented; finish its outstanding manual/platform evidence alongside the implemented grouped hints/errors and date/time/file/range recipe. Continue with the remaining native family states and outstanding manual/platform verification of the implemented panel/scroll and multiple-select recipe, including RTL and forced colors. Keep the remaining Phase 0 evidence, lifecycle and payload work open alongside these recipes. Tabs and other compound widgets follow in Phase 2.
+Focus on **Phase 1 — native component completeness**. The first native dialog recipe is implemented; finish its outstanding manual/platform evidence alongside the implemented grouped hints/errors and date/time/file/range recipe. The [native family state audit](docs/native-states.md) now covers the relevant authored states; continue with outstanding manual/platform verification of the implemented panel/scroll and multiple-select recipe, including RTL and forced colors. Keep the remaining Phase 0 evidence, lifecycle and payload work open alongside these recipes. Tabs and other compound widgets follow in Phase 2.

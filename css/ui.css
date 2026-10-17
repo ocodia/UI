@@ -299,6 +299,7 @@
     :where(form) { margin-block-end: var(--_ui-density-space, var(--ui-space)); }
     :where(label) { display: block; margin-block-end: var(--_ui-density-label-gap, .35rem); font-weight: var(--ui-font-weight-medium); }
     :where(input, select, textarea, progress, meter) { accent-color: var(--ui-action-bg); }
+    :where(progress) { max-inline-size: 100%; }
     :where(:is(button, input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="hidden"], [type="image"]), select, textarea)) {
       --_ui-control-min: var(--ui-control-min-size);
       --_ui-control-block: var(--ui-control-padding-block);

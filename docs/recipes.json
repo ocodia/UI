@@ -70,8 +70,14 @@
     },
     {
       "title": "Read-only and disabled",
-      "code": "<ui-stack>\n  <ui-field><label for=\"readonly\">Target date (read-only)</label><input id=\"readonly\" type=\"date\" readonly></ui-field>\n  <ui-field><label for=\"disabled\">Target date (unavailable)</label><input id=\"disabled\" type=\"date\" disabled></ui-field>\n</ui-stack>",
-      "note": "",
+      "code": "<form>\n  <ui-field><label for=\"readonly\">Preferred date for the full coastal field survey (read-only)</label><input id=\"readonly\" name=\"retained\" type=\"date\" value=\"2026-10-17\" readonly></ui-field>\n  <ui-field><label for=\"disabled\">Preferred date for the full coastal field survey (unavailable)</label><input id=\"disabled\" name=\"omitted\" type=\"date\" value=\"2026-10-17\" disabled></ui-field>\n  <button type=\"submit\">Inspect values</button>\n</form>",
+      "note": "Read-only answers retain their values and serialize; disabled answers are omitted. These modes do not participate in constraint validation.",
+      "script": ""
+    },
+    {
+      "title": "Required answer and constraint recovery",
+      "code": "<ui-form>\n  <form>\n    <ui-field>\n      <label for=\"answer\">Preferred date for the full coastal field survey</label>\n      <ui-hint id=\"answer-hint\">Choose a date from 1 to 31 October 2026.</ui-hint>\n      <input id=\"answer\" name=\"answer\" type=\"date\" min=\"2026-10-01\" max=\"2026-10-31\" required aria-describedby=\"answer-hint\">\n    </ui-field>\n    <ui-cluster><button type=\"submit\">Check answer</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n  </form>\n</ui-form>",
+      "note": "Submit an empty or out-of-bounds answer to see linked error recovery. Native validity and normalized values remain on the input; the server must recheck constraints.",
       "script": ""
     }
   ],
@@ -84,8 +90,14 @@
     },
     {
       "title": "Read-only and disabled",
-      "code": "<ui-stack>\n  <ui-field><label for=\"readonly\">Start time (read-only)</label><input id=\"readonly\" type=\"time\" readonly></ui-field>\n  <ui-field><label for=\"disabled\">Start time (unavailable)</label><input id=\"disabled\" type=\"time\" disabled></ui-field>\n</ui-stack>",
-      "note": "",
+      "code": "<form>\n  <ui-field><label for=\"readonly\">Preferred start time for the full coastal field survey (read-only)</label><input id=\"readonly\" name=\"retained\" type=\"time\" value=\"09:30\" readonly></ui-field>\n  <ui-field><label for=\"disabled\">Preferred start time for the full coastal field survey (unavailable)</label><input id=\"disabled\" name=\"omitted\" type=\"time\" value=\"09:30\" disabled></ui-field>\n  <button type=\"submit\">Inspect values</button>\n</form>",
+      "note": "Read-only answers retain their values and serialize; disabled answers are omitted. These modes do not participate in constraint validation.",
+      "script": ""
+    },
+    {
+      "title": "Required answer and constraint recovery",
+      "code": "<ui-form>\n  <form>\n    <ui-field>\n      <label for=\"answer\">Preferred start time for the full coastal field survey</label>\n      <ui-hint id=\"answer-hint\">Choose a time from 09:00 to 17:00, in 15-minute steps.</ui-hint>\n      <input id=\"answer\" name=\"answer\" type=\"time\" min=\"09:00\" max=\"17:00\" step=\"900\" required aria-describedby=\"answer-hint\">\n    </ui-field>\n    <ui-cluster><button type=\"submit\">Check answer</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n  </form>\n</ui-form>",
+      "note": "Submit an empty or out-of-bounds answer to see linked error recovery. Native validity and normalized values remain on the input; the server must recheck constraints.",
       "script": ""
     }
   ],
@@ -98,8 +110,14 @@
     },
     {
       "title": "Read-only and disabled",
-      "code": "<ui-stack>\n  <ui-field><label for=\"readonly\">Number of copies (read-only)</label><input id=\"readonly\" type=\"number\" readonly></ui-field>\n  <ui-field><label for=\"disabled\">Number of copies (unavailable)</label><input id=\"disabled\" type=\"number\" disabled></ui-field>\n</ui-stack>",
-      "note": "",
+      "code": "<form>\n  <ui-field><label for=\"readonly\">Number of printed field guides for the whole research team (read-only)</label><input id=\"readonly\" name=\"retained\" type=\"number\" value=\"4\" readonly></ui-field>\n  <ui-field><label for=\"disabled\">Number of printed field guides for the whole research team (unavailable)</label><input id=\"disabled\" name=\"omitted\" type=\"number\" value=\"4\" disabled></ui-field>\n  <button type=\"submit\">Inspect values</button>\n</form>",
+      "note": "Read-only answers retain their values and serialize; disabled answers are omitted. These modes do not participate in constraint validation.",
+      "script": ""
+    },
+    {
+      "title": "Required answer and constraint recovery",
+      "code": "<ui-form>\n  <form>\n    <ui-field>\n      <label for=\"answer\">Number of printed field guides for the whole research team</label>\n      <ui-hint id=\"answer-hint\">Enter an even number from 2 to 20.</ui-hint>\n      <input id=\"answer\" name=\"answer\" type=\"number\" min=\"2\" max=\"20\" step=\"2\" required aria-describedby=\"answer-hint\">\n    </ui-field>\n    <ui-cluster><button type=\"submit\">Check answer</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n  </form>\n</ui-form>",
+      "note": "Submit an empty or out-of-bounds answer to see linked error recovery. Native validity and normalized values remain on the input; the server must recheck constraints.",
       "script": ""
     }
   ],
@@ -159,6 +177,12 @@
       "code": "<form>\n  <label for=\"regions\">Survey regions (choose any)</label>\n  <p id=\"regions-hint\">Desktop selection shortcuts depend on your platform. Use its modifier keys to select separate entries.</p>\n  <select id=\"regions\" name=\"region\" multiple size=\"4\" aria-describedby=\"regions-hint\"><option value=\"coast\" selected>Coast</option><option value=\"woodland\">Woodland</option><option value=\"river\">River</option><option value=\"heath\">Heath</option></select>\n  <button type=\"submit\">Inspect selected values</button>\n</form>",
       "note": "Use FormData.getAll(\"region\"); a single get() loses additional selections.",
       "script": ""
+    },
+    {
+      "title": "Required selection and unavailable choices",
+      "code": "<ui-form>\n  <form>\n    <ui-field>\n      <label for=\"region\">Region for the full coastal field survey and follow-up visits</label>\n      <ui-hint id=\"region-hint\">Choose an available region. River access is currently closed.</ui-hint>\n      <select id=\"region\" name=\"region\" required aria-describedby=\"region-hint\">\n        <option value=\"\" selected>Choose a region</option>\n        <option value=\"coast\">Coast</option>\n        <option value=\"woodland\">Woodland</option>\n        <optgroup label=\"Unavailable\"><option value=\"river\" disabled>River (access closed)</option></optgroup>\n      </select>\n    </ui-field>\n    <ui-field><label for=\"archived\">Archived region (unavailable)</label><select id=\"archived\" name=\"archived\" disabled><option value=\"heath\" selected>Heath</option></select></ui-field>\n    <ui-cluster><button type=\"submit\">Check region</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n  </form>\n</ui-form>",
+      "note": "The empty first option is a missing answer. Select has no read-only mode; a disabled select is omitted from FormData. Keep full descriptions outside options when platform rows truncate.",
+      "script": ""
     }
   ],
   "option": [
@@ -173,6 +197,12 @@
       "code": "<form>\n  <label for=\"regions\">Survey regions (choose any)</label>\n  <p id=\"regions-hint\">Desktop selection shortcuts depend on your platform. Use its modifier keys to select separate entries.</p>\n  <select id=\"regions\" name=\"region\" multiple size=\"4\" aria-describedby=\"regions-hint\"><option value=\"coast\" selected>Coast</option><option value=\"woodland\">Woodland</option><option value=\"river\">River</option><option value=\"heath\">Heath</option></select>\n  <button type=\"submit\">Inspect selected values</button>\n</form>",
       "note": "Use FormData.getAll(\"region\"); a single get() loses additional selections.",
       "script": ""
+    },
+    {
+      "title": "Required selection and unavailable choices",
+      "code": "<ui-form>\n  <form>\n    <ui-field>\n      <label for=\"region\">Region for the full coastal field survey and follow-up visits</label>\n      <ui-hint id=\"region-hint\">Choose an available region. River access is currently closed.</ui-hint>\n      <select id=\"region\" name=\"region\" required aria-describedby=\"region-hint\">\n        <option value=\"\" selected>Choose a region</option>\n        <option value=\"coast\">Coast</option>\n        <option value=\"woodland\">Woodland</option>\n        <optgroup label=\"Unavailable\"><option value=\"river\" disabled>River (access closed)</option></optgroup>\n      </select>\n    </ui-field>\n    <ui-field><label for=\"archived\">Archived region (unavailable)</label><select id=\"archived\" name=\"archived\" disabled><option value=\"heath\" selected>Heath</option></select></ui-field>\n    <ui-cluster><button type=\"submit\">Check region</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n  </form>\n</ui-form>",
+      "note": "The empty first option is a missing answer. Select has no read-only mode; a disabled select is omitted from FormData. Keep full descriptions outside options when platform rows truncate.",
+      "script": ""
     }
   ],
   "slider": [
@@ -180,6 +210,12 @@
       "title": "A bounded numeric value",
       "code": "<form>\n  <label for=\"volume\">Volume, percent</label>\n  <input id=\"volume\" name=\"volume\" type=\"range\" min=\"0\" max=\"100\" step=\"5\" value=\"50\" aria-describedby=\"volume-hint\">\n  <p id=\"volume-hint\">From 0 to 100 percent, in steps of 5.</p>\n  <button type=\"submit\">Inspect volume</button>\n</form>",
       "note": "A range has a numeric default; it cannot represent an unanswered required question. Keyboard steps remain native.",
+      "script": ""
+    },
+    {
+      "title": "Unavailable range with a persistent value",
+      "code": "<form>\n  <label for=\"locked-volume\">Recording volume for all field interviews (unavailable)</label>\n  <input id=\"locked-volume\" name=\"volume\" type=\"range\" min=\"0\" max=\"100\" step=\"5\" value=\"50\" disabled aria-describedby=\"volume-hint\">\n  <p id=\"volume-hint\">50 percent. Volume is managed by the recording device.</p>\n  <button type=\"submit\">Inspect values</button>\n</form>",
+      "note": "A disabled range is omitted from submission. Range supports neither readonly nor an unanswered required state.",
       "script": ""
     }
   ],
@@ -192,8 +228,14 @@
     },
     {
       "title": "Read-only and disabled",
-      "code": "<ui-stack><ui-field><label for=\"original\">Original notes (read-only)</label><textarea id=\"original\" readonly>Keep the original field observations.</textarea></ui-field><ui-field><label for=\"archived\">Archived notes</label><textarea id=\"archived\" disabled>Editing unavailable.</textarea></ui-field></ui-stack>",
-      "note": "",
+      "code": "<form>\n  <ui-field><label for=\"original\">Original notes (read-only)</label><textarea id=\"original\" name=\"retained\" readonly>Keep the original field observations.</textarea></ui-field>\n  <ui-field><label for=\"archived\">Archived notes (unavailable)</label><textarea id=\"archived\" name=\"omitted\" disabled>Editing unavailable.</textarea></ui-field>\n  <button type=\"submit\">Inspect values</button>\n</form>",
+      "note": "Read-only text remains successful; disabled text is omitted. Native selection and copying stay available on the read-only answer.",
+      "script": ""
+    },
+    {
+      "title": "Required notes and error recovery",
+      "code": "<ui-form>\n  <form>\n    <ui-field>\n      <label for=\"notes\">Describe access needs and meeting arrangements for the whole research team</label>\n      <ui-hint id=\"notes-hint\">Enter notes, up to 500 characters. Keep private details out of this demonstration.</ui-hint>\n      <textarea id=\"notes\" name=\"notes\" rows=\"4\" maxlength=\"500\" required aria-describedby=\"notes-hint\"></textarea>\n    </ui-field>\n    <ui-cluster><button type=\"submit\">Check notes</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n  </form>\n</ui-form>",
+      "note": "Submit without notes to see recovery. Native resizing remains available; maxlength does not replace a server limit.",
       "script": ""
     }
   ],
@@ -203,6 +245,12 @@
       "code": "<ui-panel>\n  <article id=\"project\"><h2>Coastal field guide</h2><p>A companion for a day along the shoreline.</p><a href=\"#project\">View the field guide</a></article>\n</ui-panel>",
       "note": "The panel supplies presentation; the article, heading and link supply semantics.",
       "script": ""
+    },
+    {
+      "title": "Empty, loading and failed content",
+      "code": "<ui-stack>\n  <ui-panel><section aria-labelledby=\"empty-title\"><h2 id=\"empty-title\">No field notes yet</h2><p>Start with the observations from your first visit.</p><a href=\"#next-step\">Read how to add notes</a></section></ui-panel>\n  <ui-panel><section aria-labelledby=\"loading-title\"><h2 id=\"loading-title\">Retrieving archived notes</h2><p>The current notes stay available while the archive is loading.</p><label for=\"archive-progress\">Archive retrieval</label><progress id=\"archive-progress\">Waiting</progress></section></ui-panel>\n  <ui-panel><section aria-labelledby=\"failure-title\"><h2 id=\"failure-title\">Archived notes could not be retrieved</h2><p>Your current notes are unchanged. Try again from the project when the service is available.</p><a href=\"#next-step\">Read the recovery steps</a></section></ui-panel>\n</ui-stack>\n<section id=\"next-step\"><h2>Next steps</h2><p>In your project, enter observations in the notes form. If the archive fails, keep working with current notes and retry later.</p></section>",
+      "note": "These are static content examples; no request is running. Panels add no state API. A live application owns aria-busy during updates, one announcement owner, retry and cancellation. See the working async form recipe for a running task.",
+      "script": ""
     }
   ],
   "details": [
@@ -210,6 +258,12 @@
       "title": "Optional supporting information",
       "code": "<details>\n  <summary>What happens to my project answers?</summary>\n  <p>The application owns storage and server submission. UI keeps native values on the form controls.</p>\n</details>",
       "note": "Essential instructions belong outside a closed disclosure.",
+      "script": ""
+    },
+    {
+      "title": "Long summary and initially open content",
+      "code": "<details open>\n  <summary>Read the complete meeting arrangements, access information and alternative route before joining the coastal field survey</summary>\n  <p>Meet at the visitor centre at 09:30. The woodland route is available if the coastal path is closed.</p>\n  <a href=\"#contact\">Read the contact information</a>\n</details>\n<section id=\"contact\"><h2>Contact information</h2><p>Ask the survey coordinator about access before travelling.</p></section>",
+      "note": "The browser owns open state, Enter/Space activation and focus. Details has no native disabled state; keep essential instructions outside a closed disclosure.",
       "script": ""
     }
   ],
@@ -251,6 +305,12 @@
       "code": "<nav aria-label=\"Breadcrumb\">\n  <ol><li><a href=\"#home\">Home</a></li><li><a href=\"#projects\">Projects</a></li><li aria-current=\"page\">Coastal field guide</li></ol>\n</nav>\n<section id=\"home\"><h2 id=\"projects\">Coastal field guide</h2></section>",
       "note": "The current item is text. Keep list items inside their native list.",
       "script": ""
+    },
+    {
+      "title": "Long path and current location",
+      "code": "<nav aria-label=\"Survey breadcrumb\">\n  <ol><li><a href=\"#all-projects\">All research projects and field guides</a></li><li><a href=\"#regional-projects\">Regional surveys and follow-up visits</a></li><li aria-current=\"page\">Coastal field survey access arrangements for the whole research team</li></ol>\n</nav>\n<section id=\"all-projects\"><h2>All research projects and field guides</h2><p>Browse the project collection.</p></section>\n<section id=\"regional-projects\"><h2>Regional surveys and follow-up visits</h2><p>Choose a regional project.</p></section>",
+      "note": "The current location is text, not a disabled link. Ancestors have working fragment destinations; no arrow-key navigation is added.",
+      "script": ""
     }
   ],
   "breadcrumb-item": [
@@ -258,6 +318,12 @@
       "title": "A named navigation path",
       "code": "<nav aria-label=\"Breadcrumb\">\n  <ol><li><a href=\"#home\">Home</a></li><li><a href=\"#projects\">Projects</a></li><li aria-current=\"page\">Coastal field guide</li></ol>\n</nav>\n<section id=\"home\"><h2 id=\"projects\">Coastal field guide</h2></section>",
       "note": "The current item is text. Keep list items inside their native list.",
+      "script": ""
+    },
+    {
+      "title": "Long path and current location",
+      "code": "<nav aria-label=\"Survey breadcrumb\">\n  <ol><li><a href=\"#all-projects\">All research projects and field guides</a></li><li><a href=\"#regional-projects\">Regional surveys and follow-up visits</a></li><li aria-current=\"page\">Coastal field survey access arrangements for the whole research team</li></ol>\n</nav>\n<section id=\"all-projects\"><h2>All research projects and field guides</h2><p>Browse the project collection.</p></section>\n<section id=\"regional-projects\"><h2>Regional surveys and follow-up visits</h2><p>Choose a regional project.</p></section>",
+      "note": "The current location is text, not a disabled link. Ancestors have working fragment destinations; no arrow-key navigation is added.",
       "script": ""
     }
   ],

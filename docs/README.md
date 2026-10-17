@@ -24,6 +24,8 @@ The [native-value recipe](../examples/native-inputs.html) combines grouped error
 
 The [survey briefing](../examples/composition.html) demonstrates nested panels, named scroll regions and native multiple selection. Its [composition contract](reference.md#panels-scroll-regions-and-multiple-selection) explains reading order, keyboard access, repeated values and reset.
 
+See the [native family state audit](native-states.md) for authored default, long-content, disabled/read-only, invalid, busy and fallback examples and their verification limits.
+
 ## Build UI
 
 Read [architecture](architecture.md) before implementation. Use the [component template](component-template.md) to define behavior before adding code. Follow [contributing](../CONTRIBUTING.md) and the [accessibility contract](../ACCESSIBILITY.md). The [roadmap](../ROADMAP.md) defines sequence and dependencies, not release dates.
