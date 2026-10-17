@@ -140,9 +140,9 @@ auditButton.addEventListener('click', async () => {
   const report = [];
   frame.hidden = false;
   try {
-    for (const route of ['../index.html', '../gallery.html', '../docs/controls.html', '../docs/components/checkbox.html', '../form.html', '../workspace.html', '../examples/index.html', '../examples/components.html', '../examples/patterns.html', '../examples/themes.html', '../examples/server-errors.html', '../examples/form-integration.html', '../examples/native-inputs.html', '../examples/composition.html', '../docs/native-states.html', '../docs/dialog.html', '../docs/components/dialog.html', '../docs/previews/dialog-1.html', ...['date-input', 'time-input', 'number-input', 'select', 'option', 'textarea', 'slider', 'details', 'breadcrumb', 'breadcrumb-item', 'card'].map(key => `../docs/components/${key}.html`)]) {
+    for (const route of ['../index.html', '../gallery.html', '../docs/controls.html', '../docs/components/checkbox.html', '../form.html', '../workspace.html', '../examples/index.html', '../examples/components.html', '../examples/patterns.html', '../examples/themes.html', '../examples/server-errors.html', '../examples/form-integration.html', '../examples/native-inputs.html', '../examples/composition.html', '../docs/native-states.html', '../docs/dialog.html', '../docs/components/dialog.html', '../docs/previews/dialog-1.html', '../docs/popover.html', '../docs/components/popover.html', '../docs/previews/popover-0.html', '../docs/previews/popover-1.html', ...['date-input', 'time-input', 'number-input', 'select', 'option', 'textarea', 'slider', 'details', 'breadcrumb', 'breadcrumb-item', 'card'].map(key => `../docs/components/${key}.html`)]) {
       const win = await loadExample(frame, route);
-      for (const brand of (route.endsWith('/themes.html') || route.endsWith('/dialog-1.html')) ? ['default', 'forest'] : ['default']) {
+      for (const brand of (route.endsWith('/themes.html') || route.endsWith('/dialog-1.html') || /\/previews\/popover-[01]\.html$/.test(route)) ? ['default', 'forest'] : ['default']) {
         if (brand === 'default') delete win.document.documentElement.dataset.brand;
         else win.document.documentElement.dataset.brand = brand;
         for (const theme of ['light', 'dark']) {
@@ -182,6 +182,30 @@ auditButton.addEventListener('click', async () => {
             for (const review of audit.incomplete) {
               report.push(`  REVIEW ${review.id}: ${review.help}`);
               for (const node of review.nodes) report.push(`    ${JSON.stringify(node.target)}`);
+            }
+            if (/\/previews\/popover-[01]\.html$/.test(route)) {
+              const panel = win.document.querySelector('#project-help');
+              for (const dir of ['ltr', 'rtl']) {
+                win.document.documentElement.dir = dir;
+                win.document.querySelector('#help-open').click();
+                assert(panel.matches(':popover-open') && !panel.matches(':modal'), 'Popover audit requires open non-modal native help');
+                panel.scrollTop = 0;
+                for (const position of ['start', 'end']) {
+                  if (position === 'end') [...panel.querySelectorAll('button')].at(-1).focus();
+                  const popoverAudit = await win.axe.run(win.document, {
+                    runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] }
+                  });
+                  report.push(`${route} open ${position} (${brand}, ${theme}, ${dir}): ${popoverAudit.violations.length} violations; ${popoverAudit.incomplete.length} need manual review`);
+                  for (const [label, findings] of [['', popoverAudit.violations], ['REVIEW ', popoverAudit.incomplete]]) {
+                    for (const finding of findings) {
+                      report.push(`  ${label}${finding.id}: ${finding.help}`);
+                      for (const node of finding.nodes) report.push(`    ${JSON.stringify(node.target)}`);
+                    }
+                  }
+                }
+                panel.hidePopover();
+              }
+              win.document.documentElement.dir = 'ltr';
             }
             if (route.endsWith('/dialog-1.html')) {
               const dialog = win.document.querySelector('#briefing-dialog');

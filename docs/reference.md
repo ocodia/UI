@@ -286,7 +286,7 @@ A modal dialog can be opened with the browser's `showModal()` API. Close it with
 
 The [native dialog recipe](dialog.md) documents initial/returned focus, Escape and backdrop policy, close results, form ownership, lifecycle limits and readable no-script/unsupported/open-failure behavior. [Try it](../examples/patterns.html#modal). The recipe is application code; it adds no library element or registration.
 
-`js/examples.js` powers only the native gallery's theme selector, dialog opener, and validation demonstration. Do not include it in an application. The CSS does not depend on it. Native popover support varies in older browsers; provide an application fallback if needed.
+`js/examples.js` powers only the native gallery's theme selector, dialog opener, and validation demonstration. Do not include it in an application. The CSS does not depend on it. The [native popover recipe](popover.md) supplies short and long optional help with capability checks, complete inline fallback, native dismissal and non-modal background editing. Its page script installs before revealing the native opener; without it, the help remains inline. See the [focused checks](../tests/popover.html) and dated evidence.
 
 ## Migration
 

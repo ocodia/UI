@@ -1156,14 +1156,18 @@ Keep internal observation private by default; optional declarative adapter must 
 
 **Native recipe · Phase 1.** UI route: `native popover and popovertarget`.
 
-Use native disclosure with a named trigger; semantics follow content and are not automatically dialog/menu.
+Use native auto popover and declarative invokers for optional non-modal information. Capability/target checks retain complete inline help when enhancement is unavailable. See docs/popover.md; content keeps its native semantics.
 
-**Acceptance work:** Escape, light dismissal, keyboard reachability, focus policy, and unsupported-feature fallback.
+**Acceptance work:** Browser assertions cover toggle/close, non-modal editing, native target relationships, focus restoration, disabled actions, auto-popover coordination, long-content bounds and missing-support/no-script fallback. Verify real Escape, light dismissal, keyboard traversal, zoom, mobile, forced colors and screen readers; see dated evidence in ACCESSIBILITY.md.
 
 ```html
-<button type="button" popovertarget="help">Project help</button>
-<div id="help" popover>Supporting information about your project.</div>
+<button id="help-open" type="button" popovertarget="project-help" hidden>Open project help</button>
+<div id="help-inline"><h3>Project help</h3><p>Keep the full help available inline before enhancement.</p></div>
+<div id="project-help" popover="auto" hidden><h3>Project help</h3><p>Keep the full help available inline before enhancement.</p><button type="button" popovertarget="project-help" popovertargetaction="hide">Close project help</button></div>
+<!-- Install the matching capability/target checks before revealing the opener or hiding inline help. See docs/popover.md. -->
 ```
+
+[Native popover contract and examples](popover.md) · [Focused checks](../tests/popover.html).
 
 [Reference component](https://webawesome.com/docs/components/popover/) · [Specification template](component-template.md)
 

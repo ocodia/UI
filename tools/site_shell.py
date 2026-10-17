@@ -12,7 +12,7 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 GUIDES = [
     ('Start here', [('index', 'Documentation'), ('getting-started', 'Getting started'), ('reference', 'Current API')]),
-    ('Build interfaces', [('controls', 'Buttons & control sizes'), ('forms', 'Form integration'), ('native-states', 'Native family states'), ('dialog', 'Native dialog'), ('density', 'Density'), ('conventions', 'Interaction conventions')]),
+    ('Build interfaces', [('controls', 'Buttons & control sizes'), ('forms', 'Form integration'), ('native-states', 'Native family states'), ('dialog', 'Native dialog'), ('popover', 'Native popover'), ('density', 'Density'), ('conventions', 'Interaction conventions')]),
     ('Customize', [('theming', 'Theming & tokens')]),
     ('Project', [('architecture', 'Architecture'), ('accessibility', 'Accessibility & evidence'), ('roadmap', 'Roadmap'), ('contributing', 'Contributing'), ('component-template', 'Specification template'), ('site', 'Documentation authoring')]),
 ]

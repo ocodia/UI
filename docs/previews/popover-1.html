@@ -1,0 +1,58 @@
+<!doctype html>
+<!-- Generated from docs/recipes.json. Trusted repository examples only. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Long help with native scrolling — UI example</title>
+<link rel="stylesheet" href="../../css/ui.css"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/components.js" defer></script><script src="../../js/docs-preview.js?v=ca0c3101df0e" defer></script>
+<style>body { padding: 1.5rem 2rem 1.5rem 1.5rem; } body > main { max-inline-size: none; inline-size: auto; margin: 0; padding: 0; } h1 { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); } output { display: block; margin-block-start: 1rem; } .table-scroll table { min-inline-size: 38rem; } :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) { display: none; }</style></head>
+<body><main aria-label="Long help with native scrolling example"><h1>Long help with native scrolling</h1><section>
+  <h2>Project details</h2>
+  <p id="title-hint">Use a short title and keep the original field notes. Optional help does not save or publish answers.</p>
+  <button id="help-open" type="button" popovertarget="project-help" hidden>Open project help</button>
+  <div id="help-inline">
+    <h3>Preparing a useful project description</h3>
+    <p>Keep the title short enough to recognise in a project list. Put the full context in the description and use field notes for observations from individual visits. A descriptive title helps people find the right project without needing an internal code.</p>
+    <h4>Explain the purpose</h4>
+    <p>Describe the question the team is exploring and the places involved. Use ordinary words and explain unfamiliar terms the first time you use them. Separate confirmed observations from ideas that still need checking.</p>
+    <p>If plans change, update the description and leave enough context for someone who was not at the meeting. You can keep existing notes while reviewing a new route or preparing a later visit.</p>
+    <h4>Keep private information separate</h4>
+    <p>Do not include private contact details in the project title or general description. Ask before sharing photographs or recordings of other people. Project access and publication are separate application decisions; editing a title does not make a project public.</p>
+    <p>Use a private channel for arrangements that only the coordinator needs. Describe access needs without making assumptions about another person or recording more information than the task requires.</p>
+    <h4>Make the next step clear</h4>
+    <p>Explain what someone can contribute now: review an observation, suggest a route or prepare equipment for a visit. Keep a readable version of the arrangements available when a device or connection is unavailable.</p>
+    <p>Give each action a clear destination or label. Keep important instructions beside the task rather than only inside this optional help. You can close the help at either end, return to editing and reopen it when needed.</p>
+    <p><a href="../forms.html">Read the form integration guide</a></p>
+  </div>
+  <div id="project-help" popover="auto" hidden>
+    <button type="button" popovertarget="project-help" popovertargetaction="hide">Close project help</button>
+    <h3>Preparing a useful project description</h3>
+    <p>Keep the title short enough to recognise in a project list. Put the full context in the description and use field notes for observations from individual visits. A descriptive title helps people find the right project without needing an internal code.</p>
+    <h4>Explain the purpose</h4>
+    <p>Describe the question the team is exploring and the places involved. Use ordinary words and explain unfamiliar terms the first time you use them. Separate confirmed observations from ideas that still need checking.</p>
+    <p>If plans change, update the description and leave enough context for someone who was not at the meeting. You can keep existing notes while reviewing a new route or preparing a later visit.</p>
+    <h4>Keep private information separate</h4>
+    <p>Do not include private contact details in the project title or general description. Ask before sharing photographs or recordings of other people. Project access and publication are separate application decisions; editing a title does not make a project public.</p>
+    <p>Use a private channel for arrangements that only the coordinator needs. Describe access needs without making assumptions about another person or recording more information than the task requires.</p>
+    <h4>Make the next step clear</h4>
+    <p>Explain what someone can contribute now: review an observation, suggest a route or prepare equipment for a visit. Keep a readable version of the arrangements available when a device or connection is unavailable.</p>
+    <p>Give each action a clear destination or label. Keep important instructions beside the task rather than only inside this optional help. You can close the help at either end, return to editing and reopen it when needed.</p>
+    <p><a href="../forms.html">Read the form integration guide</a></p>
+    <button type="button" popovertarget="project-help" popovertargetaction="hide">Close project help</button>
+  </div>
+  <ui-field><label for="project-title">Title for the coastal research project and its follow-up visits</label><input id="project-title" name="title" value="Coastal field guide" aria-describedby="title-hint"></ui-field>
+  <ui-field><label for="project-reference">Project reference (optional)</label><input id="project-reference" name="reference" value="COAST-01"></ui-field>
+</section></main><script>
+(() => {
+  const opener = document.querySelector('#help-open');
+  const panel = document.querySelector('#project-help');
+  const fallback = document.querySelector('#help-inline');
+  const closers = panel ? [...panel.querySelectorAll('[popovertargetaction="hide"]')] : [];
+  if (!opener || !panel || !fallback || !closers.length ||
+      typeof panel.showPopover !== 'function' || typeof panel.hidePopover !== 'function' ||
+      !('popoverTargetElement' in HTMLButtonElement.prototype) || panel.popover !== 'auto' ||
+      opener.popoverTargetElement !== panel || closers.some(button => button.popoverTargetElement !== panel)) return;
+  // Normalize pointer focus without replacing the native toggle action.
+  opener.addEventListener('click', () => opener.focus());
+  panel.hidden = false;
+  fallback.hidden = true;
+  opener.hidden = false;
+})();
+</script></body></html>

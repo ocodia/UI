@@ -71,6 +71,9 @@ Finish recipes and verification for existing platform building blocks. These alr
 - [ ] Verify panel composition, named scroll regions, native multiple-select behavior, nested layouts, RTL and forced colors.
   - Implemented the [survey briefing](examples/composition.html) and [composition contract](docs/reference.md#panels-scroll-regions-and-multiple-selection), with local repeated-value inspection and focused display checks. Dated browser/emulation results and remaining platform work are recorded in [ACCESSIBILITY.md](ACCESSIBILITY.md).
 
+- [ ] Complete native popover dismissal, non-modal focus and fallback verification.
+  - The [short/long help recipe](docs/popover.md) adds native invokers, complete inline fallback, background editing and focused browser checks. Remaining platform and assistive-technology evidence keeps this item open.
+
 Exit: native primitives have reusable recipes and evidence, rather than merely matching visual screenshots.
 
 ## Phase 2 — common application interfaces

@@ -26,6 +26,8 @@ The [survey briefing](../examples/composition.html) demonstrates nested panels, 
 
 See the [native family state audit](native-states.md) for authored default, long-content, disabled/read-only, invalid, busy and fallback examples and their verification limits.
 
+[Native popover](popover.md) covers optional non-modal help, declarative invokers, focus and complete inline fallback, including long-content scrolling.
+
 ## Build UI
 
 Read [architecture](architecture.md) before implementation. Use the [component template](component-template.md) to define behavior before adding code. Follow [contributing](../CONTRIBUTING.md) and the [accessibility contract](../ACCESSIBILITY.md). The [roadmap](../ROADMAP.md) defines sequence and dependencies, not release dates.
