@@ -182,6 +182,8 @@ Adopted messages are presentation state, not persistent native validity rules. S
 
 Controls associated through `form="…"` can use explicitly described `ui-error` nodes outside the wrapper. Relevant document mutations and ownership attributes are observed automatically; `refresh()` supports immediate rediscovery. See [form integration](forms.md) for external controls, grouped questions, localization, lifecycle limits and async response ordering. Server text must be escaped by the application before writing HTML.
 
+The [native-value recipe](../examples/native-inputs.html) and [date/time/file/range contract](forms.md#native-dates-times-files-and-ranges) cover grouped hints/errors, native serialization, file selection recovery and server responsibilities using this existing API.
+
 ## Themes and customization
 
 UI follows the system light or dark theme. Set `data-theme="light"` or `data-theme="dark"` on `html` to force a theme. Remove the attribute to return to the system preference. Theme persistence is the application's choice.

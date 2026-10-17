@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Native form values — UI</title>
+  <link rel="stylesheet" href="../css/ui.css"><link rel="stylesheet" href="../themes/forest.css"><link rel="stylesheet" href="examples.css"><link rel="stylesheet" href="../css/site.css">
+  <script src="../js/components.js" defer></script><script src="native-inputs.js" defer></script>
+</head>
+<body>
+  <ui-skip-link><a href="#main">Skip to main content</a></ui-skip-link>
+  <header class="site-header"><a class="site-wordmark" href="../index.html">UI <span>HTML first</span></a><nav aria-label="Primary" data-site-nav><ul><li><a href="../index.html">About</a></li><li><a href="components.html">Components</a></li><li><a href="../docs/index.html" aria-current="page">Docs</a></li><li><a href="themes.html">Themes</a></li><li><a href="../tests/accessibility.html">Tests</a></li></ul></nav></header>
+  <main id="main" tabindex="-1">
+    <h1>Native form values</h1>
+    <p>Plan a field visit, recover from grouped errors and inspect the values a form supplies. This example sends nothing, reads no file contents and saves nothing.</p>
+    <p>All questions are required unless marked optional. Dates and times describe the venue's local wall time in Europe/London. This example checks a fixed demonstration window, not appointment availability.</p>
+    <ui-form id="visit-editor">
+      <ui-error-summary hidden><h2>There is a problem</h2><ul></ul></ui-error-summary>
+      <form id="visit-form" action="native-inputs.html" method="post" enctype="multipart/form-data">
+        <fieldset aria-describedby="visit-when-hint">
+          <legend>When will you visit?</legend>
+          <ui-hint id="visit-when-hint">Choose a date and local start time. Each answer has its own error.</ui-hint>
+          <ui-field>
+            <label for="visit-date">Visit date</label>
+            <ui-hint id="visit-date-hint">From 1 January 2026 to 31 December 2027. The browser displays dates using its own locale.</ui-hint>
+            <ui-error hidden>Error: Enter a visit date</ui-error>
+            <input id="visit-date" name="date" type="date" min="2026-01-01" max="2027-12-31" required aria-describedby="visit-when-hint visit-date-hint">
+          </ui-field>
+          <ui-field>
+            <label for="visit-time">Local start time</label>
+            <ui-hint id="visit-time-hint">From 09:00 to 17:00, in 15-minute intervals. Venue timezone: Europe/London.</ui-hint>
+            <ui-error hidden>Error: Enter a local start time</ui-error>
+            <input id="visit-time" name="time" type="time" min="09:00" max="17:00" step="900" required aria-describedby="visit-when-hint visit-time-hint">
+          </ui-field>
+        </fieldset>
+        <fieldset id="visit-kind" aria-describedby="visit-kind-hint">
+          <legend>How will you visit?</legend>
+          <ui-hint id="visit-kind-hint">Choose one visit type.</ui-hint>
+          <ui-error id="visit-kind-error" hidden>Error: Select a visit type</ui-error>
+          <label><input id="visit-guided" name="kind" type="radio" value="guided" required aria-describedby="visit-kind-hint"> Guided visit</label>
+          <label><input id="visit-independent" name="kind" type="radio" value="independent" aria-describedby="visit-kind-hint"> Independent visit with your own field notes</label>
+        </fieldset>
+        <fieldset id="visit-formats" aria-describedby="visit-formats-hint">
+          <legend>Which guide formats do you need?</legend>
+          <ui-hint id="visit-formats-hint">Choose at least one. This group rule is checked by the application.</ui-hint>
+          <ui-error id="visit-formats-error" hidden>Error: Select at least one guide format</ui-error>
+          <label><input id="visit-html" name="format" type="checkbox" value="html" aria-describedby="visit-formats-hint"> HTML</label>
+          <label><input id="visit-text" name="format" type="checkbox" value="text" aria-describedby="visit-formats-hint"> Plain text</label>
+        </fieldset>
+        <ui-field>
+          <label for="visit-files">Supporting documents (optional)</label>
+          <ui-hint id="visit-files-hint">Choose up to 3 PDF or plain-text files, each no larger than 1 MiB (1,048,576 bytes). Only file names, types and sizes are displayed. Files must be selected again after leaving this page.</ui-hint>
+          <ui-error id="visit-files-error" hidden></ui-error>
+          <input id="visit-files" name="documents" type="file" accept=".pdf,.txt,application/pdf,text/plain" multiple aria-describedby="visit-files-hint">
+        </ui-field>
+        <ui-field>
+          <label for="visit-level">Recording level, percent (optional)</label>
+          <ui-hint id="visit-level-hint">From 0 to 100, in steps of 5. Starts at 50; this control always has a value.</ui-hint>
+          <input id="visit-level" name="level" type="range" min="0" max="100" step="5" value="50" aria-describedby="visit-level-hint">
+          <output id="visit-level-value" for="visit-level" aria-live="off" hidden>50%</output>
+        </ui-field>
+        <ui-field><label for="visit-venue">Venue code (read-only)</label><input id="visit-venue" name="venue" value="FIELD-01" readonly></ui-field>
+        <ui-field><label for="visit-staff">Staff reference (unavailable)</label><input id="visit-staff" name="staff" value="Assigned by the server" disabled></ui-field>
+        <ui-cluster>
+          <button id="visit-submit" type="submit" name="intent" value="inspect" hidden>Inspect values</button>
+          <button type="reset" data-variant="secondary">Reset answers</button>
+        </ui-cluster>
+      </form>
+    </ui-form>
+    <p id="visit-fallback">Local value inspection needs JavaScript. Labels, hints, native constraints, file selection and reset remain available. A production form needs a real server action and submit button.</p>
+    <p id="visit-status" role="status" aria-atomic="true"></p>
+    <section id="visit-result" aria-labelledby="visit-result-title" hidden>
+      <h2 id="visit-result-title">Submitted entries</h2>
+      <p>Entries below come from native FormData, including repeated names and the submit button. An empty file selection contributes an empty File entry. This is a local inspection; no upload or booking takes place.</p>
+      <dl id="visit-values"></dl>
+    </section>
+    <section aria-labelledby="visit-server-title"><h2 id="visit-server-title">Server responsibilities</h2>
+      <p>Recheck dates, time intervals, allowed choices, file counts and sizes, and range bounds. Treat the date as a calendar date; resolve the local time using the venue's trusted timezone and an explicit daylight-saving policy. Read-only and disabled presentation provides no authorization.</p>
+      <p>The accept attribute only guides the picker. A real upload service must inspect file content and type, enforce limits and access rules, and handle safe storage. A rejected response preserves other answers and explains when files need to be selected again.</p>
+      <p><a href="../docs/forms.html#native-dates-times-files-and-ranges">Read the integration contract</a> · <a href="native-inputs.js">Read the application script</a> · <a href="../tests/accessibility.html">Run browser checks</a></p>
+    </section>
+  </main>
+  <footer><p>UI · <a href="../docs/index.html">Documentation</a> · <a href="../docs/accessibility.html">Accessibility evidence</a></p></footer>
+</body>
+</html>

@@ -66,6 +66,7 @@ Finish recipes and verification for existing platform building blocks. These alr
 - [ ] Complete native dialog opening/closing/focus-return recipes and support failure behavior; do not add a duplicate modal implementation.
   - Implemented the [dialog recipe](docs/dialog.md) with explicit initial focus, native close/Escape policy, stale-result cleanup, missing-trigger focus recovery and inline no-script/unsupported/open-failure fallback. Browser evidence is recorded in [ACCESSIBILITY.md](ACCESSIBILITY.md); the remaining manual/platform checks keep this item open.
 - [ ] Complete grouped hint/error contracts and date/time/file/range examples, including serialized form values and server responsibilities.
+  - Implemented the [native-value recipe](examples/native-inputs.html) and [integration contract](docs/forms.md#native-dates-times-files-and-ranges), with separate date/time errors, shared choice feedback, file metadata/limits, native serialization and reset. Browser evidence is recorded in [ACCESSIBILITY.md](ACCESSIBILITY.md); manual/platform checks remain open.
 - [ ] Verify panel composition, named scroll regions, native multiple-select behavior, nested layouts, RTL and forced colors.
 
 Exit: native primitives have reusable recipes and evidence, rather than merely matching visual screenshots.
@@ -151,4 +152,4 @@ The target is [WCAG 2.2 AA](https://www.w3.org/WAI/WCAG22/quickref/). [APG](http
 
 ## Next implementation slice
 
-Focus on **Phase 1 — native component completeness**. The first native dialog recipe is implemented; finish its outstanding manual/platform evidence alongside the next slice: grouped hints/errors and date/time/file/range examples with serialized values and server responsibilities. Continue with the remaining native family states, panel/scroll composition, multiple selects, RTL and forced-colors verification. Keep the remaining Phase 0 evidence, lifecycle and payload work open alongside these recipes. Tabs and other compound widgets follow in Phase 2.
+Focus on **Phase 1 — native component completeness**. The first native dialog recipe is implemented; finish its outstanding manual/platform evidence alongside the implemented grouped hints/errors and date/time/file/range recipe. Continue with the remaining native family states, panel/scroll composition, multiple selects, RTL and forced-colors verification. Keep the remaining Phase 0 evidence, lifecycle and payload work open alongside these recipes. Tabs and other compound widgets follow in Phase 2.

@@ -38,7 +38,7 @@ The native form owns submission. UI adds linked errors and focus management. Bas
 | Form structure | `ui-field`, `ui-hint`, `ui-error`, `ui-skip-link` |
 | Optional behavior | `ui-form`, `ui-error-summary` in `js/components.js`; [application integration](docs/forms.md) |
 | Themes | System/light/dark, spacing/type/radius scales, semantic state/focus tokens, an optional forest brand |
-| Examples | Element gallery, complete form, Fieldwork workspace, recipes, server error recovery, async form integration and theme workbench |
+| Examples | Element gallery, complete form, Fieldwork workspace, recipes, server error recovery, async form integration, native input values and theme workbench |
 
 Only the two behavior elements are registered with `customElements`. CSS-only elements need no registration. Existing `.stack`, `.cluster`, `.grid`, and `.table-scroll` helpers remain supported.
 
@@ -78,6 +78,8 @@ Run `python3 -m http.server 8765` from this directory. Open [the example hub](ht
 The existing [element gallery](gallery.html), [complete form](form.html), and [Fieldwork workspace](workspace.html) remain available. New examples use working features only; proposed components are described as contracts in the explorer.
 
 Phase 1 starts with the [native dialog recipe](docs/dialog.md): [try opening and dismissing it](examples/patterns.html#modal), with inline information retained when enhancement is unavailable.
+
+The [native-value recipe](examples/native-inputs.html) adds grouped hints/errors, date/time/file/range values and [server responsibilities](docs/forms.md#native-dates-times-files-and-ranges). It inspects values locally without uploading files.
 
 Run documentation checks with `python3 tools/check_docs.py`. After changing the catalogue, run `python3 tools/build_catalog.py`; generated files are committed so reading docs needs no generator.
 

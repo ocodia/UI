@@ -140,7 +140,7 @@ auditButton.addEventListener('click', async () => {
   const report = [];
   frame.hidden = false;
   try {
-    for (const route of ['../index.html', '../gallery.html', '../docs/controls.html', '../docs/components/checkbox.html', '../form.html', '../workspace.html', '../examples/index.html', '../examples/components.html', '../examples/patterns.html', '../examples/themes.html', '../examples/server-errors.html', '../examples/form-integration.html']) {
+    for (const route of ['../index.html', '../gallery.html', '../docs/controls.html', '../docs/components/checkbox.html', '../form.html', '../workspace.html', '../examples/index.html', '../examples/components.html', '../examples/patterns.html', '../examples/themes.html', '../examples/server-errors.html', '../examples/form-integration.html', '../examples/native-inputs.html']) {
       const win = await loadExample(frame, route);
       for (const brand of route.endsWith('/themes.html') ? ['default', 'forest'] : ['default']) {
         if (brand === 'default') delete win.document.documentElement.dataset.brand;
@@ -157,6 +157,19 @@ auditButton.addEventListener('click', async () => {
               win.document.querySelector('#theme-name').focus();
               win.document.querySelector('body > header a').focus();
             }
+            // loadExample eagerly loads nested frames; let host palette mutations settle.
+            const previews = [...win.document.querySelectorAll('[data-example] iframe')];
+            if (previews.length) {
+              await new Promise(resolve => win.setTimeout(resolve, 60));
+              for (const preview of previews) {
+                const root = preview.contentDocument.documentElement;
+                for (const attribute of ['data-theme', 'data-brand', 'dir']) {
+                  assert(root.getAttribute(attribute) === win.document.documentElement.getAttribute(attribute), `Preview ${attribute} must match its host before audit`);
+                }
+                assert(preview.contentWindow.getComputedStyle(root).getPropertyValue('--ui-canvas').trim() === win.getComputedStyle(win.document.documentElement).getPropertyValue('--ui-canvas').trim(), 'Preview must render the host canvas palette before audit');
+              }
+              report.push(`PASS: ${previews.length} loaded previews match host attributes and rendered canvas (${theme}).`);
+            }
             const audit = await win.axe.run(win.document, {
               runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] }
             });
@@ -168,6 +181,23 @@ auditButton.addEventListener('click', async () => {
             for (const review of audit.incomplete) {
               report.push(`  REVIEW ${review.id}: ${review.help}`);
               for (const node of review.nodes) report.push(`    ${JSON.stringify(node.target)}`);
+            }
+            if (route.endsWith('/native-inputs.html')) {
+              const editor = win.document.querySelector('#visit-editor');
+              editor.form.requestSubmit(win.document.querySelector('#visit-submit'));
+              assert(win.document.activeElement === editor.querySelector('ui-error-summary'), 'Native input errors must focus their summary');
+              const errorAudit = await win.axe.run(win.document, {
+                runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] }
+              });
+              report.push(`Native input errors (${theme}): ${errorAudit.violations.length} violations; ${errorAudit.incomplete.length} need manual review`);
+              for (const [label, findings] of [['', errorAudit.violations], ['REVIEW ', errorAudit.incomplete]]) {
+                for (const finding of findings) {
+                  report.push(`  ${label}${finding.id}: ${finding.help}`);
+                  for (const node of finding.nodes) report.push(`    ${JSON.stringify(node.target)}`);
+                }
+              }
+              editor.form.reset();
+              await new Promise(resolve => win.setTimeout(resolve, 0));
             }
             if (route.endsWith('/patterns.html')) {
               const dialog = win.document.querySelector('#recipe-dialog');

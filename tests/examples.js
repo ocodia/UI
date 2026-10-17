@@ -101,8 +101,10 @@ exampleButton.addEventListener('click', async () => {
     check(!serverSummary.hidden && serverSummary.textContent.includes('already in use'), 'Reset does not bypass the next domain validation.');
     win = await load('../examples/form-integration.html');
     passed.push(...await runAsyncFormChecks(win));
+    win = await load('../examples/native-inputs.html');
+    passed.push(...await runNativeInputChecks(win));
     frame.style.inlineSize = '320px';
-    for (const route of ['index', 'components', 'patterns', 'themes', 'server-errors', 'form-integration']) {
+    for (const route of ['index', 'components', 'patterns', 'themes', 'server-errors', 'form-integration', 'native-inputs']) {
       win = await load(`../examples/${route}.html`, true);
       doc = win.document;
       for (const dir of ['ltr', 'rtl']) {
@@ -119,6 +121,11 @@ exampleButton.addEventListener('click', async () => {
       if (route === 'patterns') {
         check(!doc.querySelector('#recipe-dialog-fallback').hidden && doc.querySelector('#recipe-dialog-fallback a').getAttribute('href') === '../docs/architecture.html', 'Dialog information and its destination stay available with scripts blocked.');
         check(doc.querySelector('#recipe-open-dialog').hidden && doc.querySelector('#recipe-dialog').hidden, 'Script-dependent dialog controls stay hidden with scripts blocked.');
+      }
+      if (route === 'native-inputs') {
+        check(doc.querySelector('#visit-submit').hidden && !doc.querySelector('#visit-fallback').hidden && !doc.querySelector('#visit-form').noValidate, 'Native-input fallback retains guidance and native validation while local inspection stays hidden.');
+        check(doc.querySelector('#visit-files').multiple && doc.querySelector('#visit-date').required && doc.querySelector('#visit-level').value === '50' && doc.querySelector('[type="reset"]'), 'File selection, required date, range default and native reset remain available without JavaScript.');
+        check(doc.querySelector('#visit-html').getAttribute('aria-describedby') === 'visit-formats-hint' && doc.querySelector('#visit-time').getAttribute('aria-describedby').includes('visit-when-hint'), 'Grouped choice and date/time hints have explicit no-script associations.');
       }
       if (route === 'server-errors') {
         check(!doc.querySelector('ui-error-summary').hidden && !doc.querySelector('ui-error').hidden, 'Server messages remain visible without JavaScript.');

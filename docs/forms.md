@@ -25,8 +25,8 @@ For checkbox groups, `required` means **this checkbox must be checked**, not “
   <legend>Which updates do you want?</legend>
   <ui-hint id="updates-hint">Choose at least one.</ui-hint>
   <ui-error hidden>Error: Select at least one update</ui-error>
-  <label><input name="updates" type="checkbox" value="news">News</label>
-  <label><input name="updates" type="checkbox" value="events">Events</label>
+  <label><input name="updates" type="checkbox" value="news" aria-describedby="updates-hint">News</label>
+  <label><input name="updates" type="checkbox" value="events" aria-describedby="updates-hint">Events</label>
 </fieldset>
 ```
 
@@ -37,6 +37,41 @@ editor.validator = (form) => new FormData(form).getAll('updates').length
 ```
 
 A direct `ui-error` child opts this checkbox fieldset into shared feedback. Supply one error per group, targeting a validating representative; the summary link focuses that checkbox and the error describes the fieldset. Only the representative gets `aria-invalid`. Use separate `ui-field` children for independent checkbox questions with independent constraints/errors. Do not mix those individual questions with a shared group error. Repeated values stay native: use `FormData.getAll()`.
+
+## Native dates, times, files and ranges
+
+[Try the native-value recipe](../examples/native-inputs.html) and [read its application script](../examples/native-inputs.js). It combines two grouped questions with date/time fields, optional multiple files and a native range. It displays native FormData locally without a request, upload or persistence. UI's existing form API supplies errors; this recipe adds no library element or API.
+
+### Hints, errors and recovery
+
+A fieldset can provide context for several distinct answers, such as a date and time. Keep each answer in its own `ui-field` with a visible label, hint and error; do not reuse one error node for both answers. Explicitly describe each input with any relevant shared hint plus its own hint so guidance works before enhancement.
+
+For a single radio question, use one shared direct error and same-name radios; `required` makes the native group required. For an at-least-one checkbox question, use one direct fieldset error and an application validator targeting an eligible checkbox. Associate the group hint explicitly with both the fieldset and its members. Do not put `required` on every checkbox. On failure, UI adds the error description to the fieldset, preserves authored hints and renders one linked summary entry per question. Radio members are marked invalid; the checkbox representative alone is marked invalid. The recipe's summary link focuses that representative without selecting an answer.
+
+Correct answers and submit again to clear feedback. A native reset restores date/time defaults, radio/checkbox defaults and the range's initial value, clears file selection and managed errors, and restores the page title. A cancelled reset preserves answers, errors and the last inspected result. Editing clears the example's previously inspected entries so they are not mistaken for current answers. Existing field errors remain until validation or reset; the application does not announce each edit as an error.
+
+### Values and constraints
+
+| Native control | Submitted entry | Application and server contract |
+| --- | --- | --- |
+| Date | Calendar string such as `2026-10-20`; optional empty entry is `""` | Validate the actual calendar date, min/max and any step. Display locale does not change serialization. Do not convert a date-only answer into an implicit UTC timestamp. |
+| Time | Local wall time such as `09:15`; seconds are included when applicable | The value contains no date, timezone or offset. Define these separately, recheck bounds/intervals, and resolve ambiguous or nonexistent daylight-saving times explicitly. The recipe's `step="900"` means 900 seconds, or 15 minutes, anchored by its `min="09:00"`. |
+| Multiple files | Repeated `File` entries under the same name | Use `getAll()` and multipart form encoding for real uploads. With no selection, FormData includes an empty File entry with an empty name and zero bytes; a deliberately selected zero-byte file can still have a name. Do not use file size alone to detect absence. |
+| Range | Numeric string such as `50` | The browser supplies a value even when untouched. `required` cannot make it an unanswered question. Recheck numeric bounds and step on the server; choose another input when an explicit answer is necessary. |
+| Checkbox choices | One entry per checked, enabled member; no entry for unchecked members | Use `getAll()`, validate allowed values and the group count, and reject unexpected values. |
+| Radio question | One entry for the checked, enabled member; none when unanswered | Validate one allowed value, including required membership and authorization. |
+
+`new FormData(form, event.submitter)` includes the activated submit button's name/value. Read-only supported controls still serialize; disabled controls do not. Neither state makes a submitted value trustworthy. File, checkbox, radio and range controls do not support `readonly`; use their native semantics rather than a pretend read-only state. Date/time picker appearance and supported editing gestures vary by browser and platform. If a type falls back to text, the server still enforces the same value format and rules.
+
+The recipe uses a fixed demonstration date window (2026–2027), a trusted venue context of Europe/London and a 0–100 range in steps of 5, initially 50. It demonstrates native constraints, not scheduling availability or a timezone resolver. A real service must derive the venue and its timezone from trusted application data and apply its own booking rules.
+
+### Files and server responses
+
+The recipe's synchronous validator checks a maximum of three files and 1 MiB (1,048,576 bytes) per file. `accept` suggests PDF/plain-text choices to the picker; it does not enforce content type. Browser-provided names and MIME types are untrusted metadata. The local inspector renders names with `textContent`, reads no bytes and exposes no local filesystem path. A real upload service checks actual file content/type, counts, byte limits, authorization and safe storage under its own policy. Client checks improve recovery but cannot replace server checks.
+
+Browsers own file selection. Applications cannot repopulate a file input from a server path or a previous response. A response rendered as a new document must preserve ordinary answers, show escaped linked errors and explain that files need to be selected again; an async response updating the same document can retain the current native selection if it does not reset or replace the input. Never clear the whole form to show a rejection. Report a service-wide upload failure in task feedback rather than inventing a field error. Follow the [async integration contract](#asynchronous-submission) for cancellation and stale responses.
+
+Without JavaScript, the recipe keeps editable native inputs, explicit hints, constraints and reset. Local inspection stays hidden with a visible explanation. It is not a server-backed form: replace its demonstration action and install a real submit button when adapting it for production. Native validation alone cannot enforce a checkbox minimum count, file limits, authorization or server rules.
 
 ## Localization
 
