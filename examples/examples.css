@@ -45,3 +45,16 @@ ui-panel > :is(article, section) > :first-child { margin-block-start: 0; }
 
 /* Native FormData inspector: long file names remain readable at narrow widths. */
 #visit-values dd { margin-inline-start: var(--ui-space); overflow-wrap: anywhere; }
+
+/* Survey briefing application geometry; no new library component or attributes. */
+#brief-layout { --ui-sidebar-width: 15rem; --ui-sidebar-content-min: 42rem; }
+#brief-selection-grid { --ui-grid-min: 18rem; align-items: start; }
+#brief-layout aside nav ul { display: block; }
+#brief-layout aside nav li + li { margin-block-start: var(--ui-space-2); }
+#brief-table { min-inline-size: 60rem; }
+#brief-notes { max-block-size: 16rem; overflow: auto; padding: var(--ui-space); border: 1px solid var(--ui-border); scroll-padding: var(--ui-space); }
+#brief-values, #brief-context-title + p, #brief-selection-help { overflow-wrap: anywhere; }
+@media print {
+  #brief-notes { max-block-size: none; overflow: visible; }
+  #brief-table { min-inline-size: 0; inline-size: 100%; }
+}

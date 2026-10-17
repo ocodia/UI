@@ -103,8 +103,10 @@ exampleButton.addEventListener('click', async () => {
     passed.push(...await runAsyncFormChecks(win));
     win = await load('../examples/native-inputs.html');
     passed.push(...await runNativeInputChecks(win));
+    win = await load('../examples/composition.html');
+    passed.push(...await runCompositionChecks(win));
     frame.style.inlineSize = '320px';
-    for (const route of ['index', 'components', 'patterns', 'themes', 'server-errors', 'form-integration', 'native-inputs']) {
+    for (const route of ['index', 'components', 'patterns', 'themes', 'server-errors', 'form-integration', 'native-inputs', 'composition']) {
       win = await load(`../examples/${route}.html`, true);
       doc = win.document;
       for (const dir of ['ltr', 'rtl']) {
@@ -121,6 +123,10 @@ exampleButton.addEventListener('click', async () => {
       if (route === 'patterns') {
         check(!doc.querySelector('#recipe-dialog-fallback').hidden && doc.querySelector('#recipe-dialog-fallback a').getAttribute('href') === '../docs/architecture.html', 'Dialog information and its destination stay available with scripts blocked.');
         check(doc.querySelector('#recipe-open-dialog').hidden && doc.querySelector('#recipe-dialog').hidden, 'Script-dependent dialog controls stay hidden with scripts blocked.');
+      }
+      if (route === 'composition') {
+        check(doc.querySelector('#brief-submit').hidden && !doc.querySelector('#brief-fallback').hidden && !doc.querySelector('#brief-form').noValidate, 'Composition keeps its native form baseline and hides local inspection with scripts blocked.');
+        check(doc.querySelector('#brief-areas').multiple && doc.querySelector('#brief-areas').options[0].selected && doc.querySelector('#brief-table-region').tabIndex === 0 && doc.querySelector('#brief-notes').tabIndex === 0, 'Native multiple-selection defaults and both focusable scroll regions survive without JavaScript.');
       }
       if (route === 'native-inputs') {
         check(doc.querySelector('#visit-submit').hidden && !doc.querySelector('#visit-fallback').hidden && !doc.querySelector('#visit-form').noValidate, 'Native-input fallback retains guidance and native validation while local inspection stays hidden.');

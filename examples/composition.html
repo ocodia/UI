@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Survey briefing — UI</title>
+  <link rel="stylesheet" href="../css/ui.css"><link rel="stylesheet" href="../themes/forest.css"><link rel="stylesheet" href="examples.css"><link rel="stylesheet" href="../css/site.css">
+  <script src="../js/components.js" defer></script><script src="composition.js" defer></script>
+</head>
+<body>
+  <ui-skip-link><a href="#main">Skip to main content</a></ui-skip-link>
+  <header class="site-header"><a class="site-wordmark" href="../index.html">UI <span>HTML first</span></a><nav aria-label="Primary" data-site-nav><ul><li><a href="../index.html">About</a></li><li><a href="components.html">Components</a></li><li><a href="../docs/index.html" aria-current="page">Docs</a></li><li><a href="themes.html">Themes</a></li><li><a href="../tests/accessibility.html">Tests</a></li></ul></nav></header>
+  <main id="main" tabindex="-1">
+    <h1>Survey briefing</h1>
+    <p>Choose survey areas, compare access information and read field notes. This local example sends nothing and saves nothing.</p>
+    <ui-sidebar id="brief-layout">
+      <aside>
+        <ui-panel><h2>Plan your briefing</h2><p>The sidebar comes first in reading order and moves above the content when space is limited.</p>
+          <nav aria-label="Briefing sections"><ul><li><a href="#brief-selection">Choose areas</a></li><li><a href="#brief-access-title">Compare access</a></li><li><a href="#brief-notes-title">Read field notes</a></li></ul></nav>
+          <p><a href="../docs/reference.html#panels-scroll-regions-and-multiple-selection">Read the composition contract</a></p>
+        </ui-panel>
+      </aside>
+      <ui-stack>
+        <section id="brief-selection" aria-labelledby="brief-selection-title">
+          <h2 id="brief-selection-title">Choose survey areas</h2>
+          <ui-panel>
+            <ui-grid id="brief-selection-grid">
+              <ui-form id="brief-editor">
+                <ui-error-summary hidden><h2>There is a problem</h2><ul></ul></ui-error-summary>
+                <form id="brief-form" action="composition.html" method="get">
+                  <ui-field>
+                    <label for="brief-areas">Survey areas</label>
+                    <ui-hint id="brief-areas-hint">Choose one or more. Coast is selected initially. Selecting an area does not submit the form.</ui-hint>
+                    <ui-error hidden>Error: Select at least one survey area</ui-error>
+                    <select id="brief-areas" name="area" multiple size="5" required aria-describedby="brief-areas-hint brief-selection-help">
+                      <optgroup label="Open routes"><option value="coast" selected>Coast</option><option value="woodland">Woodland</option><option value="valley">River valley</option></optgroup>
+                      <optgroup label="Restricted routes"><option value="marsh" disabled>Marsh (unavailable)</option><option value="island">Island</option></optgroup>
+                    </select>
+                  </ui-field>
+                  <p id="brief-selection-help">On desktop, Shift with arrow keys extends a contiguous selection in many browsers. Use Command-click on macOS or Control-click on Windows to toggle separate choices. Keyboard shortcuts and touch choosers vary by platform.</p>
+                  <ui-field><label for="brief-archived">Archived areas (unavailable)</label><select id="brief-archived" name="archived" multiple size="2" disabled><option value="quarry" selected>Quarry</option><option value="moor">Moor</option></select></ui-field>
+                  <ui-cluster><button id="brief-submit" type="submit" name="intent" value="inspect" hidden>Inspect selection</button><button type="reset" data-variant="secondary">Reset areas</button></ui-cluster>
+                </form>
+              </ui-form>
+              <ui-panel><section aria-labelledby="brief-context-title"><h3 id="brief-context-title">Area context</h3>
+                <p>The native list keeps its platform selection behavior. For a short question that needs simpler independent toggles, <a href="../docs/components/checkbox-group.html">consider checkboxes</a>.</p>
+                <details><summary>Read complete area descriptions</summary><dl><dt>Coast</dt><dd>Open coastal paths with exposed viewpoints and several places to stop.</dd><dt>Woodland</dt><dd>Shaded paths with uneven roots; allow extra time after rain.</dd><dt>River valley</dt><dd>A longer riverside route with narrow sections and seasonal diversions.</dd><dt>Marsh (unavailable)</dt><dd>Closed while the boardwalk is repaired.</dd><dt>Island</dt><dd>Access depends on a separately confirmed crossing and return journey.</dd></dl></details>
+              </section></ui-panel>
+            </ui-grid>
+            <p id="brief-fallback">Local inspection needs JavaScript. Native selection, reset, section links and both scroll regions remain available. A production form needs a real server action and submit button.</p>
+            <p id="brief-status" role="status" aria-atomic="true"></p>
+            <section id="brief-result" aria-labelledby="brief-result-title" hidden><h3 id="brief-result-title">Submitted entries</h3><p>Each selected, enabled option contributes a separate area entry, in option order. Nothing is sent.</p><ul id="brief-values"></ul></section>
+          </ui-panel>
+        </section>
+        <ui-panel><section>
+          <h2 id="brief-access-title">Compare access</h2>
+          <p id="brief-access-help">This table has more columns than a narrow screen can show. Focus its scroll region and use horizontal arrow keys, or scroll with a pointer or touch. Tab moves on to the next control.</p>
+          <div id="brief-table-region" class="table-scroll" role="region" tabindex="0" aria-labelledby="brief-access-title" aria-describedby="brief-access-help">
+            <table id="brief-table"><caption>Illustrative route access information; confirm conditions before travel</caption>
+              <thead><tr><th scope="col">Area</th><th scope="col">Surface</th><th scope="col">Distance</th><th scope="col">Rest points</th><th scope="col">Access notes</th><th scope="col">Status</th></tr></thead>
+              <tbody><tr><th scope="row">Coast</th><td>Firm paths and exposed stone</td><td>3 km</td><td>Benches at viewpoints</td><td>Steep approach at the northern entrance; use the southern entrance for the gentler route.</td><td>Open</td></tr>
+              <tr><th scope="row">Woodland</th><td>Earth paths with roots</td><td>2 km</td><td>Picnic clearing</td><td>Roots become slippery after rain. The longer approach avoids the narrow footbridge.</td><td>Open</td></tr>
+              <tr><th scope="row">River valley</th><td>Gravel and short grass</td><td>5 km</td><td>Shelter at midpoint</td><td>Check seasonal diversions and allow enough time for the return journey.</td><td>Open</td></tr>
+              <tr><th scope="row">Marsh</th><td>Boardwalk</td><td>1 km</td><td>None on the boardwalk</td><td>Boardwalk repairs prevent access. Choose another area.</td><td>Closed</td></tr>
+              <tr><th scope="row">Island</th><td>Mixed tracks</td><td>4 km</td><td>Landing shelter</td><td>Confirm the crossing, landing access and return arrangements separately.</td><td>Confirm crossing</td></tr></tbody>
+            </table>
+          </div>
+        </section></ui-panel>
+        <ui-panel><section>
+          <h2 id="brief-notes-title">Field notes</h2>
+          <p id="brief-notes-help">These notes scroll vertically inside their own region. Focus the notes and use Up/Down or Page Up/Page Down. Tab leaves the region; links inside it remain separate stops.</p>
+          <div id="brief-notes" role="region" tabindex="0" aria-labelledby="brief-notes-title" aria-describedby="brief-notes-help">
+            <ol><li><p>Before choosing a route, discuss the distance, surfaces and planned rest stops with everyone taking part. Make a plan that works for the whole group.</p></li><li><p>Confirm current access information with the venue. The table is illustrative and cannot describe temporary closures, weather damage or every individual access need.</p></li><li><p>Allow time to pause and record observations. A shorter route with useful rest points may support the survey better than covering every possible area.</p></li><li><p>Keep a clear return plan and agree how the group will communicate if someone needs to stop. Check transport arrangements before setting out.</p></li><li><p>Bring the information in a format everyone can use. <a href="native-inputs.html">Inspect guide-format and native input values</a> in the related form recipe.</p></li><li><p>Leave space for follow-up notes. <a href="../docs/forms.html">Read the form integration guidance</a> before adding saving, uploads or asynchronous requests to this local example.</p></li></ol>
+          </div>
+        </section></ui-panel>
+      </ui-stack>
+    </ui-sidebar>
+  </main>
+  <footer><p>UI · <a href="../docs/index.html">Documentation</a> · <a href="composition.js">Application script</a> · <a href="../tests/composition.html">Composition display checks</a></p></footer>
+</body>
+</html>

@@ -73,6 +73,10 @@ Browsers own file selection. Applications cannot repopulate a file input from a 
 
 Without JavaScript, the recipe keeps editable native inputs, explicit hints, constraints and reset. Local inspection stays hidden with a visible explanation. It is not a server-backed form: replace its demonstration action and install a real submit button when adapting it for production. Native validation alone cannot enforce a checkbox minimum count, file limits, authorization or server rules.
 
+## Multiple selection in composed layouts
+
+The [survey briefing](../examples/composition.html) demonstrates native multiple selection inside nested panels, with named table/notes scroll regions. Its [composition and multiple-select contract](reference.md#panels-scroll-regions-and-multiple-selection) covers platform instructions, required errors, repeated `getAll()` values, disabled options/optgroups, selected defaults and cancelled reset. The browser owns selection and scrolling; local inspection sends nothing. Server validation must recheck allowed values and access rules.
+
 ## Localization
 
 UI does not infer translations from `lang`. Set the document/section language, author translated labels, hints and summary heading, and configure prefixes on `ui-form`:

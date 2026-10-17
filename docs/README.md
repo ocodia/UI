@@ -22,6 +22,8 @@ Every guide below is available as a rendered page in the documentation site. Bro
 
 The [native-value recipe](../examples/native-inputs.html) combines grouped errors with date, time, file and range inputs. Read the [native-input integration contract](forms.md#native-dates-times-files-and-ranges) for serialized values and server responsibilities.
 
+The [survey briefing](../examples/composition.html) demonstrates nested panels, named scroll regions and native multiple selection. Its [composition contract](reference.md#panels-scroll-regions-and-multiple-selection) explains reading order, keyboard access, repeated values and reset.
+
 ## Build UI
 
 Read [architecture](architecture.md) before implementation. Use the [component template](component-template.md) to define behavior before adding code. Follow [contributing](../CONTRIBUTING.md) and the [accessibility contract](../ACCESSIBILITY.md). The [roadmap](../ROADMAP.md) defines sequence and dependencies, not release dates.

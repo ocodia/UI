@@ -140,7 +140,7 @@ auditButton.addEventListener('click', async () => {
   const report = [];
   frame.hidden = false;
   try {
-    for (const route of ['../index.html', '../gallery.html', '../docs/controls.html', '../docs/components/checkbox.html', '../form.html', '../workspace.html', '../examples/index.html', '../examples/components.html', '../examples/patterns.html', '../examples/themes.html', '../examples/server-errors.html', '../examples/form-integration.html', '../examples/native-inputs.html']) {
+    for (const route of ['../index.html', '../gallery.html', '../docs/controls.html', '../docs/components/checkbox.html', '../form.html', '../workspace.html', '../examples/index.html', '../examples/components.html', '../examples/patterns.html', '../examples/themes.html', '../examples/server-errors.html', '../examples/form-integration.html', '../examples/native-inputs.html', '../examples/composition.html']) {
       const win = await loadExample(frame, route);
       for (const brand of route.endsWith('/themes.html') ? ['default', 'forest'] : ['default']) {
         if (brand === 'default') delete win.document.documentElement.dataset.brand;
@@ -182,14 +182,15 @@ auditButton.addEventListener('click', async () => {
               report.push(`  REVIEW ${review.id}: ${review.help}`);
               for (const node of review.nodes) report.push(`    ${JSON.stringify(node.target)}`);
             }
-            if (route.endsWith('/native-inputs.html')) {
-              const editor = win.document.querySelector('#visit-editor');
-              editor.form.requestSubmit(win.document.querySelector('#visit-submit'));
+            if (route.endsWith('/native-inputs.html') || route.endsWith('/composition.html')) {
+              const editor = win.document.querySelector(route.endsWith('/composition.html') ? '#brief-editor' : '#visit-editor');
+              if (route.endsWith('/composition.html')) [...editor.form.elements.area.options].forEach(option => { option.selected = false; });
+              editor.form.requestSubmit(win.document.querySelector(route.endsWith('/composition.html') ? '#brief-submit' : '#visit-submit'));
               assert(win.document.activeElement === editor.querySelector('ui-error-summary'), 'Native input errors must focus their summary');
               const errorAudit = await win.axe.run(win.document, {
                 runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] }
               });
-              report.push(`Native input errors (${theme}): ${errorAudit.violations.length} violations; ${errorAudit.incomplete.length} need manual review`);
+              report.push(`${route.endsWith('/composition.html') ? 'Composition selection errors' : 'Native input errors'} (${theme}): ${errorAudit.violations.length} violations; ${errorAudit.incomplete.length} need manual review`);
               for (const [label, findings] of [['', errorAudit.violations], ['REVIEW ', errorAudit.incomplete]]) {
                 for (const finding of findings) {
                   report.push(`  ${label}${finding.id}: ${finding.help}`);

@@ -102,6 +102,62 @@ The example has a separate application stylesheet and an optional script. Projec
 
 The layouts, content, disclosure navigation, and native form controls work without JavaScript. Save and export controls appear only after the optional script initializes. UI supplies the layout primitives; application shell choices stay in `css/workspace.css`.
 
+## Panels, scroll regions and multiple selection
+
+The [survey briefing recipe](../examples/composition.html) combines an ordinary aside, `ui-sidebar`, nested `ui-panel`/`ui-grid`/`ui-stack`, a native multiple-select and two independent scroll regions. [Read its application script](../examples/composition.js). Its only application behavior is local FormData inspection and feedback cleanup; selection, scrolling and form reset remain native. It initializes once for the static page; client-side routing or dynamic form replacement would need application-owned teardown and initialization.
+
+### Composition and reading order
+
+`ui-panel` supplies a surface, padding and a border. Its native section/article/aside supplies meaning; the panel itself gains no role, focus stop or click handler. Use real headings and explicit links/buttons. Avoid making a whole card clickable around other interactive children.
+
+`ui-sidebar` has two direct children: the aside first and the content second. It wraps when its content minimum cannot fit beside the aside. `ui-grid` fits its tracks to available space; neither wrapper creates ARIA grid semantics. The recipe sets existing local geometry tokens, keeping reading order unchanged across widths and in RTL:
+
+```css
+#brief-layout {
+  --ui-sidebar-width: 15rem;
+  --ui-sidebar-content-min: 42rem;
+}
+#brief-selection-grid { --ui-grid-min: 18rem; }
+```
+
+Keep intrinsic minimums under control inside nested layouts. UI layout children already allow shrinking; wide content still needs its own local overflow container. Do not hide page overflow, reverse visual order, lock the whole page to a fixed height or shrink text to force columns to fit.
+
+### Named native scroll regions
+
+A table can need two-dimensional layout while the surrounding page reflows. The existing `.table-scroll` helper provides horizontal overflow, not a custom scrolling widget. Name its region, make it focusable and explain how to scroll:
+
+```html
+<h2 id="access-title">Access comparison</h2>
+<p id="access-help">Focus the table region and use horizontal arrow keys.
+  Tab moves to the next control.</p>
+<div class="table-scroll" role="region" tabindex="0"
+     aria-labelledby="access-title" aria-describedby="access-help">
+  <table>
+    <caption>Route access information</caption>
+    <thead><tr><th scope="col">Route</th><th scope="col">Distance</th></tr></thead>
+    <tbody><tr><th scope="row">Coast</th><td>3 km</td></tr></tbody>
+  </table>
+</div>
+```
+
+Keep the caption and native row/column headers. Avoid giving an enclosing section the same landmark name as the scroll region; the region is the named scrolling destination. A focusable scroll container needs an accessible name even when its table also has a caption. Instructions stay outside the scroll area. Browser scrollbars may be transient; the visible instructions and table layout provide a persistent cue. No custom keyboard handler, drag-only control, roving tabindex or scrollbar role is installed. Native arrows scroll the focused region; Tab leaves it and reaches any links within it in DOM order. Platform keyboard behavior still needs testing.
+
+The recipe also bounds an ordinary field-notes region with application CSS (`max-block-size: 16rem; overflow: auto`) and the same naming/focus pattern. This is an application example, not a new general scroller API. Bound a prose region only when the task benefits; do not nest it inside another scroll region or hide essential content. Allow links inside it, keep focus indicators clear of clipping, and retain native pointer/touch scrolling. The recipe releases its height limit for print. UI's shared focus rules also apply to these native focus stops, including the system Highlight outline in forced colors; it does not use `forced-color-adjust: none`.
+
+### Native multiple-select contract
+
+The recipe's `select multiple size="5" required` remains one native control with native options/optgroups, a visible label, instructions and its own inline error. `size` sets visible rows; `data-size` only selects supported CSS geometry. Do not give it an extra listbox role, replace options with custom wrappers, or install a duplicate arrow-key selection handler. It has no `readonly` mode.
+
+Multiple-select gestures vary by browser and platform. Shift with arrows commonly extends a contiguous selection; Command-click on macOS or Control-click on Windows commonly toggles separate options. Noncontiguous keyboard selection and touch choosers require platform testing. Keep all option labels concise; the adjacent descriptions disclosure supplies full route context when a native row truncates. For a short list needing simpler independent selection, use [native checkboxes](components.md#checkbox-group).
+
+An empty required selection produces one UI error. The linked summary focuses the select without choosing an option. Correction and resubmission clear the error and retain authored hint descriptions. Selecting alone does not navigate, submit or announce a new result. The example clears obsolete inspection feedback on input/change and reports submitted entries only on explicit submission.
+
+`new FormData(form, event.submitter).getAll('area')` returns repeated successful values in option order, not the sequence of clicks. `select.value` exposes only the first selected value, so do not use it to collect all answers. Selected disabled options, selected options in a disabled optgroup, and disabled selects do not contribute entries. `required` is a missing-answer check, not authorization: the server must check the allowed values, permissions and selection count. Do not use client-disabled choices as an access-control boundary.
+
+Authored `selected` attributes define reset defaults; the current `selected` properties define current answers. An uncancelled native reset restores Coast, clears managed errors/title state and clears application inspection feedback. A cancelled reset leaves the current selection and feedback intact. Without JavaScript, selection, reset, landmarks, source order and both scroll regions remain available; only the local inspector stays hidden. A production form requires a real server action and submit button.
+
+Run [the complete browser checks](../tests/accessibility.html) or [focused composition display checks](../tests/composition.html). The focused page reports whether forced colors is active and only counts system-color checks when it is. Browser emulation does not replace Windows contrast themes, screen readers, touch, real zoom or platform keyboard evidence. See [the dated record](../ACCESSIBILITY.md).
+
 ## Reusable forms
 
 Load `js/components.js` and wrap exactly one native form in `ui-form`. An optional summary can sit anywhere inside that wrapper, including above the page heading. Without a supplied summary, UI creates one with the English heading “There is a problem”. Supply an authored summary to choose another heading or language.

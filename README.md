@@ -81,6 +81,8 @@ Phase 1 starts with the [native dialog recipe](docs/dialog.md): [try opening and
 
 The [native-value recipe](examples/native-inputs.html) adds grouped hints/errors, date/time/file/range values and [server responsibilities](docs/forms.md#native-dates-times-files-and-ranges). It inspects values locally without uploading files.
 
+The [survey briefing](examples/composition.html) combines nested panels, named table/notes scroll regions and native multiple selection. See its [composition contract](docs/reference.md#panels-scroll-regions-and-multiple-selection).
+
 Run documentation checks with `python3 tools/check_docs.py`. After changing the catalogue, run `python3 tools/build_catalog.py`; generated files are committed so reading docs needs no generator.
 
 After changing guides, live recipe sources or site generators, run `python3 tools/build_docs.py` to rebuild the complete static site, then `python3 tools/test_docs.py`. See [documentation authoring](docs/site.md). The shared navigation is About, Components, Docs, Themes and Tests; recipes and the gallery remain accessible through Docs and the examples hub.
