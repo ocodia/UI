@@ -534,9 +534,9 @@ Use the browser disclosure for optional content; closed content must not contain
 
 **Native recipe · Phase 1.** UI route: `dialog with showModal()`.
 
-Use an accessible title, explicit close action and browser modal behavior. Application code opens it, clears stale results and retains inline information when enhancement is unavailable. See docs/dialog.md and examples/patterns.html#modal.
+Use an accessible title, explicit close action and browser modal behavior. Application code opens it, clears stale results and retains inline information when enhancement is unavailable. Long structured content starts with heading focus and scrolls as one native surface. See docs/dialog.md and its long-briefing recipe.
 
-**Acceptance work:** Browser assertions cover modal/initial focus, background focus blocking, close results, return focus after trigger changes and unsupported/open-failure/no-script fallback. Verify real Escape/Tab/backdrop input, long-content scrolling, zoom, forced colors, touch and screen readers before release.
+**Acceptance work:** Browser assertions cover short/long modal focus, scroll bounds, both close actions, reopening at the start, background focus blocking, close results, return focus after trigger changes and unsupported/open-failure/no-script fallback. Verify remaining browser/mobile, zoom, forced colors, touch and screen-reader combinations before release; see dated manual evidence in ACCESSIBILITY.md.
 
 ```html
 <button id="open-information" type="button" hidden>Open information</button>

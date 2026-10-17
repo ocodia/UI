@@ -140,13 +140,14 @@ auditButton.addEventListener('click', async () => {
   const report = [];
   frame.hidden = false;
   try {
-    for (const route of ['../index.html', '../gallery.html', '../docs/controls.html', '../docs/components/checkbox.html', '../form.html', '../workspace.html', '../examples/index.html', '../examples/components.html', '../examples/patterns.html', '../examples/themes.html', '../examples/server-errors.html', '../examples/form-integration.html', '../examples/native-inputs.html', '../examples/composition.html', '../docs/native-states.html', ...['date-input', 'time-input', 'number-input', 'select', 'option', 'textarea', 'slider', 'details', 'breadcrumb', 'breadcrumb-item', 'card'].map(key => `../docs/components/${key}.html`)]) {
+    for (const route of ['../index.html', '../gallery.html', '../docs/controls.html', '../docs/components/checkbox.html', '../form.html', '../workspace.html', '../examples/index.html', '../examples/components.html', '../examples/patterns.html', '../examples/themes.html', '../examples/server-errors.html', '../examples/form-integration.html', '../examples/native-inputs.html', '../examples/composition.html', '../docs/native-states.html', '../docs/dialog.html', '../docs/components/dialog.html', '../docs/previews/dialog-1.html', ...['date-input', 'time-input', 'number-input', 'select', 'option', 'textarea', 'slider', 'details', 'breadcrumb', 'breadcrumb-item', 'card'].map(key => `../docs/components/${key}.html`)]) {
       const win = await loadExample(frame, route);
-      for (const brand of route.endsWith('/themes.html') ? ['default', 'forest'] : ['default']) {
+      for (const brand of (route.endsWith('/themes.html') || route.endsWith('/dialog-1.html')) ? ['default', 'forest'] : ['default']) {
         if (brand === 'default') delete win.document.documentElement.dataset.brand;
         else win.document.documentElement.dataset.brand = brand;
         for (const theme of ['light', 'dark']) {
           win.document.documentElement.dataset.theme = theme;
+          if (route.endsWith('/dialog-1.html')) win.document.documentElement.dir = 'ltr';
           for (const palette of route.endsWith('/themes.html') ? ['default', 'blue'] : ['default']) {
             if (route.endsWith('/themes.html')) {
               win.document.querySelector('#brand').value = brand;
@@ -181,6 +182,28 @@ auditButton.addEventListener('click', async () => {
             for (const review of audit.incomplete) {
               report.push(`  REVIEW ${review.id}: ${review.help}`);
               for (const node of review.nodes) report.push(`    ${JSON.stringify(node.target)}`);
+            }
+            if (route.endsWith('/dialog-1.html')) {
+              const dialog = win.document.querySelector('#briefing-dialog');
+              for (const dir of ['ltr', 'rtl']) {
+                win.document.documentElement.dir = dir;
+                win.document.querySelector('#briefing-open').click();
+                assert(dialog.matches(':modal') && win.document.activeElement === win.document.querySelector('#briefing-title'), 'Long dialog audit requires a real modal with heading focus');
+                for (const position of ['start', 'end']) {
+                  if (position === 'end') [...dialog.querySelectorAll('button')].at(-1).focus();
+                  const longAudit = await win.axe.run(win.document, {
+                    runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] }
+                  });
+                  report.push(`Long dialog ${position} (${brand}, ${theme}, ${dir}): ${longAudit.violations.length} violations; ${longAudit.incomplete.length} need manual review`);
+                  for (const [label, findings] of [['', longAudit.violations], ['REVIEW ', longAudit.incomplete]]) {
+                    for (const finding of findings) {
+                      report.push(`  ${label}${finding.id}: ${finding.help}`);
+                      for (const node of finding.nodes) report.push(`    ${JSON.stringify(node.target)}`);
+                    }
+                  }
+                }
+                await new Promise(resolve => { dialog.addEventListener('close', resolve, { once: true }); dialog.close(); });
+              }
             }
             if (/\/docs\/components\/(date-input|time-input|number-input|select|option|textarea)\.html$/.test(route)) {
               const preview = previews.find(frame => frame.contentDocument.querySelector('ui-form'));

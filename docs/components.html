@@ -270,8 +270,8 @@
 <p><a href="https://webawesome.com/docs/components/details/">Reference component</a> · <a href="component-template.html">Specification template</a></p>
 <h3 id="dialog">Dialog</h3>
 <p><strong>Native recipe · Phase 1.</strong> UI route: <code>dialog with showModal()</code>.</p>
-<p>Use an accessible title, explicit close action and browser modal behavior. Application code opens it, clears stale results and retains inline information when enhancement is unavailable. See docs/dialog.md and examples/patterns.html#modal.</p>
-<p><strong>Acceptance work:</strong> Browser assertions cover modal/initial focus, background focus blocking, close results, return focus after trigger changes and unsupported/open-failure/no-script fallback. Verify real Escape/Tab/backdrop input, long-content scrolling, zoom, forced colors, touch and screen readers before release.</p>
+<p>Use an accessible title, explicit close action and browser modal behavior. Application code opens it, clears stale results and retains inline information when enhancement is unavailable. Long structured content starts with heading focus and scrolls as one native surface. See docs/dialog.md and its long-briefing recipe.</p>
+<p><strong>Acceptance work:</strong> Browser assertions cover short/long modal focus, scroll bounds, both close actions, reopening at the start, background focus blocking, close results, return focus after trigger changes and unsupported/open-failure/no-script fallback. Verify remaining browser/mobile, zoom, forced colors, touch and screen-reader combinations before release; see dated manual evidence in ACCESSIBILITY.md.</p>
 <pre><code data-language="html">&lt;button id=&quot;open-information&quot; type=&quot;button&quot; hidden&gt;Open information&lt;/button&gt;
 &lt;section id=&quot;information-fallback&quot;&gt;&lt;h2&gt;Project information&lt;/h2&gt;&lt;p&gt;Keep equivalent information available before enhancement.&lt;/p&gt;&lt;/section&gt;
 &lt;dialog id=&quot;information&quot; aria-labelledby=&quot;information-title&quot; hidden&gt;

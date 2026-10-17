@@ -80,6 +80,7 @@ exampleButton.addEventListener('click', async () => {
     check(doc.querySelector('#recipe-name').value === '' && doc.querySelector('#recipe-output').textContent === '', 'Recipe reset clears values, errors and application feedback.');
     passed.push(...await runDialogChecks(win));
     passed.push(...await runDialogFallbackChecks(load));
+    passed.push(...await runLongDialogChecks(load, frame));
     win = await load('../examples/server-errors.html');
     doc = win.document;
     const serverForm = doc.querySelector('#server-form');
@@ -144,6 +145,7 @@ exampleButton.addEventListener('click', async () => {
   } finally {
     buttons.forEach((button) => { button.disabled = false; });
     frame.style.removeProperty('inline-size');
+    frame.style.removeProperty('block-size');
     document.querySelector('#result-title').focus();
   }
 });

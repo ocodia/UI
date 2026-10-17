@@ -38,7 +38,7 @@ Installation checks the authored nodes and both `showModal` and `close` methods.
 | --- | --- |
 | Open | Focus the activated button explicitly, clear the old `returnValue`, call `showModal()`. Repeated activation while open does nothing. |
 | Initial focus | The close button has `autofocus` for this short information task. |
-| Keyboard | Native button activation; Tab/Shift+Tab within the modal; Escape requests cancellation. No application key handler or focus trap. |
+| Keyboard | Native button activation; Native sequential focus through modal controls; browser chrome remains available. Escape requests cancellation. No application key handler or focus trap. |
 | Dismiss | Explicit `method="dialog"` close button or native Escape. No backdrop-click listener and no opt-in to light dismissal. |
 | Close result | The button produces `returnValue="close"`. Every opening clears the previous result, so Escape/programmatic close cannot reuse it. |
 | Return focus | Native restoration to the explicitly focused opener. If it has been removed, hidden or disabled, the close handler focuses the surviving section heading. |
@@ -46,9 +46,21 @@ Installation checks the authored nodes and both `showModal` and `close` methods.
 
 Give the dialog a visible title with `aria-labelledby`. Keep its content structure; this recipe has no blanket `aria-describedby`, duplicate `role="dialog"`, `aria-modal`, `aria-expanded` or live region. The browser owns modal state and background inertness. The close button is always available. This informational task has no disabled, read-only, invalid or busy state; those belong to controls and application work inside a task dialog.
 
-Safari's keyboard preferences affect whether Tab includes links. Use Option+Tab to include them when full keyboard navigation is off; verify both directions without changing native key behavior.
+Safari's keyboard preferences affect whether Tab includes buttons and links. Use Option+Tab to include them when full keyboard navigation is off; verify both directions without changing native key behavior. Chrome may move sequential focus to browser chrome at the end of the dialog; Shift+Tab returns to its last control. Background document content stays inert. This recipe preserves native browser focus behavior rather than installing a custom trap.
 
 For long or structured content, choose an initial focus target near the beginning, such as a heading with `tabindex="-1"`, and test scrolling. Do not focus the dialog container. Keep a short, explicit close action reachable. UI bounds the dialog and permits internal scrolling; translated content, narrow screens, RTL and text resizing still need verification. Labels and content belong to the application and can be localized without parsing button text.
+
+## Long briefing and scrolling
+
+The [long survey briefing](previews/dialog-1.html) is a separate information recipe, authored in [recipes.json](recipes.json) and included in the live examples below and on the [dialog component page](components/dialog.html). Use the standalone preview for keyboard and actual browser-zoom checks; a modal inside a documentation iframe makes only that frame inert. Run the [focused checks](../tests/dialog.html) or the complete browser suite for repeatable geometry and recovery checks.
+
+The heading uses `tabindex="-1" autofocus`, so native initial focus starts at the beginning of the structured content. It has no blanket description: headings and paragraphs remain individually readable. Two ordinary `method="dialog"` forms offer the same explicit close action before and after the six briefing sections. There is no sticky header, separate inner scroller, custom focus trap or extra keyboard handler. Native focus scrolling brings either close action into view, even when enlarged content pushes the first action below the heading.
+
+The entire dialog uses the foundation's existing maximum width/height and `overflow: auto`. At narrow widths its content reflows while the dialog scrolls vertically. Do not set a fixed content height, hide overflow or shrink the text to fit. Keep the closing forms separate; never nest them in another form.
+
+Each opening focuses the real opener, clears the previous result and calls `showModal()`. Immediately after a successful opening, the application sets `dialog.scrollTop = 0` while retaining the native heading focus. Resetting scroll on a closed dialog alone did not reliably remove its previous position in the tested narrow/enlarged case. A repeated activation while open does nothing, preserving the current reading position.
+
+Both close actions return the value `close`; Escape remains uncancelled. Native focus returns to the opener. If that opener has been disabled, hidden or removed, the close listener focuses the surviving task heading. The equivalent six-section briefing stays inline if scripts or native modal methods are unavailable. An opening exception or a method that returns without opening reveals that fallback and focuses its heading. The recipe initializes once for the static page and owns no observers or timers; replacement markup and removal of an open modal remain application responsibilities.
 
 ## Forms and asynchronous tasks
 
@@ -68,6 +80,6 @@ Never simulate modality with `open`, `show()`, an ARIA role or manual background
 
 ## Verification
 
-[Browser checks](../tests/accessibility.html) cover actual modal state, initial focus, blocked background focus, close-form result without navigation, repeated open/close, cleared results, focus after disabled/hidden/removed triggers, reinsertion, no-script fallback, missing methods and thrown opening failures. A synthetic `cancel` assertion checks only that the recipe does not prevent cancellation; it does not prove Escape behavior.
+[Browser checks](../tests/accessibility.html) cover actual modal state, initial focus, blocked background focus, close-form result without navigation, repeated open/close, cleared results, focus after disabled/hidden/removed triggers, reinsertion, no-script fallback, missing methods and thrown opening failures. The long-briefing suite also covers heading focus, equivalent inline content, both closing forms, viewport bounds, vertical scrolling, focus scrolling to either close action, reopening at the start, missing-trigger recovery and unavailable/throwing/no-op opening methods. Its display matrix includes normal/enlarged text, default/forest, light/dark, LTR/RTL and narrow/short frames. A synthetic `cancel` assertion checks only that the recipe does not prevent cancellation; it does not prove Escape behavior.
 
 Manual checks: open with keyboard and pointer, traverse forward/backward, activate the close button, press Escape, click the backdrop, check return focus and background inertness. Repeat with long content, both brands/light-dark modes, 320px LTR/RTL, zoom/text spacing, forced colors and touch. Verify title announcements and task completion with VoiceOver/Safari and NVDA/Firefox or Chrome. Record versions, dates and unresolved findings in [ACCESSIBILITY.md](../ACCESSIBILITY.md). Automated checks are partial evidence.

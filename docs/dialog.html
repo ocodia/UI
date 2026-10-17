@@ -37,10 +37,16 @@
 <p>Use the implementation in <code>recipes.js</code> with its corresponding markup in <code>patterns.html</code>; the IDs above illustrate the structure. For a task with real data or actions, supply an inline form or a working page link as fallback rather than copying only explanatory text.</p>
 <p>Installation checks the authored nodes and both <code>showModal</code> and <code>close</code> methods. It attaches handlers, reveals the closed dialog, hides the inline duplicate, then reveals the opener. It does not move focus. The script is a page recipe initialized once after parsing, not an autoloader for arbitrary dialogs.</p>
 <h2 id="interaction-and-ownership">Interaction and ownership</h2>
-<div class="table-scroll" tabindex="0" role="region" aria-label="Interaction and ownership reference table 1"><table><thead><tr><th scope="col">Operation</th><th scope="col">Recipe behavior</th></tr></thead><tbody><tr><td>Open</td><td>Focus the activated button explicitly, clear the old <code>returnValue</code>, call <code>showModal()</code>. Repeated activation while open does nothing.</td></tr><tr><td>Initial focus</td><td>The close button has <code>autofocus</code> for this short information task.</td></tr><tr><td>Keyboard</td><td>Native button activation; Tab/Shift+Tab within the modal; Escape requests cancellation. No application key handler or focus trap.</td></tr><tr><td>Dismiss</td><td>Explicit <code>method=&quot;dialog&quot;</code> close button or native Escape. No backdrop-click listener and no opt-in to light dismissal.</td></tr><tr><td>Close result</td><td>The button produces <code>returnValue=&quot;close&quot;</code>. Every opening clears the previous result, so Escape/programmatic close cannot reuse it.</td></tr><tr><td>Return focus</td><td>Native restoration to the explicitly focused opener. If it has been removed, hidden or disabled, the close handler focuses the surviving section heading.</td></tr><tr><td>Open failure</td><td>If <code>showModal()</code> throws or returns without opening, hide the unusable action/dialog, reveal the inline information and focus its heading.</td></tr></tbody></table></div>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Interaction and ownership reference table 1"><table><thead><tr><th scope="col">Operation</th><th scope="col">Recipe behavior</th></tr></thead><tbody><tr><td>Open</td><td>Focus the activated button explicitly, clear the old <code>returnValue</code>, call <code>showModal()</code>. Repeated activation while open does nothing.</td></tr><tr><td>Initial focus</td><td>The close button has <code>autofocus</code> for this short information task.</td></tr><tr><td>Keyboard</td><td>Native button activation; Native sequential focus through modal controls; browser chrome remains available. Escape requests cancellation. No application key handler or focus trap.</td></tr><tr><td>Dismiss</td><td>Explicit <code>method=&quot;dialog&quot;</code> close button or native Escape. No backdrop-click listener and no opt-in to light dismissal.</td></tr><tr><td>Close result</td><td>The button produces <code>returnValue=&quot;close&quot;</code>. Every opening clears the previous result, so Escape/programmatic close cannot reuse it.</td></tr><tr><td>Return focus</td><td>Native restoration to the explicitly focused opener. If it has been removed, hidden or disabled, the close handler focuses the surviving section heading.</td></tr><tr><td>Open failure</td><td>If <code>showModal()</code> throws or returns without opening, hide the unusable action/dialog, reveal the inline information and focus its heading.</td></tr></tbody></table></div>
 <p>Give the dialog a visible title with <code>aria-labelledby</code>. Keep its content structure; this recipe has no blanket <code>aria-describedby</code>, duplicate <code>role=&quot;dialog&quot;</code>, <code>aria-modal</code>, <code>aria-expanded</code> or live region. The browser owns modal state and background inertness. The close button is always available. This informational task has no disabled, read-only, invalid or busy state; those belong to controls and application work inside a task dialog.</p>
-<p>Safari&#x27;s keyboard preferences affect whether Tab includes links. Use Option+Tab to include them when full keyboard navigation is off; verify both directions without changing native key behavior.</p>
+<p>Safari&#x27;s keyboard preferences affect whether Tab includes buttons and links. Use Option+Tab to include them when full keyboard navigation is off; verify both directions without changing native key behavior. Chrome may move sequential focus to browser chrome at the end of the dialog; Shift+Tab returns to its last control. Background document content stays inert. This recipe preserves native browser focus behavior rather than installing a custom trap.</p>
 <p>For long or structured content, choose an initial focus target near the beginning, such as a heading with <code>tabindex=&quot;-1&quot;</code>, and test scrolling. Do not focus the dialog container. Keep a short, explicit close action reachable. UI bounds the dialog and permits internal scrolling; translated content, narrow screens, RTL and text resizing still need verification. Labels and content belong to the application and can be localized without parsing button text.</p>
+<h2 id="long-briefing-and-scrolling">Long briefing and scrolling</h2>
+<p>The <a href="previews/dialog-1.html">long survey briefing</a> is a separate information recipe, authored in <a href="recipes.json">recipes.json</a> and included in the live examples below and on the <a href="components/dialog.html">dialog component page</a>. Use the standalone preview for keyboard and actual browser-zoom checks; a modal inside a documentation iframe makes only that frame inert. Run the <a href="../tests/dialog.html">focused checks</a> or the complete browser suite for repeatable geometry and recovery checks.</p>
+<p>The heading uses <code>tabindex=&quot;-1&quot; autofocus</code>, so native initial focus starts at the beginning of the structured content. It has no blanket description: headings and paragraphs remain individually readable. Two ordinary <code>method=&quot;dialog&quot;</code> forms offer the same explicit close action before and after the six briefing sections. There is no sticky header, separate inner scroller, custom focus trap or extra keyboard handler. Native focus scrolling brings either close action into view, even when enlarged content pushes the first action below the heading.</p>
+<p>The entire dialog uses the foundation&#x27;s existing maximum width/height and <code>overflow: auto</code>. At narrow widths its content reflows while the dialog scrolls vertically. Do not set a fixed content height, hide overflow or shrink the text to fit. Keep the closing forms separate; never nest them in another form.</p>
+<p>Each opening focuses the real opener, clears the previous result and calls <code>showModal()</code>. Immediately after a successful opening, the application sets <code>dialog.scrollTop = 0</code> while retaining the native heading focus. Resetting scroll on a closed dialog alone did not reliably remove its previous position in the tested narrow/enlarged case. A repeated activation while open does nothing, preserving the current reading position.</p>
+<p>Both close actions return the value <code>close</code>; Escape remains uncancelled. Native focus returns to the opener. If that opener has been disabled, hidden or removed, the close listener focuses the surviving task heading. The equivalent six-section briefing stays inline if scripts or native modal methods are unavailable. An opening exception or a method that returns without opening reveals that fallback and focuses its heading. The recipe initializes once for the static page and owns no observers or timers; replacement markup and removal of an open modal remain application responsibilities.</p>
 <h2 id="forms-and-asynchronous-tasks">Forms and asynchronous tasks</h2>
 <p>The close form uses <code>method=&quot;dialog&quot;</code>: it closes the modal without a network submission. Its result is a task outcome, not saved form data. It does not submit or reset the separate project form. Escape is dismissal, not an affirmative action; never infer confirmation from a stale <code>returnValue</code>.</p>
 <p>Do not nest forms. Put task inputs in one ordinary form with real names, labels, validation and server submission, or use one dialog form for an entirely local task. In a form with required fields, provide a cancel button that can bypass validation using <code>formnovalidate</code> and an appropriate dialog closing action. Keep reset separate from close: closing does not reset answers. Applications own serialization, server rules and explicit save/abandon decisions. Follow <a href="forms.html">form integration</a> when coordinating validation or async work.</p>
@@ -50,7 +56,7 @@
 <p>Keep the section heading available for fallback focus. Before removing an open dialog or its whole section, application code must close it and choose a surviving focus destination; removal is not treated as a completed task. Nested modals and multiple dynamic triggers are outside this recipe. An application that introduces them must track the actual opener, scope events to the owning dialog and define the focus path between tasks.</p>
 <p>Never simulate modality with <code>open</code>, <code>show()</code>, an ARIA role or manual background hiding when <code>showModal()</code> is unavailable. Leave a useful inline task or destination. Do not remove <code>open</code> to close a dialog; use <code>close()</code> so the browser performs its closing steps.</p>
 <h2 id="verification">Verification</h2>
-<p><a href="../tests/accessibility.html">Browser checks</a> cover actual modal state, initial focus, blocked background focus, close-form result without navigation, repeated open/close, cleared results, focus after disabled/hidden/removed triggers, reinsertion, no-script fallback, missing methods and thrown opening failures. A synthetic <code>cancel</code> assertion checks only that the recipe does not prevent cancellation; it does not prove Escape behavior.</p>
+<p><a href="../tests/accessibility.html">Browser checks</a> cover actual modal state, initial focus, blocked background focus, close-form result without navigation, repeated open/close, cleared results, focus after disabled/hidden/removed triggers, reinsertion, no-script fallback, missing methods and thrown opening failures. The long-briefing suite also covers heading focus, equivalent inline content, both closing forms, viewport bounds, vertical scrolling, focus scrolling to either close action, reopening at the start, missing-trigger recovery and unavailable/throwing/no-op opening methods. Its display matrix includes normal/enlarged text, default/forest, light/dark, LTR/RTL and narrow/short frames. A synthetic <code>cancel</code> assertion checks only that the recipe does not prevent cancellation; it does not prove Escape behavior.</p>
 <p>Manual checks: open with keyboard and pointer, traverse forward/backward, activate the close button, press Escape, click the backdrop, check return focus and background inertness. Repeat with long content, both brands/light-dark modes, 320px LTR/RTL, zoom/text spacing, forced colors and touch. Verify title announcements and task completion with VoiceOver/Safari and NVDA/Firefox or Chrome. Record versions, dates and unresolved findings in <a href="accessibility.html">ACCESSIBILITY.md</a>. Automated checks are partial evidence.</p><h2 id="interactive-examples">Interactive examples</h2><section aria-labelledby="dialog-guide-0-title">
 <h3 id="dialog-guide-0-title">Modal task with inline fallback</h3>
 <p>This short sample demonstrates native modality. The full recipe documents trigger removal, lifecycle and async ownership.</p>
@@ -80,7 +86,119 @@ if (typeof dialog.showModal === &#x27;function&#x27; &amp;&amp; typeof dialog.cl
 }
 &lt;/script&gt;</code></pre></details>
   <p class="example-caption"><a href="previews/dialog-guide-0.html">Open example on its own</a> · Form previews send nothing.</p>
-</div></section><p class="doc-source">Generated from <a href="dialog.md">docs/dialog.md</a>. The source and this page share one contract.</p></article><aside class="docs-toc"><nav aria-label="On this page"><p>On this page</p><ul><li><a href="#markup-and-enhancement">Markup and enhancement</a></li><li><a href="#interaction-and-ownership">Interaction and ownership</a></li><li><a href="#forms-and-asynchronous-tasks">Forms and asynchronous tasks</a></li><li><a href="#lifecycle-and-failure">Lifecycle and failure</a></li><li><a href="#verification">Verification</a></li><li><a href="#interactive-examples">Interactive examples</a></li></ul></nav></aside></div></ui-sidebar></main>
+</div></section><section aria-labelledby="dialog-guide-1-title">
+<h3 id="dialog-guide-1-title">Long briefing with heading focus and scrolling</h3>
+<p>The native dialog scrolls as one document. Initial focus stays at the heading; close actions are available before and after the structured content. Without modal support or application JavaScript, the same briefing stays inline. This is an information task, not a confirmation.</p>
+<div class="example" data-example>
+  <div class="example-stage"><div class="example-viewport"><iframe src="previews/dialog-guide-1.html" title="Long briefing with heading focus and scrolling example" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms"></iframe><button type="button" class="example-handle" aria-label="Resize Long briefing with heading focus and scrolling example" aria-describedby="dialog-guide-1-resize-help" hidden><span aria-hidden="true">↔</span></button></div></div>
+  <ui-cluster class="example-tools" hidden><label for="dialog-guide-1-width">Width <input id="dialog-guide-1-width" type="range" min="240" max="1200" value="1200"></label><output for="dialog-guide-1-width">Full width</output><button type="button" data-variant="quiet" data-reset>Reset width</button><button type="button" data-variant="quiet" data-copy>Copy code</button><span role="status" data-copy-status></span><span class="example-help" id="dialog-guide-1-resize-help">Drag the edge or use arrow keys; Shift changes by 50px. Home/End use minimum/full width.</span></ui-cluster>
+  <details><summary>Code</summary><pre><code>&lt;section aria-labelledby=&quot;briefing-task-title&quot;&gt;
+  &lt;h2 id=&quot;briefing-task-title&quot; tabindex=&quot;-1&quot;&gt;Survey briefing&lt;/h2&gt;
+  &lt;p&gt;Read the arrangements before travelling. Opening or closing the briefing sends nothing.&lt;/p&gt;
+  &lt;button id=&quot;briefing-open&quot; type=&quot;button&quot; hidden&gt;Open full survey briefing&lt;/button&gt;
+  &lt;section id=&quot;briefing-fallback&quot; aria-labelledby=&quot;inline-title&quot;&gt;
+    &lt;h2 id=&quot;inline-title&quot; tabindex=&quot;-1&quot;&gt;Full survey briefing&lt;/h2&gt;
+    &lt;section aria-labelledby=&quot;inline-meeting-title&quot;&gt;
+      &lt;h3 id=&quot;inline-meeting-title&quot;&gt;Meeting and arrival&lt;/h3&gt;
+      &lt;p&gt;Meet at the visitor centre at 09:30. Arrive ten minutes early if you need to borrow recording equipment. The briefing begins indoors so everyone can hear the route information before the group leaves. If you arrive late, wait at the visitor centre rather than trying to catch the group along the shoreline.&lt;/p&gt;
+      &lt;p&gt;Tell the coordinator which route you plan to follow. Keep the meeting point and return time with your own travel notes. You can leave the survey early; let the coordinator know before leaving the group.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;inline-access-title&quot;&gt;
+      &lt;h3 id=&quot;inline-access-title&quot;&gt;Access and alternative routes&lt;/h3&gt;
+      &lt;p&gt;The coastal path includes uneven ground, narrow gates and a steep return section. The woodland route has a firmer surface and more places to rest. Choose the route that suits you; taking the alternative route does not prevent you from contributing observations.&lt;/p&gt;
+      &lt;p&gt;The visitor centre has seating and an accessible toilet. Discuss any arrangements with the coordinator before travelling. Weather and maintenance can change access, so check the latest local information on the day.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;inline-equipment-title&quot;&gt;
+      &lt;h3 id=&quot;inline-equipment-title&quot;&gt;Equipment and preparation&lt;/h3&gt;
+      &lt;p&gt;Bring water, weather protection and a way to record your observations. A notebook is enough; no phone or specialist application is required. Keep equipment light enough to carry comfortably. Borrowed equipment can be returned at the visitor centre after the survey.&lt;/p&gt;
+      &lt;p&gt;Make a note of the meeting point before leaving home. Charge any equipment you choose to use. Do not depend on a network connection along the route. The coordinator carries the printed route description.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;inline-observations-title&quot;&gt;
+      &lt;h3 id=&quot;inline-observations-title&quot;&gt;Recording observations&lt;/h3&gt;
+      &lt;p&gt;Record what you can identify confidently and describe uncertainty in ordinary words. Note the general habitat and the time of the observation. Do not disturb wildlife to improve a photograph or collect material from the route.&lt;/p&gt;
+      &lt;p&gt;Keep personal details out of shared notes. Ask before recording another person. You can contribute written observations without taking photographs or making audio recordings. Review your notes before sharing them with the project.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;inline-weather-title&quot;&gt;
+      &lt;h3 id=&quot;inline-weather-title&quot;&gt;Weather and changes&lt;/h3&gt;
+      &lt;p&gt;The coordinator may shorten or cancel the route if conditions change. Stay with the group during the briefing so you hear any revised arrangements. Use the woodland alternative when the coastal path is closed, and respect signs and local access restrictions.&lt;/p&gt;
+      &lt;p&gt;If the survey is cancelled, return borrowed equipment and keep your existing notes. Cancellation does not erase work already recorded. A future visit can use those notes as a starting point without repeating the whole survey.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;inline-return-title&quot;&gt;
+      &lt;h3 id=&quot;inline-return-title&quot;&gt;Returning and next steps&lt;/h3&gt;
+      &lt;p&gt;Return to the visitor centre by 12:30. Check in with the coordinator and return borrowed items. Take time to review your notes while the route is fresh in your memory. Identify anything that needs a later check rather than guessing an answer.&lt;/p&gt;
+      &lt;p&gt;Closing this information changes no project answers and sends nothing. Your place in the underlying page is preserved. You can reopen this briefing whenever you need it; it starts at the heading each time.&lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/section&gt;
+  &lt;dialog id=&quot;briefing-dialog&quot; aria-labelledby=&quot;briefing-title&quot; hidden&gt;
+    &lt;h2 id=&quot;briefing-title&quot; tabindex=&quot;-1&quot; autofocus&gt;Full survey briefing&lt;/h2&gt;
+    &lt;form method=&quot;dialog&quot;&gt;&lt;button type=&quot;submit&quot; value=&quot;close&quot;&gt;Close briefing&lt;/button&gt;&lt;/form&gt;
+    &lt;p&gt;Meeting, access, equipment and return arrangements. Read at your own pace. An additional close action follows the last section.&lt;/p&gt;
+    &lt;section aria-labelledby=&quot;briefing-meeting-title&quot;&gt;
+      &lt;h3 id=&quot;briefing-meeting-title&quot;&gt;Meeting and arrival&lt;/h3&gt;
+      &lt;p&gt;Meet at the visitor centre at 09:30. Arrive ten minutes early if you need to borrow recording equipment. The briefing begins indoors so everyone can hear the route information before the group leaves. If you arrive late, wait at the visitor centre rather than trying to catch the group along the shoreline.&lt;/p&gt;
+      &lt;p&gt;Tell the coordinator which route you plan to follow. Keep the meeting point and return time with your own travel notes. You can leave the survey early; let the coordinator know before leaving the group.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;briefing-access-title&quot;&gt;
+      &lt;h3 id=&quot;briefing-access-title&quot;&gt;Access and alternative routes&lt;/h3&gt;
+      &lt;p&gt;The coastal path includes uneven ground, narrow gates and a steep return section. The woodland route has a firmer surface and more places to rest. Choose the route that suits you; taking the alternative route does not prevent you from contributing observations.&lt;/p&gt;
+      &lt;p&gt;The visitor centre has seating and an accessible toilet. Discuss any arrangements with the coordinator before travelling. Weather and maintenance can change access, so check the latest local information on the day.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;briefing-equipment-title&quot;&gt;
+      &lt;h3 id=&quot;briefing-equipment-title&quot;&gt;Equipment and preparation&lt;/h3&gt;
+      &lt;p&gt;Bring water, weather protection and a way to record your observations. A notebook is enough; no phone or specialist application is required. Keep equipment light enough to carry comfortably. Borrowed equipment can be returned at the visitor centre after the survey.&lt;/p&gt;
+      &lt;p&gt;Make a note of the meeting point before leaving home. Charge any equipment you choose to use. Do not depend on a network connection along the route. The coordinator carries the printed route description.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;briefing-observations-title&quot;&gt;
+      &lt;h3 id=&quot;briefing-observations-title&quot;&gt;Recording observations&lt;/h3&gt;
+      &lt;p&gt;Record what you can identify confidently and describe uncertainty in ordinary words. Note the general habitat and the time of the observation. Do not disturb wildlife to improve a photograph or collect material from the route.&lt;/p&gt;
+      &lt;p&gt;Keep personal details out of shared notes. Ask before recording another person. You can contribute written observations without taking photographs or making audio recordings. Review your notes before sharing them with the project.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;briefing-weather-title&quot;&gt;
+      &lt;h3 id=&quot;briefing-weather-title&quot;&gt;Weather and changes&lt;/h3&gt;
+      &lt;p&gt;The coordinator may shorten or cancel the route if conditions change. Stay with the group during the briefing so you hear any revised arrangements. Use the woodland alternative when the coastal path is closed, and respect signs and local access restrictions.&lt;/p&gt;
+      &lt;p&gt;If the survey is cancelled, return borrowed equipment and keep your existing notes. Cancellation does not erase work already recorded. A future visit can use those notes as a starting point without repeating the whole survey.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;briefing-return-title&quot;&gt;
+      &lt;h3 id=&quot;briefing-return-title&quot;&gt;Returning and next steps&lt;/h3&gt;
+      &lt;p&gt;Return to the visitor centre by 12:30. Check in with the coordinator and return borrowed items. Take time to review your notes while the route is fresh in your memory. Identify anything that needs a later check rather than guessing an answer.&lt;/p&gt;
+      &lt;p&gt;Closing this information changes no project answers and sends nothing. Your place in the underlying page is preserved. You can reopen this briefing whenever you need it; it starts at the heading each time.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;form method=&quot;dialog&quot;&gt;&lt;button type=&quot;submit&quot; value=&quot;close&quot;&gt;Close briefing&lt;/button&gt;&lt;/form&gt;
+  &lt;/dialog&gt;
+&lt;/section&gt;
+&lt;script&gt;
+(() =&gt; {
+  const dialog = document.querySelector(&#x27;#briefing-dialog&#x27;);
+  const opener = document.querySelector(&#x27;#briefing-open&#x27;);
+  const fallback = document.querySelector(&#x27;#briefing-fallback&#x27;);
+  const heading = document.querySelector(&#x27;#briefing-task-title&#x27;);
+  if (!dialog || !opener || !fallback || !heading || typeof dialog.showModal !== &#x27;function&#x27; || typeof dialog.close !== &#x27;function&#x27;) return;
+  opener.addEventListener(&#x27;click&#x27;, () =&gt; {
+    if (dialog.open) return;
+    opener.focus();
+    dialog.returnValue = &#x27;&#x27;;
+    try {
+      dialog.showModal();
+      if (dialog.open) {
+        dialog.scrollTop = 0;
+        return;
+      }
+    } catch {}
+    dialog.hidden = true;
+    opener.hidden = true;
+    fallback.hidden = false;
+    fallback.querySelector(&#x27;h2&#x27;).focus();
+  });
+  dialog.addEventListener(&#x27;close&#x27;, () =&gt; {
+    if (!dialog.open &amp;&amp; (!opener.isConnected || opener.disabled || opener.hidden)) heading.focus();
+  });
+  dialog.hidden = false;
+  fallback.hidden = true;
+  opener.hidden = false;
+})();
+&lt;/script&gt;</code></pre></details>
+  <p class="example-caption"><a href="previews/dialog-guide-1.html">Open example on its own</a> · Form previews send nothing.</p>
+</div></section><p class="doc-source">Generated from <a href="dialog.md">docs/dialog.md</a>. The source and this page share one contract.</p></article><aside class="docs-toc"><nav aria-label="On this page"><p>On this page</p><ul><li><a href="#markup-and-enhancement">Markup and enhancement</a></li><li><a href="#interaction-and-ownership">Interaction and ownership</a></li><li><a href="#long-briefing-and-scrolling">Long briefing and scrolling</a></li><li><a href="#forms-and-asynchronous-tasks">Forms and asynchronous tasks</a></li><li><a href="#lifecycle-and-failure">Lifecycle and failure</a></li><li><a href="#verification">Verification</a></li><li><a href="#interactive-examples">Interactive examples</a></li></ul></nav></aside></div></ui-sidebar></main>
   <footer class="site-footer"><p>UI · Native HTML. Useful composition.</p><p><a href="accessibility.html">Accessibility & evidence</a> · <a href="roadmap.html">Roadmap</a> · <a href="../examples/index.html">Examples</a></p></footer>
 </body>
 </html>

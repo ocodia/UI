@@ -41,6 +41,118 @@ if (typeof dialog.showModal === &#x27;function&#x27; &amp;&amp; typeof dialog.cl
 }
 &lt;/script&gt;</code></pre></details>
   <p class="example-caption"><a href="../previews/dialog-0.html">Open example on its own</a> · Form previews send nothing.</p>
+</div></section><section aria-labelledby="dialog-1-title">
+<h3 id="dialog-1-title">Long briefing with heading focus and scrolling</h3>
+<p>The native dialog scrolls as one document. Initial focus stays at the heading; close actions are available before and after the structured content. Without modal support or application JavaScript, the same briefing stays inline. This is an information task, not a confirmation.</p>
+<div class="example" data-example>
+  <div class="example-stage"><div class="example-viewport"><iframe src="../previews/dialog-1.html" title="Long briefing with heading focus and scrolling example" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms"></iframe><button type="button" class="example-handle" aria-label="Resize Long briefing with heading focus and scrolling example" aria-describedby="dialog-1-resize-help" hidden><span aria-hidden="true">↔</span></button></div></div>
+  <ui-cluster class="example-tools" hidden><label for="dialog-1-width">Width <input id="dialog-1-width" type="range" min="240" max="1200" value="1200"></label><output for="dialog-1-width">Full width</output><button type="button" data-variant="quiet" data-reset>Reset width</button><button type="button" data-variant="quiet" data-copy>Copy code</button><span role="status" data-copy-status></span><span class="example-help" id="dialog-1-resize-help">Drag the edge or use arrow keys; Shift changes by 50px. Home/End use minimum/full width.</span></ui-cluster>
+  <details><summary>Code</summary><pre><code>&lt;section aria-labelledby=&quot;briefing-task-title&quot;&gt;
+  &lt;h2 id=&quot;briefing-task-title&quot; tabindex=&quot;-1&quot;&gt;Survey briefing&lt;/h2&gt;
+  &lt;p&gt;Read the arrangements before travelling. Opening or closing the briefing sends nothing.&lt;/p&gt;
+  &lt;button id=&quot;briefing-open&quot; type=&quot;button&quot; hidden&gt;Open full survey briefing&lt;/button&gt;
+  &lt;section id=&quot;briefing-fallback&quot; aria-labelledby=&quot;inline-title&quot;&gt;
+    &lt;h2 id=&quot;inline-title&quot; tabindex=&quot;-1&quot;&gt;Full survey briefing&lt;/h2&gt;
+    &lt;section aria-labelledby=&quot;inline-meeting-title&quot;&gt;
+      &lt;h3 id=&quot;inline-meeting-title&quot;&gt;Meeting and arrival&lt;/h3&gt;
+      &lt;p&gt;Meet at the visitor centre at 09:30. Arrive ten minutes early if you need to borrow recording equipment. The briefing begins indoors so everyone can hear the route information before the group leaves. If you arrive late, wait at the visitor centre rather than trying to catch the group along the shoreline.&lt;/p&gt;
+      &lt;p&gt;Tell the coordinator which route you plan to follow. Keep the meeting point and return time with your own travel notes. You can leave the survey early; let the coordinator know before leaving the group.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;inline-access-title&quot;&gt;
+      &lt;h3 id=&quot;inline-access-title&quot;&gt;Access and alternative routes&lt;/h3&gt;
+      &lt;p&gt;The coastal path includes uneven ground, narrow gates and a steep return section. The woodland route has a firmer surface and more places to rest. Choose the route that suits you; taking the alternative route does not prevent you from contributing observations.&lt;/p&gt;
+      &lt;p&gt;The visitor centre has seating and an accessible toilet. Discuss any arrangements with the coordinator before travelling. Weather and maintenance can change access, so check the latest local information on the day.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;inline-equipment-title&quot;&gt;
+      &lt;h3 id=&quot;inline-equipment-title&quot;&gt;Equipment and preparation&lt;/h3&gt;
+      &lt;p&gt;Bring water, weather protection and a way to record your observations. A notebook is enough; no phone or specialist application is required. Keep equipment light enough to carry comfortably. Borrowed equipment can be returned at the visitor centre after the survey.&lt;/p&gt;
+      &lt;p&gt;Make a note of the meeting point before leaving home. Charge any equipment you choose to use. Do not depend on a network connection along the route. The coordinator carries the printed route description.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;inline-observations-title&quot;&gt;
+      &lt;h3 id=&quot;inline-observations-title&quot;&gt;Recording observations&lt;/h3&gt;
+      &lt;p&gt;Record what you can identify confidently and describe uncertainty in ordinary words. Note the general habitat and the time of the observation. Do not disturb wildlife to improve a photograph or collect material from the route.&lt;/p&gt;
+      &lt;p&gt;Keep personal details out of shared notes. Ask before recording another person. You can contribute written observations without taking photographs or making audio recordings. Review your notes before sharing them with the project.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;inline-weather-title&quot;&gt;
+      &lt;h3 id=&quot;inline-weather-title&quot;&gt;Weather and changes&lt;/h3&gt;
+      &lt;p&gt;The coordinator may shorten or cancel the route if conditions change. Stay with the group during the briefing so you hear any revised arrangements. Use the woodland alternative when the coastal path is closed, and respect signs and local access restrictions.&lt;/p&gt;
+      &lt;p&gt;If the survey is cancelled, return borrowed equipment and keep your existing notes. Cancellation does not erase work already recorded. A future visit can use those notes as a starting point without repeating the whole survey.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;inline-return-title&quot;&gt;
+      &lt;h3 id=&quot;inline-return-title&quot;&gt;Returning and next steps&lt;/h3&gt;
+      &lt;p&gt;Return to the visitor centre by 12:30. Check in with the coordinator and return borrowed items. Take time to review your notes while the route is fresh in your memory. Identify anything that needs a later check rather than guessing an answer.&lt;/p&gt;
+      &lt;p&gt;Closing this information changes no project answers and sends nothing. Your place in the underlying page is preserved. You can reopen this briefing whenever you need it; it starts at the heading each time.&lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/section&gt;
+  &lt;dialog id=&quot;briefing-dialog&quot; aria-labelledby=&quot;briefing-title&quot; hidden&gt;
+    &lt;h2 id=&quot;briefing-title&quot; tabindex=&quot;-1&quot; autofocus&gt;Full survey briefing&lt;/h2&gt;
+    &lt;form method=&quot;dialog&quot;&gt;&lt;button type=&quot;submit&quot; value=&quot;close&quot;&gt;Close briefing&lt;/button&gt;&lt;/form&gt;
+    &lt;p&gt;Meeting, access, equipment and return arrangements. Read at your own pace. An additional close action follows the last section.&lt;/p&gt;
+    &lt;section aria-labelledby=&quot;briefing-meeting-title&quot;&gt;
+      &lt;h3 id=&quot;briefing-meeting-title&quot;&gt;Meeting and arrival&lt;/h3&gt;
+      &lt;p&gt;Meet at the visitor centre at 09:30. Arrive ten minutes early if you need to borrow recording equipment. The briefing begins indoors so everyone can hear the route information before the group leaves. If you arrive late, wait at the visitor centre rather than trying to catch the group along the shoreline.&lt;/p&gt;
+      &lt;p&gt;Tell the coordinator which route you plan to follow. Keep the meeting point and return time with your own travel notes. You can leave the survey early; let the coordinator know before leaving the group.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;briefing-access-title&quot;&gt;
+      &lt;h3 id=&quot;briefing-access-title&quot;&gt;Access and alternative routes&lt;/h3&gt;
+      &lt;p&gt;The coastal path includes uneven ground, narrow gates and a steep return section. The woodland route has a firmer surface and more places to rest. Choose the route that suits you; taking the alternative route does not prevent you from contributing observations.&lt;/p&gt;
+      &lt;p&gt;The visitor centre has seating and an accessible toilet. Discuss any arrangements with the coordinator before travelling. Weather and maintenance can change access, so check the latest local information on the day.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;briefing-equipment-title&quot;&gt;
+      &lt;h3 id=&quot;briefing-equipment-title&quot;&gt;Equipment and preparation&lt;/h3&gt;
+      &lt;p&gt;Bring water, weather protection and a way to record your observations. A notebook is enough; no phone or specialist application is required. Keep equipment light enough to carry comfortably. Borrowed equipment can be returned at the visitor centre after the survey.&lt;/p&gt;
+      &lt;p&gt;Make a note of the meeting point before leaving home. Charge any equipment you choose to use. Do not depend on a network connection along the route. The coordinator carries the printed route description.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;briefing-observations-title&quot;&gt;
+      &lt;h3 id=&quot;briefing-observations-title&quot;&gt;Recording observations&lt;/h3&gt;
+      &lt;p&gt;Record what you can identify confidently and describe uncertainty in ordinary words. Note the general habitat and the time of the observation. Do not disturb wildlife to improve a photograph or collect material from the route.&lt;/p&gt;
+      &lt;p&gt;Keep personal details out of shared notes. Ask before recording another person. You can contribute written observations without taking photographs or making audio recordings. Review your notes before sharing them with the project.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;briefing-weather-title&quot;&gt;
+      &lt;h3 id=&quot;briefing-weather-title&quot;&gt;Weather and changes&lt;/h3&gt;
+      &lt;p&gt;The coordinator may shorten or cancel the route if conditions change. Stay with the group during the briefing so you hear any revised arrangements. Use the woodland alternative when the coastal path is closed, and respect signs and local access restrictions.&lt;/p&gt;
+      &lt;p&gt;If the survey is cancelled, return borrowed equipment and keep your existing notes. Cancellation does not erase work already recorded. A future visit can use those notes as a starting point without repeating the whole survey.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section aria-labelledby=&quot;briefing-return-title&quot;&gt;
+      &lt;h3 id=&quot;briefing-return-title&quot;&gt;Returning and next steps&lt;/h3&gt;
+      &lt;p&gt;Return to the visitor centre by 12:30. Check in with the coordinator and return borrowed items. Take time to review your notes while the route is fresh in your memory. Identify anything that needs a later check rather than guessing an answer.&lt;/p&gt;
+      &lt;p&gt;Closing this information changes no project answers and sends nothing. Your place in the underlying page is preserved. You can reopen this briefing whenever you need it; it starts at the heading each time.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;form method=&quot;dialog&quot;&gt;&lt;button type=&quot;submit&quot; value=&quot;close&quot;&gt;Close briefing&lt;/button&gt;&lt;/form&gt;
+  &lt;/dialog&gt;
+&lt;/section&gt;
+&lt;script&gt;
+(() =&gt; {
+  const dialog = document.querySelector(&#x27;#briefing-dialog&#x27;);
+  const opener = document.querySelector(&#x27;#briefing-open&#x27;);
+  const fallback = document.querySelector(&#x27;#briefing-fallback&#x27;);
+  const heading = document.querySelector(&#x27;#briefing-task-title&#x27;);
+  if (!dialog || !opener || !fallback || !heading || typeof dialog.showModal !== &#x27;function&#x27; || typeof dialog.close !== &#x27;function&#x27;) return;
+  opener.addEventListener(&#x27;click&#x27;, () =&gt; {
+    if (dialog.open) return;
+    opener.focus();
+    dialog.returnValue = &#x27;&#x27;;
+    try {
+      dialog.showModal();
+      if (dialog.open) {
+        dialog.scrollTop = 0;
+        return;
+      }
+    } catch {}
+    dialog.hidden = true;
+    opener.hidden = true;
+    fallback.hidden = false;
+    fallback.querySelector(&#x27;h2&#x27;).focus();
+  });
+  dialog.addEventListener(&#x27;close&#x27;, () =&gt; {
+    if (!dialog.open &amp;&amp; (!opener.isConnected || opener.disabled || opener.hidden)) heading.focus();
+  });
+  dialog.hidden = false;
+  fallback.hidden = true;
+  opener.hidden = false;
+})();
+&lt;/script&gt;</code></pre></details>
+  <p class="example-caption"><a href="../previews/dialog-1.html">Open example on its own</a> · Form previews send nothing.</p>
 </div></section><h2 id="behavior">Keyboard, focus & native state</h2><p>The browser owns modal focus containment and inertness after showModal(). Choose initial focus, an explicit close action, Escape policy and a logical return target. The complete dialog guide covers these decisions and support failure.</p><h2 id="integration">Values, validation & fallback</h2><p>A method=dialog form closes without network submission. Clear returnValue before opening; dismissal must not reuse a previous result. Closing is separate from resetting answers or saving data. Do not nest forms.</p><p>Keep labels and instructions available when JavaScript fails. Applications own async work, recovery and server validation. Test disabled, invalid, long-content and loading states where the task supports them.</p><p>See the <a href="../native-states.html">native family state audit</a> for default, long-content, disabled/read-only, invalid, busy and fallback coverage, including states that do not apply.</p><h2 id="api">API & styling</h2><div class="table-scroll" tabindex="0" role="region" aria-label="API reference"><table><thead><tr><th scope="col">Surface</th><th scope="col">Contract</th></tr></thead><tbody><tr><td><code>showModal()</code></td><td>Native method that opens a modal and makes the surrounding document inert.</td></tr><tr><td><code>close(result)</code></td><td>Native method to close and optionally set the result string.</td></tr><tr><td><code>returnValue</code></td><td>Result string. Clear it before each opening so dismissal cannot reuse stale confirmation.</td></tr><tr><td><code>cancel</code></td><td>Cancelable native dismissal request. The recipe leaves it uncancelled.</td></tr><tr><td><code>close</code></td><td>Native close notification; use it for task completion/focus recovery when necessary.</td></tr></tbody></table></div><p>Use the <a href="../dialog.html">implemented dialog contract</a> for the full integration rules and supported cases. Native attributes retain their standard meanings. Only <code>ui-form</code> and <code>ui-error-summary</code> register behavior.</p><p>Styles come from <code>css/ui.css</code> in the <code>ui</code> layer. Geometry and semantic colors use <a href="../theming.html">UI theme variables</a>. <a href="../density.html">Density</a> and <a href="../controls.html">control sizes</a> have separate scopes; they do not apply to every element.</p><h2 id="minimal-markup">Catalogue markup</h2><p>This minimal structure describes the route. Live examples above add the context needed to try it.</p><details><summary>Minimal markup</summary><pre><code>&lt;button id=&quot;open-information&quot; type=&quot;button&quot; hidden&gt;Open information&lt;/button&gt;
 &lt;section id=&quot;information-fallback&quot;&gt;&lt;h2&gt;Project information&lt;/h2&gt;&lt;p&gt;Keep equivalent information available before enhancement.&lt;/p&gt;&lt;/section&gt;
 &lt;dialog id=&quot;information&quot; aria-labelledby=&quot;information-title&quot; hidden&gt;
@@ -48,7 +160,7 @@ if (typeof dialog.showModal === &#x27;function&#x27; &amp;&amp; typeof dialog.cl
   &lt;p&gt;Keep equivalent information available before enhancement.&lt;/p&gt;
   &lt;form method=&quot;dialog&quot;&gt;&lt;button type=&quot;submit&quot; value=&quot;close&quot; autofocus&gt;Close information&lt;/button&gt;&lt;/form&gt;
 &lt;/dialog&gt;
-&lt;!-- Install application handlers before revealing the modal opener or hiding fallback. See docs/dialog.md. --&gt;</code></pre></details><h2 id="evidence">Verification & known limits</h2><p>Browser assertions cover modal/initial focus, background focus blocking, close results, return focus after trigger changes and unsupported/open-failure/no-script fallback. Verify real Escape/Tab/backdrop input, long-content scrolling, zoom, forced colors, touch and screen readers before release.</p><p>Native/foundation is an implementation route, not a stable-release or accessibility certification. See <a href="../accessibility.html">dated results and unresolved findings</a>; run the <a href="../../tests/accessibility.html">browser checks</a>. Manual platform and assistive-technology verification remains part of release readiness.</p><h2 id="related">Related documentation</h2><ul><li><a href="../reference.html">Current UI API</a></li><li><a href="../conventions.html">Interaction conventions</a></li><li><a href="../roadmap.html">Delivery sequence and release gate</a></li><li><a href="../component-template.html">Component specification template</a></li></ul></article><aside class="docs-toc"><nav aria-label="On this page"><p>On this page</p><ul><li><a href="#examples">Examples</a></li><li><a href="#behavior">Keyboard, focus & native state</a></li><li><a href="#integration">Values, validation & fallback</a></li><li><a href="#api">API & styling</a></li><li><a href="#minimal-markup">Catalogue markup</a></li><li><a href="#evidence">Verification & known limits</a></li><li><a href="#related">Related documentation</a></li></ul></nav></aside></div></ui-sidebar></main>
+&lt;!-- Install application handlers before revealing the modal opener or hiding fallback. See docs/dialog.md. --&gt;</code></pre></details><h2 id="evidence">Verification & known limits</h2><p>Browser assertions cover short/long modal focus, scroll bounds, both close actions, reopening at the start, background focus blocking, close results, return focus after trigger changes and unsupported/open-failure/no-script fallback. Verify remaining browser/mobile, zoom, forced colors, touch and screen-reader combinations before release; see dated manual evidence in ACCESSIBILITY.md.</p><p>Native/foundation is an implementation route, not a stable-release or accessibility certification. See <a href="../accessibility.html">dated results and unresolved findings</a>; run the <a href="../../tests/accessibility.html">browser checks</a>. Manual platform and assistive-technology verification remains part of release readiness.</p><h2 id="related">Related documentation</h2><ul><li><a href="../reference.html">Current UI API</a></li><li><a href="../conventions.html">Interaction conventions</a></li><li><a href="../roadmap.html">Delivery sequence and release gate</a></li><li><a href="../component-template.html">Component specification template</a></li></ul></article><aside class="docs-toc"><nav aria-label="On this page"><p>On this page</p><ul><li><a href="#examples">Examples</a></li><li><a href="#behavior">Keyboard, focus & native state</a></li><li><a href="#integration">Values, validation & fallback</a></li><li><a href="#api">API & styling</a></li><li><a href="#minimal-markup">Catalogue markup</a></li><li><a href="#evidence">Verification & known limits</a></li><li><a href="#related">Related documentation</a></li></ul></nav></aside></div></ui-sidebar></main>
   <footer class="site-footer"><p>UI · Native HTML. Useful composition.</p><p><a href="../accessibility.html">Accessibility & evidence</a> · <a href="../roadmap.html">Roadmap</a> · <a href="../../examples/index.html">Examples</a></p></footer>
 </body>
 </html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<!-- Generated from docs/recipes.json. Trusted repository examples only. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Long briefing with heading focus and scrolling — UI example</title>
+<link rel="stylesheet" href="../../css/ui.css"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/components.js" defer></script><script src="../../js/docs-preview.js" defer></script>
+<style>body { padding: 1.5rem 2rem 1.5rem 1.5rem; } body > main { max-inline-size: none; inline-size: auto; margin: 0; padding: 0; } h1 { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); } output { display: block; margin-block-start: 1rem; } .table-scroll table { min-inline-size: 38rem; } :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) { display: none; }</style></head>
+<body><h1>Long briefing with heading focus and scrolling</h1><main aria-label="Long briefing with heading focus and scrolling example"><section aria-labelledby="briefing-task-title">
+  <h2 id="briefing-task-title" tabindex="-1">Survey briefing</h2>
+  <p>Read the arrangements before travelling. Opening or closing the briefing sends nothing.</p>
+  <button id="briefing-open" type="button" hidden>Open full survey briefing</button>
+  <section id="briefing-fallback" aria-labelledby="inline-title">
+    <h2 id="inline-title" tabindex="-1">Full survey briefing</h2>
+    <section aria-labelledby="inline-meeting-title">
+      <h3 id="inline-meeting-title">Meeting and arrival</h3>
+      <p>Meet at the visitor centre at 09:30. Arrive ten minutes early if you need to borrow recording equipment. The briefing begins indoors so everyone can hear the route information before the group leaves. If you arrive late, wait at the visitor centre rather than trying to catch the group along the shoreline.</p>
+      <p>Tell the coordinator which route you plan to follow. Keep the meeting point and return time with your own travel notes. You can leave the survey early; let the coordinator know before leaving the group.</p>
+    </section>
+    <section aria-labelledby="inline-access-title">
+      <h3 id="inline-access-title">Access and alternative routes</h3>
+      <p>The coastal path includes uneven ground, narrow gates and a steep return section. The woodland route has a firmer surface and more places to rest. Choose the route that suits you; taking the alternative route does not prevent you from contributing observations.</p>
+      <p>The visitor centre has seating and an accessible toilet. Discuss any arrangements with the coordinator before travelling. Weather and maintenance can change access, so check the latest local information on the day.</p>
+    </section>
+    <section aria-labelledby="inline-equipment-title">
+      <h3 id="inline-equipment-title">Equipment and preparation</h3>
+      <p>Bring water, weather protection and a way to record your observations. A notebook is enough; no phone or specialist application is required. Keep equipment light enough to carry comfortably. Borrowed equipment can be returned at the visitor centre after the survey.</p>
+      <p>Make a note of the meeting point before leaving home. Charge any equipment you choose to use. Do not depend on a network connection along the route. The coordinator carries the printed route description.</p>
+    </section>
+    <section aria-labelledby="inline-observations-title">
+      <h3 id="inline-observations-title">Recording observations</h3>
+      <p>Record what you can identify confidently and describe uncertainty in ordinary words. Note the general habitat and the time of the observation. Do not disturb wildlife to improve a photograph or collect material from the route.</p>
+      <p>Keep personal details out of shared notes. Ask before recording another person. You can contribute written observations without taking photographs or making audio recordings. Review your notes before sharing them with the project.</p>
+    </section>
+    <section aria-labelledby="inline-weather-title">
+      <h3 id="inline-weather-title">Weather and changes</h3>
+      <p>The coordinator may shorten or cancel the route if conditions change. Stay with the group during the briefing so you hear any revised arrangements. Use the woodland alternative when the coastal path is closed, and respect signs and local access restrictions.</p>
+      <p>If the survey is cancelled, return borrowed equipment and keep your existing notes. Cancellation does not erase work already recorded. A future visit can use those notes as a starting point without repeating the whole survey.</p>
+    </section>
+    <section aria-labelledby="inline-return-title">
+      <h3 id="inline-return-title">Returning and next steps</h3>
+      <p>Return to the visitor centre by 12:30. Check in with the coordinator and return borrowed items. Take time to review your notes while the route is fresh in your memory. Identify anything that needs a later check rather than guessing an answer.</p>
+      <p>Closing this information changes no project answers and sends nothing. Your place in the underlying page is preserved. You can reopen this briefing whenever you need it; it starts at the heading each time.</p>
+    </section>
+  </section>
+  <dialog id="briefing-dialog" aria-labelledby="briefing-title" hidden>
+    <h2 id="briefing-title" tabindex="-1" autofocus>Full survey briefing</h2>
+    <form method="dialog"><button type="submit" value="close">Close briefing</button></form>
+    <p>Meeting, access, equipment and return arrangements. Read at your own pace. An additional close action follows the last section.</p>
+    <section aria-labelledby="briefing-meeting-title">
+      <h3 id="briefing-meeting-title">Meeting and arrival</h3>
+      <p>Meet at the visitor centre at 09:30. Arrive ten minutes early if you need to borrow recording equipment. The briefing begins indoors so everyone can hear the route information before the group leaves. If you arrive late, wait at the visitor centre rather than trying to catch the group along the shoreline.</p>
+      <p>Tell the coordinator which route you plan to follow. Keep the meeting point and return time with your own travel notes. You can leave the survey early; let the coordinator know before leaving the group.</p>
+    </section>
+    <section aria-labelledby="briefing-access-title">
+      <h3 id="briefing-access-title">Access and alternative routes</h3>
+      <p>The coastal path includes uneven ground, narrow gates and a steep return section. The woodland route has a firmer surface and more places to rest. Choose the route that suits you; taking the alternative route does not prevent you from contributing observations.</p>
+      <p>The visitor centre has seating and an accessible toilet. Discuss any arrangements with the coordinator before travelling. Weather and maintenance can change access, so check the latest local information on the day.</p>
+    </section>
+    <section aria-labelledby="briefing-equipment-title">
+      <h3 id="briefing-equipment-title">Equipment and preparation</h3>
+      <p>Bring water, weather protection and a way to record your observations. A notebook is enough; no phone or specialist application is required. Keep equipment light enough to carry comfortably. Borrowed equipment can be returned at the visitor centre after the survey.</p>
+      <p>Make a note of the meeting point before leaving home. Charge any equipment you choose to use. Do not depend on a network connection along the route. The coordinator carries the printed route description.</p>
+    </section>
+    <section aria-labelledby="briefing-observations-title">
+      <h3 id="briefing-observations-title">Recording observations</h3>
+      <p>Record what you can identify confidently and describe uncertainty in ordinary words. Note the general habitat and the time of the observation. Do not disturb wildlife to improve a photograph or collect material from the route.</p>
+      <p>Keep personal details out of shared notes. Ask before recording another person. You can contribute written observations without taking photographs or making audio recordings. Review your notes before sharing them with the project.</p>
+    </section>
+    <section aria-labelledby="briefing-weather-title">
+      <h3 id="briefing-weather-title">Weather and changes</h3>
+      <p>The coordinator may shorten or cancel the route if conditions change. Stay with the group during the briefing so you hear any revised arrangements. Use the woodland alternative when the coastal path is closed, and respect signs and local access restrictions.</p>
+      <p>If the survey is cancelled, return borrowed equipment and keep your existing notes. Cancellation does not erase work already recorded. A future visit can use those notes as a starting point without repeating the whole survey.</p>
+    </section>
+    <section aria-labelledby="briefing-return-title">
+      <h3 id="briefing-return-title">Returning and next steps</h3>
+      <p>Return to the visitor centre by 12:30. Check in with the coordinator and return borrowed items. Take time to review your notes while the route is fresh in your memory. Identify anything that needs a later check rather than guessing an answer.</p>
+      <p>Closing this information changes no project answers and sends nothing. Your place in the underlying page is preserved. You can reopen this briefing whenever you need it; it starts at the heading each time.</p>
+    </section>
+    <form method="dialog"><button type="submit" value="close">Close briefing</button></form>
+  </dialog>
+</section></main><script>
+(() => {
+  const dialog = document.querySelector('#briefing-dialog');
+  const opener = document.querySelector('#briefing-open');
+  const fallback = document.querySelector('#briefing-fallback');
+  const heading = document.querySelector('#briefing-task-title');
+  if (!dialog || !opener || !fallback || !heading || typeof dialog.showModal !== 'function' || typeof dialog.close !== 'function') return;
+  opener.addEventListener('click', () => {
+    if (dialog.open) return;
+    opener.focus();
+    dialog.returnValue = '';
+    try {
+      dialog.showModal();
+      if (dialog.open) {
+        dialog.scrollTop = 0;
+        return;
+      }
+    } catch {}
+    dialog.hidden = true;
+    opener.hidden = true;
+    fallback.hidden = false;
+    fallback.querySelector('h2').focus();
+  });
+  dialog.addEventListener('close', () => {
+    if (!dialog.open && (!opener.isConnected || opener.disabled || opener.hidden)) heading.focus();
+  });
+  dialog.hidden = false;
+  fallback.hidden = true;
+  opener.hidden = false;
+})();
+</script></body></html>

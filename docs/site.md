@@ -29,6 +29,8 @@ Each live example has a named iframe, a native Code disclosure, a standalone des
 
 The frame sandbox allows same-origin access, scripts and forms for native behavior and accessibility checks, but does not grant top navigation or popups. These flags are not a security boundary for arbitrary same-origin code; reviewed repository examples are the trust boundary. Do not introduce untrusted scripts or remote user HTML into this runner.
 
+Inside the documentation runner, the host example heading replaces the frame’s visually hidden document heading. Other embeddings, including test frames, retain that document heading.
+
 The host synchronizes its root theme, brand, reading direction and explicit focus-token overrides into each loaded preview, including subsequent root changes. Other application CSS stays isolated. Standalone previews follow the system theme unless given their own root attributes.
 
 The preview script handles ordinary valid form submissions locally and reports serialized native values. Preview-only CSS keeps those local submit actions hidden until that guard is installed, with a no-script explanation beside editable controls. It leaves dialog close forms alone. There is no preview backend, upload or persistence. The frame height message is accepted only from that exact iframe window and the site's origin; height is bounded. Essential content is still in static HTML when scripts fail.

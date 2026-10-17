@@ -18,7 +18,7 @@ Every guide below is available as a rendered page in the documentation site. Bro
 
 [Density](density.md) documents comfortable/compact composition, nested scopes and independent control sizes.
 
-[Native dialog](dialog.md) covers modal opening/closing, focus, forms, lifecycle and support-failure fallback.
+[Native dialog](dialog.md) covers modal opening/closing, focus, forms, lifecycle and support-failure fallback, plus a [long briefing](previews/dialog-1.html) with heading focus and native scrolling.
 
 The [native-value recipe](../examples/native-inputs.html) combines grouped errors with date, time, file and range inputs. Read the [native-input integration contract](forms.md#native-dates-times-files-and-ranges) for serialized values and server responsibilities.
 

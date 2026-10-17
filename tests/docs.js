@@ -21,6 +21,7 @@ async function runDocumentationChecks(load, frame) {
   const demo = example.querySelector('iframe');
   demo.loading = 'eager';
   if (demo.contentDocument?.readyState !== 'complete' || !demo.contentDocument.querySelector('input')) await new Promise(resolve=>demo.addEventListener('load',resolve,{once:true}));
+  check(demo.contentDocument.querySelector('body > h1').hidden, 'Documentation embeds use the visible host example heading rather than a duplicate frame heading.');
   const checkbox = demo.contentDocument.querySelector('input'); checkbox.click();
   check(checkbox.checked && checkbox.type === 'checkbox', 'The live example uses a real independently toggleable native checkbox.');
   // The example is not a form: serialize its control using a temporary native form association.
@@ -55,6 +56,7 @@ async function runDocumentationChecks(load, frame) {
   win = await load('../docs/components/combobox.html'); doc=win.document;
   check(!doc.querySelector('[data-example]') && doc.querySelector('#proposal').nextElementSibling.textContent.includes('not implemented'), 'Planned component pages expose proposals without pretend live controls.');
   win = await load('../docs/previews/input-0.html'); doc=win.document;
+  check(!doc.querySelector('body > h1').hidden, 'Standalone previews keep their document heading when embedded outside the documentation runner.');
   const form=doc.querySelector('form'); form.requestSubmit();
   check(!doc.querySelector('ui-error-summary').hidden && doc.activeElement === doc.querySelector('ui-error-summary'), 'Standalone preview preserves enhanced required validation and summary focus.');
   form.elements.email.value='reader@example.com'; form.requestSubmit();

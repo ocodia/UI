@@ -1,6 +1,8 @@
 // Trusted, generated documentation examples only; never a user HTML runner.
 (() => {
-  if (self !== top) document.querySelector('body > h1').hidden = true;
+  // Only the documentation runner supplies an enclosing example heading.
+  // Other embeddings (including the test harness) retain this document's h1.
+  if (self !== top && frameElement?.closest('[data-example]')) document.querySelector('body > h1').hidden = true;
   document.addEventListener('submit', (event) => {
     if (event.target.method === 'dialog' || event.submitter?.formMethod === 'dialog') return;
     event.preventDefault();

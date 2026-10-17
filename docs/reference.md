@@ -313,3 +313,7 @@ When changing UI, check both HTML examples, light and dark themes, keyboard focu
 ## License
 
 [MIT](../LICENSE).
+
+## Long information dialogs
+
+The [long survey briefing](previews/dialog-1.html) uses a native dialog with initial focus on its heading, close forms at both ends, one native scrolling surface and complete inline fallback. Its application script resets scrolling after successful opening and supplies a surviving focus target when the opener disappears. See the [dialog contract](dialog.md#long-briefing-and-scrolling) and [focused browser checks](../tests/dialog.html). This adds a recipe, not a new registered element or library API.
