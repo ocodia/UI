@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="An HTML-first project workspace built with UI layout elements and native controls." />
+    <title>Fieldwork — UI workspace</title>
+    <link rel="stylesheet" href="css/ui.css" />
+    <link rel="stylesheet" href="css/workspace.css" />
+    <script src="js/components.js" defer></script>
+    <script src="js/workspace.js" defer></script>
+  <link rel="stylesheet" href="css/site.css">
+</head>
+  <body>
+    <ui-skip-link><a href="#main">Skip to project</a></ui-skip-link>
+<header class="site-header"><a class="site-wordmark" href="index.html">UI <span>HTML first</span></a><nav aria-label="Primary" data-site-nav><ul><li><a href="index.html">About</a></li><li><a href="examples/components.html">Components</a></li><li><a href="docs/index.html" aria-current="page">Docs</a></li><li><a href="examples/themes.html">Themes</a></li><li><a href="tests/accessibility.html">Tests</a></li></ul></nav></header>
+    <section class="workspace-header" aria-label="Workspace identity">
+      <ui-cluster>
+        <strong>Fieldwork</strong>
+        <span>A place for work in progress.</span>
+        <a href="gallery.html#layouts">UI examples</a>
+      </ui-cluster>
+    </section>
+    <ui-sidebar id="workspace">
+      <aside aria-label="Workspace navigation">
+        <ui-stack>
+          <p><strong>Studio workspace</strong><br /><small>Personal · local demo</small></p>
+          <nav aria-label="Project">
+            <ul>
+              <li><a href="workspace.html" aria-current="page">Overview</a></li>
+              <li><a href="#tasks">Tasks</a></li>
+              <li><a href="#project-settings">Project settings</a></li>
+            </ul>
+            <details open>
+              <summary>Resources</summary>
+              <ul>
+                <li><a href="#brief">Project brief</a></li>
+                <li><a href="#activity">Recent activity</a></li>
+              </ul>
+            </details>
+          </nav>
+          <p><small>This workspace stays in your browser. Nothing is sent to a server.</small></p>
+        </ui-stack>
+      </aside>
+      <main id="main" tabindex="-1">
+        <ui-form id="project-editor">
+          <ui-error-summary id="project-errors" role="region" aria-labelledby="project-errors-title" tabindex="-1" hidden>
+            <h2 id="project-errors-title">There is a problem</h2>
+            <ul></ul>
+          </ui-error-summary>
+          <ui-stack>
+            <header>
+              <p><small>Projects / Field guides</small></p>
+              <h1 id="project-title">Coastal field guide</h1>
+              <p id="project-description">A practical guide to the places, plants, and wildlife along our coast.</p>
+              <ui-cluster role="group" aria-label="Project actions">
+                <a href="#project-settings">Edit project</a>
+                <button id="export-project" type="button" hidden>Export project</button>
+              </ui-cluster>
+            </header>
+            <ui-grid id="project-layout">
+              <ui-stack>
+                <section id="brief" aria-labelledby="brief-title">
+                  <h2 id="brief-title">Make room for discovery</h2>
+                  <p>Build a small, useful companion for a day outdoors. Start with familiar places, write plainly, and leave space for field notes.</p>
+                  <ui-panel>
+                    <ui-grid id="milestones">
+                      <div><strong>3 chapters</strong><p><small>From shoreline to woodland</small></p></div>
+                      <div><strong id="task-count">1 of 3 done</strong><p><small>Small steps, steady progress</small></p></div>
+                    </ui-grid>
+                  </ui-panel>
+                </section>
+                <section id="tasks" aria-labelledby="tasks-title">
+                  <h2 id="tasks-title">Next steps</h2>
+                  <p>Keep the next few actions close. Check them off as you go.</p>
+                  <fieldset>
+                    <legend>Chapter preparation</legend>
+                    <label><input type="checkbox" name="task" value="outline" checked /> Outline the first three chapters</label>
+                    <label><input type="checkbox" name="task" value="photographs" /> Choose photographs for the shoreline chapter</label>
+                    <label><input type="checkbox" name="task" value="review" /> Arrange a review with a local naturalist</label>
+                  </fieldset>
+                  <label for="task-progress">Chapter preparation progress</label>
+                  <progress id="task-progress" value="1" max="3">1 of 3 done</progress>
+                </section>
+                <section id="project-settings" aria-labelledby="settings-title">
+                  <h2 id="settings-title">Project settings</h2>
+                  <p>All fields are required unless marked optional.</p>
+                  <form id="project-form">
+                    <ui-stack>
+                      <ui-field>
+                        <label for="project-name">Project name</label>
+                        <ui-hint id="project-name-hint">Use a short name, up to 100 characters.</ui-hint>
+                        <ui-error id="project-name-error" hidden>Error: Enter a project name</ui-error>
+                        <input id="project-name" name="name" value="Coastal field guide" maxlength="100" aria-describedby="project-name-hint" required />
+                      </ui-field>
+                      <ui-field>
+                        <label for="project-summary">Summary</label>
+                        <ui-hint id="project-summary-hint">Describe the project in 500 characters or fewer.</ui-hint>
+                        <ui-error id="project-summary-error" hidden>Error: Enter a summary</ui-error>
+                        <textarea id="project-summary" name="summary" rows="3" maxlength="500" aria-describedby="project-summary-hint" required>A practical guide to the places, plants, and wildlife along our coast.</textarea>
+                      </ui-field>
+                      <ui-grid>
+                        <ui-field>
+                          <label for="project-stage">Stage</label>
+                          <ui-error id="project-stage-error" hidden>Error: Select a project stage</ui-error>
+                          <select id="project-stage" name="stage" required>
+                            <option value="Planning">Planning</option>
+                            <option value="In progress" selected>In progress</option>
+                            <option value="Ready for review">Ready for review</option>
+                          </select>
+                        </ui-field>
+                        <ui-field>
+                          <label for="project-date">Target date (optional)</label>
+                          <ui-error id="project-date-error" hidden>Error: Enter a complete target date in the format shown</ui-error>
+                          <input id="project-date" name="date" type="date" value="2026-11-30" />
+                        </ui-field>
+                      </ui-grid>
+                      <ui-cluster id="save-actions" hidden>
+                        <button type="submit">Save changes</button>
+                        <button type="reset" data-variant="secondary">Revert edits</button>
+                      </ui-cluster>
+                      <noscript><p>Enable JavaScript to save edits on this device. The content, layouts, and navigation work without it.</p></noscript>
+                      <output id="save-status" role="status"></output>
+                    </ui-stack>
+                  </form>
+                </section>
+              </ui-stack>
+              <aside id="project-details" aria-labelledby="details-title">
+                <ui-panel>
+                  <ui-stack>
+                    <h2 id="details-title">At a glance</h2>
+                    <dl>
+                      <dt>Stage</dt><dd id="detail-stage">In progress</dd>
+                      <dt>Target date</dt><dd><time id="detail-date" datetime="2026-11-30">30 November 2026</time></dd>
+                      <dt>Visibility</dt><dd>Only on this device</dd>
+                    </dl>
+                    <section id="activity" aria-labelledby="activity-title">
+                      <h3 id="activity-title">Recent activity</h3>
+                      <p id="activity-note">The outline is ready. Time to head outside.</p>
+                    </section>
+                    <details>
+                      <summary>About this example</summary>
+                      <p>Layout elements arrange native HTML. Application styles adjust their spacing and proportions. No UI framework is required.</p>
+                      <p><a href="gallery.html#layouts">Explore the layout elements</a></p>
+                    </details>
+                  </ui-stack>
+                </ui-panel>
+              </aside>
+            </ui-grid>
+          </ui-stack>
+        </ui-form>
+      </main>
+    </ui-sidebar>
+    <footer><p>Built with <a href="index.html">UI</a>. Conventional HTML, room to make it yours.</p></footer>
+  </body>
+</html>

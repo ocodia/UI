@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form integration — UI</title>
+  <link rel="stylesheet" href="../css/ui.css"><link rel="stylesheet" href="examples.css">
+  <script src="../js/components.js" defer></script><script src="form-integration.js" defer></script>
+<link rel="stylesheet" href="../css/site.css">
+</head>
+<body>
+  <ui-skip-link><a href="#main">Skip to main content</a></ui-skip-link>
+  <header class="site-header"><a class="site-wordmark" href="../index.html">UI <span>HTML first</span></a><nav aria-label="Primary" data-site-nav><ul><li><a href="../index.html">About</a></li><li><a href="components.html">Components</a></li><li><a href="../docs/index.html" aria-current="page">Docs</a></li><li><a href="themes.html">Themes</a></li><li><a href="../tests/accessibility.html">Tests</a></li></ul></nav></header>
+
+  <main id="main" tabindex="-1">
+<h1>Forms in an application</h1><p>Native ownership, shared questions, translated feedback and cancellable submission.</p>
+    <ui-stack>
+      <section aria-labelledby="delivery-title">
+        <h2 id="delivery-title">Request project updates</h2>
+        <p>This local simulation makes no network request. Choose an outcome to try field errors, service failure and success. Editing an answer, resetting or cancelling invalidates the pending response. Your answers remain editable.</p>
+        <ui-form id="delivery-editor">
+          <ui-error-summary hidden><h2>There is a problem</h2><ul></ul></ui-error-summary>
+          <form id="delivery-form" action="form-integration.html" method="get">
+            <ui-field>
+              <label for="delivery-name">Project name</label>
+              <ui-hint id="delivery-name-hint">Use a recognisable name.</ui-hint>
+              <ui-error hidden>Error: Enter a project name</ui-error>
+              <input id="delivery-name" name="project" value="Field guide" aria-describedby="delivery-name-hint" required>
+            </ui-field>
+            <fieldset aria-describedby="updates-hint">
+              <legend>Which updates do you want?</legend>
+              <ui-hint id="updates-hint">Choose at least one. The application checks this group rule.</ui-hint>
+              <ui-error id="updates-error" hidden>Error: Select at least one update</ui-error>
+              <label><input name="updates" type="checkbox" value="news" checked> Project news</label>
+              <label><input name="updates" type="checkbox" value="events"> Events</label>
+            </fieldset>
+          </form>
+          <ui-field>
+            <label for="delivery-email">Email address</label>
+            <ui-hint id="delivery-email-hint">This field sits outside the form and uses its native form attribute.</ui-hint>
+            <input id="delivery-email" name="email" type="email" autocomplete="email" form="delivery-form" value="reader@example.com" aria-describedby="delivery-email-hint" required>
+          </ui-field>
+          <div id="delivery-enhanced" hidden>
+            <ui-field><label for="delivery-outcome">Simulated response</label><select id="delivery-outcome"><option value="success">Success</option><option value="field">Email rejected</option><option value="failure">Service unavailable</option></select></ui-field>
+            <ui-cluster><button type="submit" form="delivery-form" name="intent" value="subscribe">Request updates</button><button type="reset" form="delivery-form" data-variant="secondary">Reset answers</button><button id="delivery-cancel" type="button" data-variant="quiet" hidden>Cancel request</button></ui-cluster>
+          </div>
+        </ui-form>
+        <p id="delivery-status" role="status" aria-atomic="true"></p>
+        <p id="delivery-failure" hidden>The service is unavailable. Your answers have been kept. Try requesting updates again.</p>
+        <noscript><p>JavaScript is needed for this local submission simulation. Labels, hints, native form ownership and editable answers remain available. A production form needs a real server action and submit button.</p></noscript>
+      </section>
+      <ui-panel><section lang="fr" aria-labelledby="french-title">
+        <h2 id="french-title">Un formulaire en français</h2>
+        <p>Les messages et les préfixes sont fournis par l’application.</p>
+        <ui-form id="french-editor" error-prefix="Erreur : " error-title-prefix="Erreur :">
+          <ui-error-summary hidden><h2>Il y a un problème</h2><ul></ul></ui-error-summary>
+          <form id="french-form" action="form-integration.html" method="get">
+            <ui-field><label for="french-project">Nom du projet</label><ui-hint id="french-hint">Utilisez 12 caractères maximum.</ui-hint><ui-error hidden>Erreur : Saisissez le nom du projet</ui-error><input id="french-project" name="project" maxlength="12" required aria-describedby="french-hint"></ui-field>
+            <button id="french-submit" type="submit" hidden>Vérifier le nom</button>
+          </form>
+        </ui-form>
+        <p id="french-result" role="status"></p>
+      </section></ui-panel>
+      <section aria-labelledby="contract-title"><h2 id="contract-title">Application ownership</h2><p>UI renders field feedback and preserves native form semantics. The application owns transport, pending state, cancellation, service failures and response ordering. The demo keeps submitters enabled, ignores duplicate pending submissions and captures FormData before starting work.</p><p><a href="../docs/forms.html">Read the integration contract and async recipe</a> · <a href="../tests/accessibility.html">Run browser checks</a></p></section>
+    </ui-stack>
+  </main>
+  <footer><p>UI · <a href="../docs/index.html">Documentation</a> · <a href="../docs/accessibility.html">Accessibility evidence</a></p></footer>
+</body>
+</html>

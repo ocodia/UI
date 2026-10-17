@@ -1,0 +1,11 @@
+.prettierrc
+__pycache__/
+*.py[cod]
+
+# Local macOS files
+.DS_Store
+
+# Local credentials
+.env
+.env.*
+!.env.example

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/ui.css" />
+    <meta name="description" content="UI's HTML-first UI foundation. Explore native elements, accessible forms, light-DOM composition and themeable defaults." />
+    <script src="js/components.js" defer></script>
+    <script src="js/examples.js" defer></script>
+    <title>UI — HTML first</title>
+  <link rel="stylesheet" href="css/site.css">
+</head>
+
+  <body>
+    <ui-skip-link><a href="#main">Skip to main content</a></ui-skip-link>
+    <header class="site-header"><a class="site-wordmark" href="index.html">UI <span>HTML first</span></a><nav aria-label="Primary" data-site-nav><ul><li><a href="index.html">About</a></li><li><a href="examples/components.html">Components</a></li><li><a href="docs/index.html" aria-current="page">Docs</a></li><li><a href="examples/themes.html">Themes</a></li><li><a href="tests/accessibility.html">Tests</a></li></ul></nav></header>
+    
+    <main id="main" tabindex="-1">
+<h1>Native element gallery</h1><p>Inspect the HTML foundation, native controls and composition primitives.</p>
+      <section id="getting-started">
+        <h2>HTML first</h2>
+        <p>Readable documents, native controls, and responsive defaults from one stylesheet. No classes or JavaScript required for the basics.</p>
+        <pre><code>&lt;link rel="stylesheet" href="css/ui.css"&gt;</code></pre>
+        <p>These element examples use plain HTML. The layout section adds optional elements where HTML leaves the arrangement up to you.</p>
+        <p>UI is growing into a complete light-DOM UI system. <a href="examples/components.html">Explore the component scope</a>, <a href="examples/themes.html">try themeable interfaces</a>, or <a href="docs/index.html">read the documentation</a>. Planned widgets are clearly labelled in the catalogue.</p>
+        <p><a href="form.html">Try a complete form</a> · <a href="https://github.com/ocodia/UI">View the source</a></p>
+      </section>
+      <section id="text">
+        <h2>Text</h2>
+
+        <article id="text-headings">
+          <header><h3>Headings</h3></header>
+          <h1>Heading 1</h1>
+          <h2>Heading 2</h2>
+          <h3>Heading 3</h3>
+          <h4>Heading 4</h4>
+          <h5>Heading 5</h5>
+          <h6>Heading 6</h6>
+        </article>
+        <hr />
+        <article id="text-paragraphs">
+          <header><h3>Paragraphs</h3></header>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ullamcorper ex orci, a rhoncus arcu bibendum at. Proin euismod ligula eget accumsan. Sed egestas libero leo, non blandit
+            nisl placerat id. Pellentesque eget auctor ante. Fusce nec leo CSS, porta leo in, dignissim purus. Etiam justo risus, congue vel mauris id, accumsan imperdiet quam. Vestibulum ante ipsum
+            primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut ac porta erat, vel sem.
+          </p>
+        </article>
+        <hr />
+        <article id="text-blockquotes">
+          <header><h3>Blockquotes</h3></header>
+
+          <blockquote>
+            <p>Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.</p>
+            <footer>—Aldous Huxley, <cite>Brave New World</cite></footer>
+          </blockquote>
+        </article>
+        <hr />
+        <article id="text-lists">
+          <header><h3>Lists</h3></header>
+          <h4>Ordered list</h4>
+          <ol>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+          </ol>
+          <h4>Unordered list</h4>
+          <ul>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+          </ul>
+          <h4>Definition list</h4>
+          <dl>
+            <dt>Beast of Bodmin</dt>
+            <dd>A large feline inhabiting Bodmin Moor.</dd>
+            <dt>Morgawr</dt>
+            <dd>A sea serpent.</dd>
+
+            <dt>Owlman</dt>
+            <dd>A giant owl-like creature.</dd>
+          </dl>
+        </article>
+        <hr />
+        <article id="text-tables">
+          <header><h3>Tables</h3></header>
+
+          <table>
+            <caption>
+              Table Caption
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Heading 1</th>
+                <th scope="col">Heading 2</th>
+                <th scope="col">Heading 3</th>
+                <th scope="col">Heading 4</th>
+                <th scope="col">Heading 5</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <td>Footer 1</td>
+                <td>Footer 2</td>
+                <td>Footer 3</td>
+                <td>Footer 4</td>
+                <td>Footer 5</td>
+              </tr>
+            </tfoot>
+            <tbody>
+              <tr>
+                <td>Cell 1</td>
+                <td>Cell 2</td>
+                <td>Cell 3</td>
+                <td>Cell 4</td>
+                <td>Cell 5</td>
+              </tr>
+              <tr>
+                <td>Cell 1</td>
+                <td>Cell 2</td>
+                <td>Cell 3</td>
+                <td>Cell 4</td>
+                <td>Cell 5</td>
+              </tr>
+              <tr>
+                <td>Cell 1</td>
+                <td>Cell 2</td>
+                <td>Cell 3</td>
+                <td>Cell 4</td>
+                <td>Cell 5</td>
+              </tr>
+              <tr>
+                <td>Cell 1</td>
+                <td>Cell 2</td>
+                <td>Cell 3</td>
+                <td>Cell 4</td>
+                <td>Cell 5</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+        <hr />
+        <article id="text-code">
+          <header><h3>Code</h3></header>
+          <p>Keyboard input: <kbd>Ctrl-F4</kbd></p>
+          <p>
+            Sample output:
+            <samp>This is sample output from a computer program</samp>
+          </p>
+          <p>Inline code: <code>&lt;div&gt;code&lt;/div&gt;</code></p>
+
+          <pre>
+P R E F O R M A T T E D T E X T
+! " # $ % &amp; ' ( ) * + , - . /
+0 1 2 3 4 5 6 7 8 9 : ; &lt; = &gt; ?
+@ A B C D E F G H I J K L M N O
+P Q R S T U V W X Y Z [ \ ] ^ _
+` a b c d e f g h i j k l m n o
+p q r s t u v w x y z { | } ~ 
+</pre
+          >
+        </article>
+        <hr />
+        <article id="text-inline">
+          <header><h3>Inline elements</h3></header>
+          <p><a href="#getting-started">This is a text link</a></p>
+          <p><strong>Strong is used to indicate strong importance!</strong></p>
+          <p><em>This text has added emphasis.</em></p>
+          <p>The <b>Bring Attention To element (b)</b> is used to draw the reader's attention to the element's contents, which are not otherwise granted special importance.</p>
+          <p>The <i>Idiomatic Text element (i) </i> represents a range of text that is set off from the normal text for some reason, such as idiomatic text, technical terms, taxonomical designations, among others.</p>
+          <p>The <u>Unarticulated Annotation element (u)</u> represents a span of inline text which should be rendered in a way that indicates that it has a non-textual annotation.</p>
+          <p><del>This text is deleted</del> and <ins>This text is inserted</ins></p>
+          <p><s>This text has a strikethrough</s></p>
+          <p>Superscript <sup>®</sup></p>
+          <p>Subscript C<sub>8</sub>H<sub>10</sub>N<sub>4</sub>O<sub>2</sub></p>
+          <p><small>This small text is small for for fine print, etc</small></p>
+          <p>Abbreviation: <abbr title="HyperText Markup Language">HTML</abbr></p>
+          <p>
+            <q cite="https://developer.mozilla.org/en-US/docs/HTML/Element/q">This text is a short inline quotation</q>
+          </p>
+          <p><cite>This is a citation</cite></p>
+          <p>The <dfn>dfn element</dfn> indicates a definition</p>
+          <p>The <mark>mark element</mark> indicates a highlight</p>
+          <p>The <var>variable element</var>, such as <var>x</var> = <var>y</var></p>
+          <p>
+            The time element:
+            <time datetime="2013-04-06T12:32+00:00">2 weeks ago</time>
+          </p>
+        </article>
+        <hr />
+        <article id="text-address">
+          <header><h3>Address</h3></header>
+          <address>
+            <strong>Business Name</strong><br />
+            Street Address<br />
+            Town Name, <br />
+            CODE<br />
+            Country<br />
+            <a href="mailto:name@domain.com">name@domain.com</a><br />
+            <a href="tel:+441324502030">(+44) 1324 502030</a>
+          </address>
+        </article>
+        <hr />
+        <article id="text-details">
+          <header><h3>Details</h3></header>
+          <details>
+            <summary>Some details</summary>
+            <p>More info about the details.</p>
+          </details>
+          <details open>
+            <summary>Even more details</summary>
+            <p>Here are even more details about the details.</p>
+          </details>
+        </article>
+      </section>
+      <hr />
+      <section id="embedded">
+        <h2>Embedded content</h2>
+        <p>Production media needs verified captions, transcripts, and descriptions of meaningful visual content. These legacy samples are awaiting that review.</p>
+        <article id="embedded-images">
+          <header><h3>Images</h3></header>
+          <h3>
+            img
+          </h3>
+          <img src="img/image.jpg" alt="Photo of Glencoe Valley, Scotland" loading="lazy" />
+          <h3>
+            Figure
+          </h3>
+          <figure>
+            <img src="img/image.jpg" alt="Photo of Glencoe Valley, Scotland" loading="lazy" />
+            <figcaption>Glencoe Valley, Scotland</figcaption>
+          </figure>
+        </article>
+        <hr />
+        <article id="embedded-audio">
+          <h3>Audio</h3>
+          <audio controls src="audio/audio.mp3">
+            Your browser does not support the
+            <code>audio</code> element.
+          </audio>
+        </article>
+        <hr />
+        <article id="embedded-video">
+          <h3>Video</h3>
+          <video controls>
+            <source src="video/video.mp4" type="video/mp4" />
+            Sorry, your browser doesn't support embedded videos.
+          </video>
+        </article>
+        <hr />
+        <article id="embedded-canvas">
+          <h3>Canvas</h3>
+          <canvas height="50">canvas</canvas>
+        </article>
+        <hr />
+        <article id="embedded-meter">
+          <h3>Meter</h3>
+          <meter aria-label="Storage used" value="2" min="0" max="10">2 out of 10</meter>
+        </article>
+        <hr />
+        <article id="embedded-progress">
+          <h3>Progress</h3>
+          <progress aria-label="Upload progress" id="file" max="100" value="70">70%</progress>
+        </article>
+        <hr />
+        <article id="embedded-svg">
+          <h3>Inline SVG</h3>
+          <svg width="100" height="100" viewBox="0 0 100 100" role="img" aria-label="Blue circle">
+            <circle cx="50" cy="50" r="45" fill="#1fa3ec"></circle>
+          </svg>
+        </article>
+        <hr />
+        <article id="embedded-iframes">
+          <h3>IFrame</h3>
+          <iframe src="form.html" title="UI form preview" height="300" loading="lazy"></iframe>
+        </article>
+        <hr />
+      </section>
+
+      <section id="forms">
+        <h2>Form elements</h2>
+        <p><a href="form.html">Form example</a></p>
+        <article id="forms-inputs">
+          <header><h3>Input fields</h3></header>
+          <form>
+            <p>
+              <label for="input-text">Text input</label>
+              <input id="input-text" type="text" placeholder="Text Input" name="input-text" />
+            </p>
+            <p>
+              <label for="input-password">Password input</label>
+              <input id="input-password" type="password" placeholder="Type your Password" name="input-password" />
+            </p>
+            <p>
+              <label for="input-url">URL input</label>
+              <input id="input-url" type="url" placeholder="http://yoursite.com" name="input-url" />
+            </p>
+            <p>
+              <label for="input-email">Email input</label>
+              <input id="input-email" type="email" placeholder="name@email.com" name="input-email" />
+            </p>
+            <p>
+              <label for="input-tel">Telephone input</label>
+              <input id="input-tel" type="tel" placeholder="(999) 999-9999" name="input-tel" />
+            </p>
+            <p>
+              <label for="input-search">Search input</label>
+              <input id="input-search" type="search" placeholder="Enter Search Term" name="input-search" />
+            </p>
+            <p>
+              <label for="input-number">Number Input</label>
+              <input id="input-number" type="number" placeholder="Enter a Number" name="input-number" />
+            </p>
+          </form>
+        </article>
+        <hr />
+        <article id="forms-selects">
+          <header><h3>Select menus</h3></header>
+          <form>
+            <label for="pet-select">Select</label>
+            <select name="pets" id="pet-select">
+              <option value="">Please choose an option</option>
+              <option value="dog">Dog</option>
+              <option value="cat">Cat</option>
+              <option value="hamster">Hamster</option>
+              <option value="parrot">Parrot</option>
+              <option value="spider">Spider</option>
+              <option value="goldfish">Goldfish</option>
+            </select>
+          </form>
+        </article>
+        <hr />
+        <article id="forms-checkboxes">
+          <header><h3>Checkboxes</h3></header>
+          <form>
+            <label for="checkbox1">
+              <input id="checkbox1" name="checkbox" type="checkbox" checked="checked" />
+              Choice A
+            </label>
+            <label for="checkbox2"><input id="checkbox2" name="checkbox" type="checkbox" /> Choice B</label>
+            <label for="checkbox3"><input id="checkbox3" name="checkbox" type="checkbox" /> Choice C</label>
+          </form>
+        </article>
+        <hr />
+        <article id="forms-radio">
+          <header><h3>Radio buttons</h3></header>
+          <form>
+            <label for="radio1">
+              <input id="radio1" name="radio" type="radio" checked="checked" />
+              Option 1
+            </label>
+            <label for="radio2">
+              <input id="radio2" name="radio" type="radio" />
+              Option 2
+            </label>
+            <label for="radio3">
+              <input id="radio3" name="radio" type="radio" />
+              Option 3
+            </label>
+          </form>
+        </article>
+        <hr />
+        <article id="forms-textareas">
+          <header><h3>Textareas</h3></header>
+          <form>
+            <label for="textarea">Textarea</label>
+            <textarea id="textarea" rows="8" cols="100" placeholder="Enter your message here"></textarea>
+          </form>
+        </article>
+        <hr />
+        <article id="forms-html5">
+          <header><h3>HTML5 inputs</h3></header>
+          <form>
+            <p>
+              <label for="input-colour">Color input</label>
+              <input type="color" id="input-colour" value="#000000" name="input-colour" />
+            </p>
+            <p>
+              <label for="input-number-limited">Number input</label>
+              <input type="number" id="input-number-limited" min="0" max="10" value="5" name="input-number-limited" />
+            </p>
+            <p>
+              <label for="input-range">Range input</label>
+              <input type="range" id="input-range" value="10" name="input-range" />
+            </p>
+            <p>
+              <label for="input-date">Date input</label>
+              <input type="date" id="input-date" value="1970-01-01" name="input-date" />
+            </p>
+            <p>
+              <label for="input-datetime-month">Month input</label>
+              <input type="month" id="input-datetime-month" value="1970-01" name="input-datetime-month" />
+            </p>
+            <p>
+              <label for="input-datetime-week">Week input</label>
+              <input type="week" id="input-datetime-week" value="1970-W01" name="input-datetime-week" />
+            </p>
+            <p>
+              <label for="input-datetime-local">Datetime-local input</label>
+              <input type="datetime-local" id="input-datetime-local" value="1970-01-01T00:00" name="input-datetime-local" />
+            </p>
+            <p>
+              <label for="input-file">Choose a profile picture:</label>
+              <input type="file" id="input-file" name="input-file" accept="image/png, image/jpeg" />
+            </p>
+          </form>
+        </article>
+        <hr />
+        <article id="forms-buttons">
+          <header><h3>Buttons</h3></header>
+          <form>
+            <p>
+              <input type="button" value="Input button" />
+              <input type="submit" value="Input submit" />
+              <input type="reset" value="Input reset" />
+              <input type="submit" value="Input submit disabled" disabled />
+            </p>
+            <p>
+              <button type="button">Button</button>
+              <button type="submit">Button submit</button>
+              <button type="reset">Button reset</button>
+              <button type="button" disabled>Button disabled</button>
+            </p>
+          </form>
+        </article>
+      </section>
+      <section id="form-states">
+        <h2>Form states</h2>
+        <p>Native attributes describe the state. Tab through these controls to see keyboard focus. Submit the email form to try browser validation.</p>
+        <form>
+          <p>
+            <label for="state-email">Email address</label>
+            <input id="state-email" name="email" type="email" autocomplete="email" required aria-describedby="email-hint" />
+            <small id="email-hint">Enter a complete email address. Validation starts after interaction.</small>
+          </p>
+          <button type="submit">Check email</button>
+          <output aria-live="polite"></output>
+        </form>
+        <ui-field>
+          <label for="state-invalid">Application validation</label>
+          <ui-error id="username-error">Error: This username is taken. Choose another one.</ui-error>
+          <input id="state-invalid" name="username" value="already-taken" aria-invalid="true" aria-describedby="username-error" />
+        </ui-field>
+        <p>
+          <label for="state-readonly">Read-only reference</label>
+          <input id="state-readonly" value="UI-2026" readonly name="state-readonly" />
+        </p>
+        <fieldset disabled>
+          <legend>Disabled controls</legend>
+          <label for="state-disabled">Unavailable field</label>
+          <input id="state-disabled" value="Not editable" name="state-disabled" />
+          <label><input type="checkbox" checked /> Unavailable option</label>
+          <button type="button">Unavailable action</button>
+        </fieldset>
+        <pre><code>&lt;label for="email"&gt;Email&lt;/label&gt;
+&lt;input id="email" name="email" type="email" required&gt;</code></pre>
+      </section>
+      <section id="accessible-forms">
+        <h2>Accessible form conventions</h2>
+        <p>Native labels and controls stay in the HTML. UI elements group the question, hint, and error. Keyboard focus stays visible across themes.</p>
+        <ui-form id="form-example">
+          <form id="accessible-example">
+            <ui-error-summary hidden role="region" aria-labelledby="example-errors-title" tabindex="-1">
+              <h2 id="example-errors-title">There is a problem</h2>
+              <ul></ul>
+            </ui-error-summary>
+            <ui-field>
+              <label for="accessible-name">Project name</label>
+              <ui-hint id="accessible-name-hint">Use a short name that helps you recognise the project.</ui-hint>
+              <ui-error id="accessible-name-error" hidden>Error: Enter a project name</ui-error>
+              <input id="accessible-name" name="project" aria-describedby="accessible-name-hint" required />
+            </ui-field>
+            <button type="submit">Check project name</button>
+            <output id="accessible-result" role="status"></output>
+          </form>
+        </ui-form>
+        <pre><code>&lt;ui-field&gt;
+  &lt;label for="name"&gt;Project name&lt;/label&gt;
+  &lt;ui-hint id="name-hint"&gt;Use a short name.&lt;/ui-hint&gt;
+  &lt;input id="name" aria-describedby="name-hint"&gt;
+&lt;/ui-field&gt;</code></pre>
+        <p><code>ui-form</code> coordinates validation, hints, inline errors, and focus. The native form still owns its controls and submission.</p>
+        <pre><code>&lt;ui-form&gt;
+  &lt;form action="/projects" method="post"&gt;
+    &lt;ui-field&gt;…native label and input…&lt;/ui-field&gt;
+    &lt;button&gt;Save project&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/ui-form&gt;</code></pre>
+        <p><a href="workspace.html#project-settings">Try submitting the workspace with an empty project name</a> to see linked errors and focus movement.</p>
+        <p><a href="ACCESSIBILITY.md">Read the accessibility contract</a> · <a href="tests/accessibility.html">Run browser checks</a></p>
+      </section>
+      <section id="interactions">
+        <h2>Native interactions</h2>
+        <h3>Disclosure</h3>
+        <details>
+          <summary>Does this need JavaScript?</summary>
+          <p>No. The browser manages this disclosure.</p>
+          <details>
+            <summary>A nested disclosure</summary>
+            <p>Nested content keeps its own spacing and open state.</p>
+          </details>
+        </details>
+        <h3>Popover</h3>
+        <p>A native popover closes with Escape or a click outside. Its toggle needs no JavaScript in supporting browsers.</p>
+        <button type="button" popovertarget="help-popover">Show help</button>
+        <div id="help-popover" popover>
+          <h3>A little help</h3>
+          <p>UI styles the HTML you already know.</p>
+          <button type="button" popovertarget="help-popover" popovertargetaction="hide">Close help</button>
+        </div>
+        <pre><code>&lt;button popovertarget="help"&gt;Help&lt;/button&gt;
+&lt;div id="help" popover&gt;Helpful content.&lt;/div&gt;</code></pre>
+        <h3>Modal dialog</h3>
+        <p>This example uses a small script to call the native dialog API. The close button uses a normal dialog form.</p>
+        <button type="button" id="open-dialog" hidden>Open dialog</button>
+        <noscript><p>Enable JavaScript to open this modal example. The rest of UI works without it.</p></noscript>
+        <dialog id="example-dialog" aria-labelledby="dialog-title">
+          <h3 id="dialog-title">A native dialog</h3>
+          <p>The browser manages modal focus and Escape. Closing returns focus to the opener.</p>
+          <form method="dialog"><button autofocus>Close dialog</button></form>
+        </dialog>
+      </section>
+      <section id="layouts">
+        <h2>Layout elements</h2>
+        <p>Elements describe meaning. These layout elements describe arrangement. They work with CSS alone, without registration or JavaScript.</p>
+        <p><a href="workspace.html">Try the project workspace</a> to see layouts, navigation, forms, and a detail panel working together. The original class forms remain available.</p>
+        <h3>Stack</h3>
+        <ui-stack>
+          <p>A vertical group with consistent spacing.</p>
+          <p>Useful when mixed elements need the same rhythm.</p>
+          <a href="#getting-started">Back to the start</a>
+        </ui-stack>
+        <pre><code>&lt;ui-stack&gt;…&lt;/ui-stack&gt;</code></pre>
+        <h3>Cluster</h3>
+        <ui-cluster>
+          <button type="button" popovertarget="help-popover">Help</button>
+          <a href="form.html">Form example</a>
+          <span>Items wrap when space runs out.</span>
+        </ui-cluster>
+        <pre><code>&lt;ui-cluster&gt;…&lt;/ui-cluster&gt;</code></pre>
+        <h3>Grid</h3>
+        <ui-grid>
+          <section><h4>Conventional HTML</h4><p>Use elements for their meaning.</p></section>
+          <section><h4>Native behavior</h4><p>Keep browser controls and interactions.</p></section>
+          <section><h4>Small surface</h4><p>Add a class only when you need a layout choice.</p></section>
+        </ui-grid>
+        <pre><code>&lt;ui-grid&gt;…&lt;/ui-grid&gt;</code></pre>
+        <h3>Sidebar and panel</h3>
+        <p>A sidebar sits beside its content when there is enough room, then stacks in reading order. A panel supplies a surface without changing the meaning of its contents.</p>
+        <ui-sidebar>
+          <nav aria-label="Sidebar example">
+            <ul>
+              <li><a href="#forms">Form elements</a></li>
+              <li><a href="#accessible-forms">Accessible forms</a></li>
+            </ul>
+          </nav>
+          <ui-panel>
+            <section>
+              <h4>Room to work</h4>
+              <p>Native HTML stays in the page. The layout responds to the available space.</p>
+            </section>
+          </ui-panel>
+        </ui-sidebar>
+        <pre><code>&lt;ui-sidebar&gt;
+  &lt;nav aria-label="Project"&gt;…links…&lt;/nav&gt;
+  &lt;ui-panel&gt;…content…&lt;/ui-panel&gt;
+&lt;/ui-sidebar&gt;</code></pre>
+        <p>Adjust layout geometry in your own CSS. Defaults work without any configuration.</p>
+        <pre><code>#project-cards {
+  --ui-grid-min: 20rem;
+  --ui-grid-gap: 1.5rem;
+}
+#project-actions { --ui-cluster-gap: .5rem; }</code></pre>
+        <h3>Wide tables</h3>
+        <p>One optional wrapper contains wide data. Focus it with Tab, then scroll with the arrow keys.</p>
+        <div class="table-scroll" tabindex="0" role="region" aria-labelledby="wide-table-caption">
+          <table>
+            <caption id="wide-table-caption">Release checks</caption>
+            <thead><tr><th scope="col">Example</th><th scope="col">Keyboard</th><th scope="col">Small screens</th><th scope="col">Light theme</th><th scope="col">Dark theme</th><th scope="col">Native behavior</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Forms</th><td>Visible focus</td><td>Flexible fields</td><td>Readable text</td><td>Separate action colors</td><td>Browser validation</td></tr>
+              <tr><th scope="row">Dialogs</th><td>Return focus</td><td>Bounded width</td><td>Canvas surface</td><td>Canvas surface</td><td>Escape to close</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section id="themes">
+        <h2>Themes and customization</h2>
+        <p>UI follows your system theme automatically. This page can also preview a forced light or dark theme.</p>
+        <p id="theme-control" hidden>
+          <label for="theme">Preview theme</label>
+          <select id="theme"><option value="auto">System</option><option value="light">Light</option><option value="dark">Dark</option></select>
+        </p>
+        <p>Override a few CSS variables in your own stylesheet to set your brand and spacing.</p>
+        <pre><code>:root {
+  --ui-action-bg: #005cc5;
+  --ui-action-text: #fff;
+  --ui-radius: .5rem;
+  --ui-content-width: 72rem;
+}</code></pre>
+        <p>Use your browser’s print preview to see the print styles. UI adds no decorative motion.</p>
+      </section>
+    </main>
+    <footer>
+      <p>UI - <a href="https://github.com/ocodia/UI/">Github</a></p>
+    </footer>
+  </body>
+</html>

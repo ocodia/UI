@@ -1,0 +1,404 @@
+{
+  "button": [
+    {
+      "title": "Action variants",
+      "code": "<ui-cluster>\n  <button type=\"button\">Save project</button>\n  <button type=\"button\" data-variant=\"secondary\">Save a copy</button>\n  <button type=\"button\" data-variant=\"quiet\">Clear filters</button>\n  <button type=\"button\" data-variant=\"danger\">Delete draft</button>\n</ui-cluster>",
+      "note": "These appearance samples do not perform project operations.",
+      "script": ""
+    },
+    {
+      "title": "Long labels and disabled actions",
+      "code": "<ui-cluster>\n  <button type=\"button\">Save this project and return to the complete project overview</button>\n  <button type=\"button\" disabled>Export unavailable</button>\n</ui-cluster>",
+      "note": "",
+      "script": ""
+    },
+    {
+      "title": "Native submit and reset",
+      "code": "<form>\n  <label for=\"project\">Project name</label>\n  <input id=\"project\" name=\"project\" value=\"Field guide\" required>\n  <ui-cluster><button type=\"submit\">Check project</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n</form>",
+      "note": "The preview reports native values locally; it does not save them.",
+      "script": ""
+    }
+  ],
+  "button-group": [
+    {
+      "title": "Related actions",
+      "code": "<ui-cluster role=\"group\" aria-label=\"Project actions\">\n  <button type=\"button\">Save project</button>\n  <button type=\"button\" data-variant=\"secondary\">Export a copy of the complete project</button>\n  <button type=\"button\" disabled>Publish unavailable</button>\n</ui-cluster>",
+      "note": "Each action remains a separate Tab stop. This is not a toolbar.",
+      "script": ""
+    }
+  ],
+  "checkbox": [
+    {
+      "title": "Single choice",
+      "code": "<label><input type=\"checkbox\" name=\"updates\" value=\"yes\"> Email me project updates</label>",
+      "note": "",
+      "script": ""
+    },
+    {
+      "title": "Checked, hint and disabled",
+      "code": "<ui-stack>\n  <ui-field><label><input type=\"checkbox\" name=\"news\" value=\"yes\" checked aria-describedby=\"news-hint\"> Project news</label><ui-hint id=\"news-hint\">You can change this later.</ui-hint></ui-field>\n  <label><input type=\"checkbox\" disabled> Updates are unavailable</label>\n</ui-stack>",
+      "note": "",
+      "script": ""
+    },
+    {
+      "title": "Indeterminate state",
+      "code": "<label><input id=\"all\" type=\"checkbox\"> Select all project chapters</label>",
+      "note": "Indeterminate is a JavaScript property, independent of checked. A real select-all operation must coordinate its child checkboxes.",
+      "script": "document.querySelector('#all').indeterminate = true;"
+    },
+    {
+      "title": "Required choice and error recovery",
+      "code": "<ui-form>\n  <form>\n    <ui-field><label><input type=\"checkbox\" name=\"confirmation\" value=\"yes\" required> I have checked the project details</label><ui-error hidden>Error: Confirm you checked the project details</ui-error></ui-field>\n    <button type=\"submit\">Check confirmation</button>\n  </form>\n</ui-form>",
+      "note": "",
+      "script": ""
+    }
+  ],
+  "checkbox-group": [
+    {
+      "title": "One question, independent answers",
+      "code": "<fieldset aria-describedby=\"formats-hint\">\n  <legend>Optional export formats</legend>\n  <ui-hint id=\"formats-hint\">Choose any that you need.</ui-hint>\n  <label><input type=\"checkbox\" name=\"format\" value=\"html\" aria-describedby=\"formats-hint\"> HTML</label>\n  <label><input type=\"checkbox\" name=\"format\" value=\"pdf\" aria-describedby=\"formats-hint\"> PDF</label>\n</fieldset>",
+      "note": "A minimum-count rule belongs to application validation. Marking every checkbox required would require every option.",
+      "script": ""
+    }
+  ],
+  "date-input": [
+    {
+      "title": "Native entry and serialized values",
+      "code": "<form>\n  <ui-field><label for=\"answer\">Target date</label><input id=\"answer\" name=\"answer\" type=\"date\" min=\"2026-01-01\" max=\"2027-12-31\"></ui-field>\n  <ui-cluster><button type=\"submit\">Inspect values</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n</form>",
+      "note": "The preview reports FormData locally. The server must validate submitted values; browser presentation varies by locale and platform.",
+      "script": ""
+    },
+    {
+      "title": "Read-only and disabled",
+      "code": "<ui-stack>\n  <ui-field><label for=\"readonly\">Target date (read-only)</label><input id=\"readonly\" type=\"date\" readonly></ui-field>\n  <ui-field><label for=\"disabled\">Target date (unavailable)</label><input id=\"disabled\" type=\"date\" disabled></ui-field>\n</ui-stack>",
+      "note": "",
+      "script": ""
+    }
+  ],
+  "time-input": [
+    {
+      "title": "Native entry and serialized values",
+      "code": "<form>\n  <ui-field><label for=\"answer\">Start time</label><input id=\"answer\" name=\"answer\" type=\"time\" min=\"09:00\" max=\"17:00\" step=\"900\"></ui-field>\n  <ui-cluster><button type=\"submit\">Inspect values</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n</form>",
+      "note": "The preview reports FormData locally. The server must validate submitted values; browser presentation varies by locale and platform.",
+      "script": ""
+    },
+    {
+      "title": "Read-only and disabled",
+      "code": "<ui-stack>\n  <ui-field><label for=\"readonly\">Start time (read-only)</label><input id=\"readonly\" type=\"time\" readonly></ui-field>\n  <ui-field><label for=\"disabled\">Start time (unavailable)</label><input id=\"disabled\" type=\"time\" disabled></ui-field>\n</ui-stack>",
+      "note": "",
+      "script": ""
+    }
+  ],
+  "number-input": [
+    {
+      "title": "Native entry and serialized values",
+      "code": "<form>\n  <ui-field><label for=\"answer\">Number of copies</label><input id=\"answer\" name=\"answer\" type=\"number\" min=\"1\" max=\"20\" step=\"1\" value=\"1\"></ui-field>\n  <ui-cluster><button type=\"submit\">Inspect values</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n</form>",
+      "note": "The preview reports FormData locally. The server must validate submitted values; browser presentation varies by locale and platform.",
+      "script": ""
+    },
+    {
+      "title": "Read-only and disabled",
+      "code": "<ui-stack>\n  <ui-field><label for=\"readonly\">Number of copies (read-only)</label><input id=\"readonly\" type=\"number\" readonly></ui-field>\n  <ui-field><label for=\"disabled\">Number of copies (unavailable)</label><input id=\"disabled\" type=\"number\" disabled></ui-field>\n</ui-stack>",
+      "note": "",
+      "script": ""
+    }
+  ],
+  "file-input": [
+    {
+      "title": "Native entry and serialized values",
+      "code": "<form enctype=\"multipart/form-data\" method=\"post\">\n  <ui-field><label for=\"answer\">Supporting document</label><input id=\"answer\" name=\"answer\" type=\"file\" accept=\".pdf,.txt\" multiple></ui-field>\n  <ui-cluster><button type=\"submit\">Inspect values</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n</form>",
+      "note": "The preview reports FormData locally. The server must validate submitted values; browser presentation varies by locale and platform.",
+      "script": ""
+    },
+    {
+      "title": "Unavailable upload",
+      "code": "<label for=\"unavailable\">Supporting document (unavailable)</label>\n<input id=\"unavailable\" type=\"file\" disabled>",
+      "note": "File inputs do not support readonly. Never set a local file path from application code. Accept is a picker hint, not server validation.",
+      "script": ""
+    }
+  ],
+  "input": [
+    {
+      "title": "Hint, required validation and reset",
+      "code": "<ui-form>\n  <form>\n    <ui-field><label for=\"email\">Email address</label><ui-hint id=\"email-hint\">We will only use this for project updates.</ui-hint><input id=\"email\" name=\"email\" type=\"email\" autocomplete=\"email\" aria-describedby=\"email-hint\" required></ui-field>\n    <ui-cluster><button type=\"submit\">Check address</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n  </form>\n</ui-form>",
+      "note": "",
+      "script": ""
+    },
+    {
+      "title": "Read-only and disabled",
+      "code": "<ui-stack><ui-field><label for=\"reference\">Reference (read-only)</label><input id=\"reference\" name=\"reference\" value=\"FIELD-001\" readonly></ui-field><ui-field><label for=\"locked\">Archived title</label><input id=\"locked\" value=\"Field guide\" disabled></ui-field></ui-stack>",
+      "note": "Read-only values remain successful form values. Disabled controls are omitted.",
+      "script": ""
+    }
+  ],
+  "radio": [
+    {
+      "title": "One answer per named question",
+      "code": "<fieldset>\n  <legend>Project visibility</legend>\n  <label><input type=\"radio\" name=\"visibility\" value=\"private\" checked> Private</label>\n  <label><input type=\"radio\" name=\"visibility\" value=\"team\"> Everyone in the project team</label>\n  <label><input type=\"radio\" name=\"visibility\" value=\"public\" disabled> Public (unavailable)</label>\n</fieldset>",
+      "note": "The browser owns arrow-key navigation and selection within the same-name group.",
+      "script": ""
+    }
+  ],
+  "radio-group": [
+    {
+      "title": "One answer per named question",
+      "code": "<fieldset>\n  <legend>Project visibility</legend>\n  <label><input type=\"radio\" name=\"visibility\" value=\"private\" checked> Private</label>\n  <label><input type=\"radio\" name=\"visibility\" value=\"team\"> Everyone in the project team</label>\n  <label><input type=\"radio\" name=\"visibility\" value=\"public\" disabled> Public (unavailable)</label>\n</fieldset>",
+      "note": "The browser owns arrow-key navigation and selection within the same-name group.",
+      "script": ""
+    }
+  ],
+  "select": [
+    {
+      "title": "Options and option groups",
+      "code": "<label for=\"stage\">Project stage</label>\n<select id=\"stage\" name=\"stage\">\n  <optgroup label=\"Current\"><option value=\"planning\">Planning</option><option value=\"active\">In progress</option></optgroup>\n  <optgroup label=\"Finished\"><option value=\"complete\">Complete</option><option disabled>Archived (unavailable)</option></optgroup>\n</select>",
+      "note": "",
+      "script": ""
+    },
+    {
+      "title": "Multiple selection and repeated values",
+      "code": "<form>\n  <label for=\"regions\">Survey regions (choose any)</label>\n  <p id=\"regions-hint\">Desktop selection shortcuts depend on your platform. Use its modifier keys to select separate entries.</p>\n  <select id=\"regions\" name=\"region\" multiple size=\"4\" aria-describedby=\"regions-hint\"><option value=\"coast\" selected>Coast</option><option value=\"woodland\">Woodland</option><option value=\"river\">River</option><option value=\"heath\">Heath</option></select>\n  <button type=\"submit\">Inspect selected values</button>\n</form>",
+      "note": "Use FormData.getAll(\"region\"); a single get() loses additional selections.",
+      "script": ""
+    }
+  ],
+  "option": [
+    {
+      "title": "Options and option groups",
+      "code": "<label for=\"stage\">Project stage</label>\n<select id=\"stage\" name=\"stage\">\n  <optgroup label=\"Current\"><option value=\"planning\">Planning</option><option value=\"active\">In progress</option></optgroup>\n  <optgroup label=\"Finished\"><option value=\"complete\">Complete</option><option disabled>Archived (unavailable)</option></optgroup>\n</select>",
+      "note": "",
+      "script": ""
+    },
+    {
+      "title": "Multiple selection and repeated values",
+      "code": "<form>\n  <label for=\"regions\">Survey regions (choose any)</label>\n  <p id=\"regions-hint\">Desktop selection shortcuts depend on your platform. Use its modifier keys to select separate entries.</p>\n  <select id=\"regions\" name=\"region\" multiple size=\"4\" aria-describedby=\"regions-hint\"><option value=\"coast\" selected>Coast</option><option value=\"woodland\">Woodland</option><option value=\"river\">River</option><option value=\"heath\">Heath</option></select>\n  <button type=\"submit\">Inspect selected values</button>\n</form>",
+      "note": "Use FormData.getAll(\"region\"); a single get() loses additional selections.",
+      "script": ""
+    }
+  ],
+  "slider": [
+    {
+      "title": "A bounded numeric value",
+      "code": "<form>\n  <label for=\"volume\">Volume, percent</label>\n  <input id=\"volume\" name=\"volume\" type=\"range\" min=\"0\" max=\"100\" step=\"5\" value=\"50\" aria-describedby=\"volume-hint\">\n  <p id=\"volume-hint\">From 0 to 100 percent, in steps of 5.</p>\n  <button type=\"submit\">Inspect volume</button>\n</form>",
+      "note": "A range has a numeric default; it cannot represent an unanswered required question. Keyboard steps remain native.",
+      "script": ""
+    }
+  ],
+  "textarea": [
+    {
+      "title": "Multiline text and reset",
+      "code": "<form>\n  <label for=\"notes\">Field notes</label>\n  <textarea id=\"notes\" name=\"notes\" rows=\"4\" maxlength=\"500\">Shoreline observations</textarea>\n  <ui-cluster><button type=\"submit\">Inspect notes</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n</form>",
+      "note": "Newlines stay in the native value. Keep native resizing available.",
+      "script": ""
+    },
+    {
+      "title": "Read-only and disabled",
+      "code": "<ui-stack><ui-field><label for=\"original\">Original notes (read-only)</label><textarea id=\"original\" readonly>Keep the original field observations.</textarea></ui-field><ui-field><label for=\"archived\">Archived notes</label><textarea id=\"archived\" disabled>Editing unavailable.</textarea></ui-field></ui-stack>",
+      "note": "",
+      "script": ""
+    }
+  ],
+  "card": [
+    {
+      "title": "Panel with meaningful content",
+      "code": "<ui-panel>\n  <article id=\"project\"><h2>Coastal field guide</h2><p>A companion for a day along the shoreline.</p><a href=\"#project\">View the field guide</a></article>\n</ui-panel>",
+      "note": "The panel supplies presentation; the article, heading and link supply semantics.",
+      "script": ""
+    }
+  ],
+  "details": [
+    {
+      "title": "Optional supporting information",
+      "code": "<details>\n  <summary>What happens to my project answers?</summary>\n  <p>The application owns storage and server submission. UI keeps native values on the form controls.</p>\n</details>",
+      "note": "Essential instructions belong outside a closed disclosure.",
+      "script": ""
+    }
+  ],
+  "dialog": [
+    {
+      "title": "Modal task with inline fallback",
+      "code": "<section aria-labelledby=\"task-title\">\n  <h2 id=\"task-title\" tabindex=\"-1\">Project information</h2>\n  <button id=\"open-dialog\" type=\"button\" hidden>Open information</button>\n  <p id=\"fallback\">Opening information sends nothing. Your answers stay on this page.</p>\n  <dialog id=\"information\" aria-labelledby=\"information-title\" hidden><h2 id=\"information-title\">Project information</h2><p>Opening information sends nothing. Your answers stay on this page.</p><form method=\"dialog\"><button value=\"close\" autofocus>Close information</button></form></dialog>\n</section>",
+      "note": "This short sample demonstrates native modality. The full recipe documents trigger removal, lifecycle and async ownership.",
+      "script": "const dialog = document.querySelector('#information');\nconst opener = document.querySelector('#open-dialog');\nconst fallback = document.querySelector('#fallback');\nif (typeof dialog.showModal === 'function' && typeof dialog.close === 'function') {\n  opener.addEventListener('click', () => {\n    if (dialog.open) return;\n    opener.focus();\n    dialog.returnValue = '';\n    try { dialog.showModal(); if (dialog.open) return; } catch {}\n    fallback.hidden = false; opener.hidden = true; dialog.hidden = true;\n    document.querySelector('#task-title').focus();\n  });\n  dialog.hidden = false; fallback.hidden = true; opener.hidden = false;\n}"
+    }
+  ],
+  "divider": [
+    {
+      "title": "A thematic break",
+      "code": "<p>The project outline is ready.</p>\n<hr>\n<p>The next topic is field research.</p>",
+      "note": "",
+      "script": ""
+    }
+  ],
+  "page": [
+    {
+      "title": "Landmarks and responsive composition",
+      "code": "<ui-sidebar>\n  <nav aria-label=\"Project\"><ul><li><a href=\"#project\">Overview</a></li><li><a href=\"#notes\">Notes</a></li></ul></nav>\n  <section id=\"project\"><h2>Coastal field guide</h2><ui-grid><ui-panel><h3>Outline</h3><p>Three chapters.</p></ui-panel><ui-panel id=\"notes\"><h3>Notes</h3><p>Room for observations.</p></ui-panel></ui-grid></section>\n</ui-sidebar>",
+      "note": "",
+      "script": ""
+    }
+  ],
+  "scroller": [
+    {
+      "title": "Named, keyboard-focusable scroll region",
+      "code": "<div class=\"table-scroll\" tabindex=\"0\" role=\"region\" aria-labelledby=\"report-title\">\n  <table><caption id=\"report-title\">Survey report</caption><thead><tr><th scope=\"col\">Project</th><th scope=\"col\">Region</th><th scope=\"col\">Stage</th><th scope=\"col\">Lead researcher</th></tr></thead><tbody><tr><td>Coastal field guide</td><td>North shoreline</td><td>In progress</td><td>Fieldwork research team</td></tr></tbody></table>\n</div>",
+      "note": "Shrink the preview to check local scrolling. The page itself must continue to reflow.",
+      "script": ""
+    }
+  ],
+  "breadcrumb": [
+    {
+      "title": "A named navigation path",
+      "code": "<nav aria-label=\"Breadcrumb\">\n  <ol><li><a href=\"#home\">Home</a></li><li><a href=\"#projects\">Projects</a></li><li aria-current=\"page\">Coastal field guide</li></ol>\n</nav>\n<section id=\"home\"><h2 id=\"projects\">Coastal field guide</h2></section>",
+      "note": "The current item is text. Keep list items inside their native list.",
+      "script": ""
+    }
+  ],
+  "breadcrumb-item": [
+    {
+      "title": "A named navigation path",
+      "code": "<nav aria-label=\"Breadcrumb\">\n  <ol><li><a href=\"#home\">Home</a></li><li><a href=\"#projects\">Projects</a></li><li aria-current=\"page\">Coastal field guide</li></ol>\n</nav>\n<section id=\"home\"><h2 id=\"projects\">Coastal field guide</h2></section>",
+      "note": "The current item is text. Keep list items inside their native list.",
+      "script": ""
+    }
+  ],
+  "progress-bar": [
+    {
+      "title": "Determinate progress",
+      "code": "<label for=\"progress\">Export progress</label>\n<progress id=\"progress\" max=\"100\" value=\"40\">40%</progress>\n<p>40 percent complete. You can keep working while the export runs.</p>",
+      "note": "The value and text are illustrative; no background task is running.",
+      "script": ""
+    },
+    {
+      "title": "Indeterminate progress",
+      "code": "<label for=\"waiting\">Waiting for the export service</label>\n<progress id=\"waiting\">Waiting</progress>\n<p>The service has not reported a measurable total yet.</p>",
+      "note": "Omit value for indeterminate progress. Applications own announcements, cancellation and persistent failure feedback.",
+      "script": ""
+    }
+  ],
+  "popover": [
+    {
+      "title": "Supplemental non-modal information",
+      "code": "<button type=\"button\" popovertarget=\"help\">Project help</button>\n<div id=\"help\" popover><h2>Project help</h2><p>Use a short title and keep the original field notes.</p><button type=\"button\" popovertarget=\"help\" popovertargetaction=\"hide\">Close help</button></div>\n<p>Use a short title and keep the original field notes.</p>",
+      "note": "Essential help is also visible inline. No menu or dialog role is applied.",
+      "script": ""
+    }
+  ],
+  "ui-stack": [
+    {
+      "title": "Working composition",
+      "code": "<ui-stack><h2>Projects</h2><p>Your current work.</p></ui-stack>",
+      "note": "CSS-only wrappers supply layout or presentation. Native children retain meaning and values.",
+      "script": ""
+    }
+  ],
+  "ui-cluster": [
+    {
+      "title": "Working composition",
+      "code": "<ui-cluster id=\"project\"><button type=\"button\">Save project</button><button type=\"button\" data-variant=\"secondary\">Export a copy of the complete project</button></ui-cluster>",
+      "note": "CSS-only wrappers supply layout or presentation. Native children retain meaning and values.",
+      "script": ""
+    }
+  ],
+  "ui-grid": [
+    {
+      "title": "Working composition",
+      "code": "<ui-grid><section><h2>First</h2></section><section><h2>Second</h2></section></ui-grid>",
+      "note": "CSS-only wrappers supply layout or presentation. Native children retain meaning and values.",
+      "script": ""
+    }
+  ],
+  "ui-sidebar": [
+    {
+      "title": "Working composition",
+      "code": "<ui-sidebar><aside>Related content</aside><section><h2>Main content</h2></section></ui-sidebar>",
+      "note": "CSS-only wrappers supply layout or presentation. Native children retain meaning and values.",
+      "script": ""
+    }
+  ],
+  "ui-panel": [
+    {
+      "title": "Working composition",
+      "code": "<ui-panel><article><h2>Project</h2><p>Summary.</p></article></ui-panel>",
+      "note": "CSS-only wrappers supply layout or presentation. Native children retain meaning and values.",
+      "script": ""
+    }
+  ],
+  "ui-field": [
+    {
+      "title": "Working composition",
+      "code": "<ui-field><label for=\"title\">Title</label><input id=\"title\" name=\"title\"></ui-field>",
+      "note": "CSS-only wrappers supply layout or presentation. Native children retain meaning and values.",
+      "script": ""
+    }
+  ],
+  "ui-hint": [
+    {
+      "title": "Working composition",
+      "code": "<ui-hint id=\"title-hint\">Use a short name.</ui-hint>\n<input aria-label=\"Title\" aria-describedby=\"title-hint\" name=\"title\">",
+      "note": "CSS-only wrappers supply layout or presentation. Native children retain meaning and values.",
+      "script": ""
+    }
+  ],
+  "ui-error": [
+    {
+      "title": "Working composition",
+      "code": "<ui-error id=\"title-error\">Error: Enter a title</ui-error>\n<input aria-label=\"Title\" name=\"title\" aria-invalid=\"true\" aria-describedby=\"title-error\">",
+      "note": "CSS-only wrappers supply layout or presentation. Native children retain meaning and values.",
+      "script": ""
+    }
+  ],
+  "ui-error-summary": [
+    {
+      "title": "Working composition",
+      "code": "<ui-form><ui-error-summary hidden><h2>There is a problem</h2><ul></ul></ui-error-summary><form><ui-field><label for=\"title\">Project title</label><input id=\"title\" name=\"title\" required></ui-field><button type=\"submit\">Check project</button></form></ui-form>",
+      "note": "Load js/components.js for this optional behavior. The preview handles valid submissions locally.",
+      "script": ""
+    }
+  ],
+  "ui-form": [
+    {
+      "title": "Working composition",
+      "code": "<ui-form>\n  <form>\n    <ui-field><label for=\"email\">Email address</label><ui-hint id=\"email-hint\">We will only use this for project updates.</ui-hint><input id=\"email\" name=\"email\" type=\"email\" autocomplete=\"email\" aria-describedby=\"email-hint\" required></ui-field>\n    <ui-cluster><button type=\"submit\">Check address</button><button type=\"reset\" data-variant=\"secondary\">Reset</button></ui-cluster>\n  </form>\n</ui-form>",
+      "note": "Load js/components.js for this optional behavior. The preview handles valid submissions locally.",
+      "script": ""
+    }
+  ],
+  "ui-skip-link": [
+    {
+      "title": "Working composition",
+      "code": "<ui-skip-link><a href=\"#content\">Skip to project content</a></ui-skip-link>\n<section id=\"content\" tabindex=\"-1\"><h2>Projects</h2><p>Your current work.</p></section>",
+      "note": "CSS-only wrappers supply layout or presentation. Native children retain meaning and values.",
+      "script": ""
+    }
+  ],
+  "controls": [
+    {
+      "title": "Button variants",
+      "code": "<ui-cluster>\n  <button type=\"button\">Save project</button>\n  <button type=\"button\" data-variant=\"secondary\">Save a copy</button>\n  <button type=\"button\" data-variant=\"quiet\">Clear filters</button>\n  <button type=\"button\" data-variant=\"danger\">Delete draft</button>\n</ui-cluster>",
+      "note": "These appearance samples do not perform project operations.",
+      "script": ""
+    },
+    {
+      "title": "Independent control sizes",
+      "code": "<ui-stack>\n  <ui-field><label for=\"small\">Small search</label><input id=\"small\" type=\"search\" data-size=\"small\"></ui-field>\n  <ui-field><label for=\"default\">Default title</label><input id=\"default\" name=\"title\"></ui-field>\n  <ui-field><label for=\"large\">Large title</label><input id=\"large\" name=\"title\" data-size=\"large\"></ui-field>\n</ui-stack>",
+      "note": "",
+      "script": ""
+    }
+  ],
+  "density": [
+    {
+      "title": "Compact composition, comfortable content",
+      "code": "<ui-panel data-density=\"compact\"><ui-stack><ui-field><label for=\"title\">Project title</label><input id=\"title\" value=\"Field guide\"></ui-field><ui-cluster><button type=\"button\">Save project</button><button type=\"button\" data-variant=\"secondary\">Export</button></ui-cluster><ui-panel data-density=\"comfortable\"><p>This nested panel restores comfortable spacing.</p></ui-panel></ui-stack></ui-panel>",
+      "note": "",
+      "script": ""
+    }
+  ],
+  "dialog-guide": [
+    {
+      "title": "Modal task with inline fallback",
+      "code": "<section aria-labelledby=\"task-title\">\n  <h2 id=\"task-title\" tabindex=\"-1\">Project information</h2>\n  <button id=\"open-dialog\" type=\"button\" hidden>Open information</button>\n  <p id=\"fallback\">Opening information sends nothing. Your answers stay on this page.</p>\n  <dialog id=\"information\" aria-labelledby=\"information-title\" hidden><h2 id=\"information-title\">Project information</h2><p>Opening information sends nothing. Your answers stay on this page.</p><form method=\"dialog\"><button value=\"close\" autofocus>Close information</button></form></dialog>\n</section>",
+      "note": "This short sample demonstrates native modality. The full recipe documents trigger removal, lifecycle and async ownership.",
+      "script": "const dialog = document.querySelector('#information');\nconst opener = document.querySelector('#open-dialog');\nconst fallback = document.querySelector('#fallback');\nif (typeof dialog.showModal === 'function' && typeof dialog.close === 'function') {\n  opener.addEventListener('click', () => {\n    if (dialog.open) return;\n    opener.focus();\n    dialog.returnValue = '';\n    try { dialog.showModal(); if (dialog.open) return; } catch {}\n    fallback.hidden = false; opener.hidden = true; dialog.hidden = true;\n    document.querySelector('#task-title').focus();\n  });\n  dialog.hidden = false; fallback.hidden = true; opener.hidden = false;\n}"
+    }
+  ]
+}

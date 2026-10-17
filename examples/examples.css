@@ -1,0 +1,44 @@
+/* Documentation application styles; these are not library component APIs. */
+:root { --ui-content-width: 82rem; }
+body > header { padding-block: 1.5rem; }
+body > header h1 { margin-block: .25rem .5rem; }
+body > header p { margin-block: .25rem; }
+body > nav { padding-block: .5rem; }
+#example-cards { --ui-grid-min: 19rem; --ui-grid-gap: 1.5rem; }
+#example-cards h2 { margin-block-start: 0; font-size: 1.4rem; }
+ui-panel > :is(article, section) > :first-child { margin-block-start: 0; }
+#recipe-layout { --ui-sidebar-gap: 2rem; }
+#recipe-layout > nav ul { display: block; }
+#recipe-layout > nav li + li { margin-block-start: .75rem; }
+#recipes { --ui-stack-gap: 2rem; }
+#theme-controls { --ui-grid-min: 14rem; }
+#theme-preview { --ui-stack-gap: 1.5rem; }
+#catalog-filter { padding: 1rem; border: 1px solid var(--ui-border); border-radius: var(--ui-radius); }
+[data-component] > summary { font-weight: 600; }
+[data-component] pre { font-size: .875rem; }
+#recipe-output, #theme-result { display: block; }
+#recipe-output:empty, #theme-result:empty { display: none; }
+@media print { #catalog-filter, #theme-controls { display: none; } }
+/* Token samples are documentation recipes, not public component variants. */
+#state-tokens > article { padding: var(--ui-space-4); border: 1px solid var(--sample-border); border-inline-start-width: .25rem; border-radius: var(--ui-radius); color: var(--sample-text); background: var(--sample-bg); }
+#state-tokens h3 { margin-block-start: 0; color: inherit; }
+#state-tokens p { margin-block-end: 0; }
+[data-token-state="info"] { --sample-text: var(--ui-info-text); --sample-bg: var(--ui-info-bg); --sample-border: var(--ui-info-border); }
+[data-token-state="success"] { --sample-text: var(--ui-success-text); --sample-bg: var(--ui-success-bg); --sample-border: var(--ui-success-border); }
+[data-token-state="warning"] { --sample-text: var(--ui-warning-text); --sample-bg: var(--ui-warning-bg); --sample-border: var(--ui-warning-border); }
+[data-token-state="danger"] { --sample-text: var(--ui-danger-text); --sample-bg: var(--ui-danger-bg); --sample-border: var(--ui-danger-border); }
+[data-token-state="selected"] { --sample-text: var(--ui-selected-text); --sample-bg: var(--ui-selected-bg); --sample-border: var(--ui-selected-border); }
+[data-token-state="disabled"] { --sample-text: var(--ui-disabled-text); --sample-bg: var(--ui-disabled-bg); --sample-border: var(--ui-disabled-border); }
+[data-token-state="busy"] { --sample-text: var(--ui-busy-text); --sample-bg: var(--ui-busy-bg); --sample-border: var(--ui-busy-border); }
+
+@media print {
+  #state-tokens > article { color: #000; background: #fff; border-color: #666; }
+}
+
+#variant-result, #size-result { display: block; }
+#variant-result:empty, #size-result:empty { display: none; }
+#control-sizes { --ui-grid-min: 18rem; }
+
+#density-comparison { --ui-grid-min: 22rem; align-items: start; }
+#density-comparison output { display: block; }
+#density-comparison output:empty { display: none; }

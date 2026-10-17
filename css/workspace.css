@@ -1,0 +1,41 @@
+/* Application choices live outside UI's defaults. */
+:root { --ui-content-width: 90rem; }
+.workspace-header { padding-block: 1.25rem; }
+.workspace-header ui-cluster { margin: 0; }
+.workspace-header strong { font-size: 1.35rem; }
+.workspace-header a { margin-inline-start: auto; }
+#workspace { --ui-sidebar-gap: 2rem; }
+#workspace > aside { border-block-end: 1px solid var(--ui-border); padding-block-end: 1rem; }
+#workspace nav ul { display: block; padding: 0; list-style: none; }
+#workspace nav li + li { margin-block-start: .25rem; }
+#workspace nav a { display: block; padding: .5rem .75rem; border-inline-start: 3px solid transparent; border-radius: var(--ui-radius); }
+#workspace nav [aria-current] { color: var(--ui-selected-text); background: var(--ui-selected-bg); border-inline-start-color: var(--ui-selected-border); font-weight: var(--ui-font-weight-bold); }
+#workspace nav a:focus-visible { color: var(--ui-focus-edge); background: var(--ui-focus); }
+#workspace nav details { background: transparent; }
+#workspace h1 { margin-block-start: .25rem; }
+#workspace h2 { margin-block-start: 0; font-size: 1.4rem; }
+#project-layout { --ui-grid-gap: 2rem; align-items: start; grid-template-columns: minmax(0, 1fr); }
+#project-layout > ui-stack { --ui-stack-gap: 2rem; }
+#project-details > ui-panel { --ui-panel-padding: 1.25rem; }
+#project-details dd { margin-inline: 0; }
+#project-details details { background: var(--ui-canvas); }
+#project-form :is(input, select, textarea) { max-inline-size: 100%; }
+#task-progress { inline-size: 100%; }
+#save-status { display: block; }
+#save-status:empty { display: none; }
+@media (width >= 52rem) {
+  #workspace > aside { border-block-end: 0; border-inline-end: 1px solid var(--ui-border); padding-inline-end: 1.5rem; }
+}
+@media (width >= 78rem) {
+  #project-layout { grid-template-columns: minmax(0, 1fr) 18rem; }
+}
+@media print {
+  ui-skip-link, #workspace > aside, #save-actions, #export-project { display: none; }
+  #workspace, #project-layout { display: block; }
+  #project-details ui-panel, #milestones { background: transparent; }
+}
+
+@media (forced-colors: active) {
+  #workspace nav [aria-current] { border-inline-start-color: CanvasText; }
+  #workspace nav a:focus-visible { color: LinkText; background: Canvas; }
+}

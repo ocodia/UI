@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Compose working interfaces from native HTML and implemented UI primitives.">
+  <title>Interface recipes — UI</title>
+  <link rel="stylesheet" href="../css/ui.css"><link rel="stylesheet" href="examples.css">
+  <script src="../js/components.js" defer></script><script src="recipes.js" defer></script>
+<link rel="stylesheet" href="../css/site.css">
+</head>
+<body>
+  <ui-skip-link><a href="#main">Skip to main content</a></ui-skip-link>
+  <header class="site-header"><a class="site-wordmark" href="../index.html">UI <span>HTML first</span></a><nav aria-label="Primary" data-site-nav><ul><li><a href="../index.html">About</a></li><li><a href="components.html">Components</a></li><li><a href="../docs/index.html" aria-current="page">Docs</a></li><li><a href="themes.html">Themes</a></li><li><a href="../tests/accessibility.html">Tests</a></li></ul></nav></header>
+
+  <main id="main" tabindex="-1">
+<h1>Interface recipes</h1><p>Compose working interfaces from native HTML and implemented UI primitives.</p>
+    <ui-sidebar id="recipe-layout">
+      <nav aria-label="Recipes"><ul><li><a href="#navigation">Navigation</a></li><li><a href="#form-recipe">Forms and choices</a></li><li><a href="#disclosure">Disclosures</a></li><li><a href="#feedback">Progress and status</a></li><li><a href="#modal">Native dialog</a></li></ul></nav>
+      <ui-stack id="recipes">
+        <section id="navigation" aria-labelledby="navigation-title">
+          <h2 id="navigation-title">Navigation stays navigation</h2>
+          <nav aria-label="Breadcrumb"><ol><li><a href="index.html">Examples</a></li><li aria-current="page">Recipes</li></ol></nav>
+          <p>A real destination is a link. The current location uses <code>aria-current</code>. A collapsible sidebar can use <code>details</code> without becoming a tree or command menu.</p>
+          <pre><code>&lt;nav aria-label="Breadcrumb"&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;a href="/projects"&gt;Projects&lt;/a&gt;&lt;/li&gt;
+    &lt;li aria-current="page"&gt;Field guide&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+        </section>
+        <section id="form-recipe" aria-labelledby="form-title">
+          <h2 id="form-title">Native values, coordinated errors</h2>
+          <p>Submit an empty project name to try linked errors. The demonstration validates locally and sends nothing.</p>
+          <ui-panel><ui-form id="recipe-editor">
+            <ui-error-summary hidden><h2>There is a problem</h2><ul></ul></ui-error-summary>
+            <form id="recipe-form">
+              <ui-stack>
+                <ui-field><label for="recipe-name">Project name</label><ui-hint id="recipe-name-hint">Use up to 80 characters.</ui-hint><ui-error hidden>Error: Enter a project name</ui-error><input id="recipe-name" name="project" maxlength="80" aria-describedby="recipe-name-hint" required></ui-field>
+                <ui-field><label for="recipe-stage">Stage</label><select id="recipe-stage" name="stage"><option value="planning">Planning</option><option value="active">In progress</option></select></ui-field>
+                <fieldset><legend>Visibility</legend><label><input type="radio" name="visibility" value="private" checked> Private</label><label><input type="radio" name="visibility" value="team"> Team</label></fieldset>
+                <fieldset><legend>Optional exports</legend><label><input type="checkbox" name="format" value="html"> HTML</label><label><input type="checkbox" name="format" value="pdf"> PDF</label></fieldset>
+                <ui-cluster><button id="recipe-submit" type="submit" hidden>Check project</button><button type="reset" data-variant="secondary">Reset answers</button></ui-cluster>
+                <output id="recipe-output" role="status"></output>
+                <noscript><p>Controls remain native. Enable JavaScript to run this local form demonstration.</p></noscript>
+              </ui-stack>
+            </form>
+          </ui-form></ui-panel>
+          <p><code>ui-form</code> handles presentation and focus. The form and its inputs own submission, values and reset. Server validation remains the application's job.</p>
+          <p><a href="server-errors.html">Try a pre-rendered server error</a> to see messages and answers survive enhancement, correction and reset.</p>
+          <pre><code>&lt;ui-form&gt;
+  &lt;form action="/projects" method="post"&gt;
+    &lt;ui-field&gt;…native label, hint and input…&lt;/ui-field&gt;
+    &lt;fieldset&gt;…legend and native choices…&lt;/fieldset&gt;
+    &lt;button type="submit"&gt;Save project&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/ui-form&gt;</code></pre>
+        </section>
+        <section id="disclosure" aria-labelledby="disclosure-title"><h2 id="disclosure-title">Use the browser's disclosure</h2><details><summary>How does progressive enhancement work here?</summary><p>Native details, controls and layouts work without the demo script. Compound-widget roles are added only when their keyboard and focus behavior is ready.</p></details><p>Tabs and the enhanced accordion family are planned. These disclosures are working native HTML.</p></section>
+        <section id="feedback" aria-labelledby="feedback-title"><h2 id="feedback-title">Name progress and keep context</h2><ui-panel><label for="recipe-progress">Documentation coverage draft</label><progress id="recipe-progress" max="4" value="1">1 of 4 stages</progress><p>Illustrative progress: 1 of 4 stages. The component inventory is drafted; implementation and manual verification continue.</p></ui-panel><p>Use an <code>output</code> or status region for brief updates. Important errors also need persistent text near the task.</p></section>
+        <section id="modal" aria-labelledby="modal-title">
+          <h2 id="modal-title" tabindex="-1">A native modal task</h2>
+          <p>The browser owns modal focus containment and background inertness. Open this information task, follow its link with Tab, then close with the button or Escape. Clicking the backdrop does not close it.</p>
+          <button id="recipe-open-dialog" type="button" hidden>Open project information</button>
+          <section id="recipe-dialog-fallback" aria-labelledby="recipe-fallback-title">
+            <h3 id="recipe-fallback-title" tabindex="-1">Project information</h3>
+            <p>These recipes use native controls and optional light-DOM enhancement. Your project answers stay on this page; opening or closing information sends nothing.</p>
+            <p><a href="../docs/architecture.html">Read the architecture</a> for the ownership rules.</p>
+          </section>
+          <dialog id="recipe-dialog" aria-labelledby="recipe-dialog-title" hidden>
+            <h2 id="recipe-dialog-title">Project information</h2>
+            <p>These recipes use native controls and optional light-DOM enhancement. Your project answers stay on this page; opening or closing information sends nothing.</p>
+            <p><a href="../docs/architecture.html">Read the architecture</a> for the ownership rules.</p>
+            <form method="dialog"><button type="submit" value="close" autofocus>Close information</button></form>
+          </dialog>
+          <p>The same information stays inline when JavaScript or modal support is unavailable. If opening fails, focus moves to that inline information. <a href="../docs/dialog.html">Read the dialog recipe</a> for focus, forms, lifecycle and manual verification.</p>
+        </section>
+      </ui-stack>
+    </ui-sidebar></main>
+  <footer><p>UI · <a href="../docs/index.html">Documentation</a> · <a href="../docs/roadmap.html">Roadmap</a> · <a href="../tests/accessibility.html">Browser checks</a></p></footer>
+</body>
+</html>

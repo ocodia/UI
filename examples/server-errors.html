@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A static server-error response enhanced by UI without losing answers, messages or focus.">
+  <title>Error: Project name — UI</title>
+  <link rel="stylesheet" href="../css/ui.css">
+  <link rel="stylesheet" href="examples.css">
+  <script src="../js/components.js" defer></script>
+  <script src="server-errors.js" defer></script>
+<link rel="stylesheet" href="../css/site.css">
+</head>
+<body>
+  <ui-skip-link><a href="#main">Skip to main content</a></ui-skip-link>
+  <header class="site-header"><a class="site-wordmark" href="../index.html">UI <span>HTML first</span></a><nav aria-label="Primary" data-site-nav><ul><li><a href="../index.html">About</a></li><li><a href="components.html">Components</a></li><li><a href="../docs/index.html" aria-current="page">Docs</a></li><li><a href="themes.html">Themes</a></li><li><a href="../tests/accessibility.html">Tests</a></li></ul></nav></header>
+
+  <main id="main" tabindex="-1">
+<h1>Server error recovery</h1><p>Keep the answers. Explain the correction. Preserve the native form.</p>
+    <ui-stack>
+      <p>This static page represents a server response that rejected a duplicate name. The error markup and entered answer are present before JavaScript loads. Enhancement adopts them without moving focus.</p>
+      <ui-form id="server-editor">
+        <ui-error-summary role="region" aria-labelledby="server-errors-title" tabindex="-1">
+          <h2 id="server-errors-title">There is a problem</h2>
+          <ul><li><a href="#server-project">This project name is already in use. Choose another name</a></li></ul>
+        </ui-error-summary>
+        <ui-panel>
+          <form id="server-form">
+            <ui-stack>
+              <ui-field>
+                <label for="server-project">Project name</label>
+                <ui-hint id="server-project-hint">Use a short, recognisable name, up to 80 characters.</ui-hint>
+                <ui-error id="server-project-error">Error: This project name is already in use. Choose another name</ui-error>
+                <input id="server-project" name="project" value="Coastal field guide" maxlength="80" required aria-invalid="true" aria-describedby="server-project-hint server-project-error">
+              </ui-field>
+              <ui-cluster id="server-actions" hidden>
+                <button type="submit">Check another name</button>
+                <button type="reset" data-variant="secondary">Reset answers and errors</button>
+              </ui-cluster>
+              <output id="server-result" role="status"></output>
+              <noscript><p>The summary links, answer, hint and inline error work without JavaScript. Enable JavaScript to try correcting and resetting this local demonstration.</p></noscript>
+            </ui-stack>
+          </form>
+        </ui-panel>
+      </ui-form>
+      <section aria-labelledby="contract-title">
+        <h2 id="contract-title">Native values and error recovery</h2>
+        <p>The demo rejects the original name through a local synchronous rule; it makes no request and proves no real-world uniqueness. Production applications must validate the new answer on the server.</p>
+        <p>Try a different name, an empty name, or reset. Clearing an error preserves hints and answers. Reset restores the original answer and clears the displayed errors; another submission checks it again.</p>
+        <p><a href="../docs/reference.html#server-rendered-errors">Read the server-error contract</a> · <a href="../tests/accessibility.html">Run browser checks</a></p>
+      </section>
+    </ui-stack>
+  </main>
+  <footer><p>UI · <a href="patterns.html">Interface recipes</a> · <a href="../docs/accessibility.html">Accessibility evidence</a></p></footer>
+</body>
+</html>

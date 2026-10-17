@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Native HTML. Useful composition. A complete UI system in progress.">
+  <title>Build with UI — UI</title>
+  <link rel="stylesheet" href="../css/ui.css"><link rel="stylesheet" href="examples.css">
+
+<link rel="stylesheet" href="../css/site.css">
+</head>
+<body>
+  <ui-skip-link><a href="#main">Skip to main content</a></ui-skip-link>
+  <header class="site-header"><a class="site-wordmark" href="../index.html">UI <span>HTML first</span></a><nav aria-label="Primary" data-site-nav><ul><li><a href="../index.html">About</a></li><li><a href="components.html">Components</a></li><li><a href="../docs/index.html" aria-current="page">Docs</a></li><li><a href="themes.html">Themes</a></li><li><a href="../tests/accessibility.html">Tests</a></li></ul></nav></header>
+
+  <main id="main" tabindex="-1">
+<h1>Build with UI</h1><p>Native HTML. Useful composition. A complete UI system in progress.</p>
+    <ui-stack>
+      <section aria-labelledby="start-title">
+        <h2 id="start-title">Start with what works today</h2>
+        <p>Build interfaces from native elements and a small set of light-DOM primitives. Use the explorer to distinguish existing recipes from planned widgets.</p>
+        <pre><code>&lt;link rel="stylesheet" href="css/ui.css"&gt;
+&lt;script src="js/components.js" defer&gt;&lt;/script&gt;</code></pre>
+        <p><a href="../docs/getting-started.html">Get started</a> · <a href="../docs/reference.html">Read the current API</a> · <a href="../AGENTS.md">Guide for coding agents</a></p>
+      </section>
+      <ui-grid id="example-cards">
+        <ui-panel><article><h2>Component explorer</h2><p>Browse all 90 reference entries, their UI approach, delivery phase and acceptance work.</p><p><a href="components.html">Explore components</a></p><small>Scope and contracts; planned entries are clearly labelled.</small></article></ui-panel>
+        <ui-panel><article><h2>Interface recipes</h2><p>Navigation, grouped choices, linked form errors, progress, disclosures and a native dialog with an inline fallback.</p><p><a href="patterns.html">Try the recipes</a></p><small>Working native HTML and implemented UI elements.</small></article></ui-panel>
+        <ui-panel><article><h2>Theme workbench</h2><p>Compare brands, semantic states and focus palettes in light, dark and system modes.</p><p><a href="themes.html">Try theming</a></p><small>Reference scales and semantic tokens; native markup throughout.</small></article></ui-panel>
+        <ui-panel><article><h2>Fieldwork workspace</h2><p>A composed application with sidebar navigation, project editing, tasks and local persistence.</p><p><a href="../workspace.html">Open the workspace</a></p><small>Application behavior remains separate from the library.</small></article></ui-panel>
+        <ui-panel><article><h2>Native element gallery</h2><p>Inspect text, native controls, interaction states, tables and layout primitives.</p><p><a href="../gallery.html">Inspect the foundation</a></p><small>Legacy media examples still need verified accessible alternatives.</small></article></ui-panel>
+        <ui-panel><article><h2>Form and evidence</h2><p>Recover from a server error, explore native controls and run repeatable checks.</p><p><a href="form-integration.html">Try form integration</a> · <a href="server-errors.html">Try server error recovery</a> · <a href="../form.html">See the complete form</a> · <a href="../tests/accessibility.html">Run checks</a></p><small>Automated checks supplement manual and assistive-technology testing.</small></article></ui-panel>
+      </ui-grid>
+      <section aria-labelledby="direction-title"><h2 id="direction-title">Built for a larger system</h2><p>Common navigation and feedback come next, then richer inputs and trees, specialist media, and optional data widgets. Native form controls keep their values and platform semantics throughout.</p><p><a href="../docs/roadmap.html">Read the phased roadmap</a> and <a href="../docs/architecture.html">understand the architecture</a>.</p></section>
+    </ui-stack></main>
+  <footer><p>UI · <a href="../docs/index.html">Documentation</a> · <a href="../docs/roadmap.html">Roadmap</a> · <a href="../tests/accessibility.html">Browser checks</a></p></footer>
+</body>
+</html>

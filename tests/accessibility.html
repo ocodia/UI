@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UI accessibility checks</title>
+  <link rel="stylesheet" href="../css/ui.css" />
+  <script src="../js/components.js" defer></script>
+  <script src="forms.js" defer></script>
+  <script src="server-errors.js" defer></script>
+  <script src="form-integration.js" defer></script>
+  <script src="accessibility.js" defer></script>
+  <script src="tokens.js" defer></script>
+  <script src="controls.js" defer></script>
+  <script src="density.js" defer></script>
+  <script src="dialog.js" defer></script>
+  <script src="examples.js" defer></script>
+  <script src="docs.js" defer></script>
+<link rel="stylesheet" href="../css/site.css">
+</head>
+<body>
+  <ui-skip-link><a href="#main">Skip to checks</a></ui-skip-link>
+  <header class="site-header"><a class="site-wordmark" href="../index.html">UI <span>HTML first</span></a><nav aria-label="Primary" data-site-nav><ul><li><a href="../index.html">About</a></li><li><a href="../examples/components.html">Components</a></li><li><a href="../docs/index.html">Docs</a></li><li><a href="../examples/themes.html">Themes</a></li><li><a href="accessibility.html" aria-current="page">Tests</a></li></ul></nav></header>
+  <main id="main" tabindex="-1">
+<h1>Accessibility checks</h1><p>Component behavior and automated checks for the example pages.</p>
+    <p>Serve this repository over HTTP, then run these checks in each supported browser. Automated checks do not replace keyboard or screen-reader testing.</p>
+    <ui-cluster>
+      <button id="run-components" type="button">Run component checks</button>
+      <button id="run-examples" type="button">Run example checks</button>
+      <button id="run-docs" type="button">Run documentation checks</button>
+      <button id="run-nojs" type="button">Check without JavaScript</button>
+      <button id="run-audit" type="button">Audit examples with axe-core</button>
+    </ui-cluster>
+    <p>The optional audit downloads axe-core 4.14.0 from jsDelivr into the example frame. The product itself has no audit dependency.</p>
+    <h2 id="result-title" tabindex="-1">Results</h2>
+    <div id="results" role="status"><p>No checks run yet.</p></div>
+    <section id="fixture" aria-label="Component test fixture"></section>
+    <iframe id="audit-frame" title="Example under accessibility test" height="600" hidden></iframe>
+    <p><a href="../workspace.html">Return to the workspace</a></p>
+  </main>
+</body>
+</html>

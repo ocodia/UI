@@ -1,0 +1,30 @@
+# UI
+
+> HTML-first UI system in development. Plain CSS/JavaScript, light DOM throughout, native controls and optional ui- composition. Current major browsers with progressive enhancement.
+
+## Start here
+
+- [Agent instructions](AGENTS.md): repository rules and actual entry points.
+- [Documentation site](docs/index.html): rendered guides and individual component references with resizable examples; authored sources remain Markdown and docs/recipes.json.
+- [Current API](docs/reference.md): implemented layouts, form and summary behavior, tokens.
+- [Machine-readable catalogue](docs/components.json): native/foundation/planned statuses; proposed names are not available APIs.
+- [Architecture](docs/architecture.md): native ownership, lifecycle, light DOM and future packaging.
+- [Form integration](docs/forms.md): external ownership, shared questions, translated feedback and application-owned async submission.
+- [Theming](docs/theming.md): implemented reference scales, semantic states/focus, local aliases and supported density scopes.
+- [Density](docs/density.md): comfortable/compact composition, nested boundaries, exact consumers and precedence; independent of control size.
+- [Controls](docs/controls.md): native button variants, control sizes, supported targets and token names.
+- [Native dialog](docs/dialog.md): application recipe for modality, focus, dismissal and inline support-failure fallback.
+- [Conventions](docs/conventions.md): UI/keyboard/focus/form rules.
+- [Roadmap](ROADMAP.md): complete component scope and release gate.
+- [Accessibility evidence](ACCESSIBILITY.md): actual test results and outstanding manual work.
+- [Component specification template](docs/component-template.md): define a widget before coding.
+
+## Working examples
+
+- [Example hub](examples/index.html)
+- [Native and composed recipes](examples/patterns.html)
+- [Theme workbench](examples/themes.html)
+- [Component explorer](examples/components.html)
+- [Fieldwork workspace](workspace.html)
+
+Only ui-form and ui-error-summary are registered behavior elements today. CSS-only wrappers need no registration. There is no published package/import path. Do not invent ui-button/ui-input replacements for native controls or implement roadmap syntax as if it already exists. Use AGENTS.md for validation commands.

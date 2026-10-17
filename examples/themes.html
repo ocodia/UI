@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="One set of native controls. Coordinated brands and modes.">
+  <title>Theme workbench — UI</title>
+  <link rel="stylesheet" href="../css/ui.css"><link rel="stylesheet" href="../themes/forest.css"><link rel="stylesheet" href="examples.css">
+  <script src="../js/components.js" defer></script><script src="themes.js" defer></script>
+<link rel="stylesheet" href="../css/site.css">
+</head>
+<body>
+  <ui-skip-link><a href="#main">Skip to main content</a></ui-skip-link>
+  <header class="site-header"><a class="site-wordmark" href="../index.html">UI <span>HTML first</span></a><nav aria-label="Primary" data-site-nav><ul><li><a href="../index.html">About</a></li><li><a href="components.html">Components</a></li><li><a href="../docs/index.html">Docs</a></li><li><a href="themes.html" aria-current="page">Themes</a></li><li><a href="../tests/accessibility.html">Tests</a></li></ul></nav></header>
+
+  <main id="main" tabindex="-1">
+<h1>Theme workbench</h1><p>One set of native controls. Coordinated brands and modes.</p>
+    <ui-stack>
+      <section aria-labelledby="theme-title"><h2 id="theme-title">Change the system, keep the HTML</h2><p>The selectors change root theme attributes. Both brands use the same semantic tokens, markup and interaction behavior. Changes are local to this page and are not stored.</p>
+        <ui-grid id="theme-controls" hidden>
+          <ui-field><label for="brand">Brand</label><select id="brand"><option value="default">UI default</option><option value="forest">Forest</option></select></ui-field>
+          <ui-field><label for="mode">Mode</label><select id="mode"><option value="system">System preference</option><option value="light">Light</option><option value="dark">Dark</option></select></ui-field>
+          <ui-field><label for="focus-palette">Focus palette</label><select id="focus-palette"><option value="default">Yellow and dark</option><option value="blue">Blue and ink</option></select></ui-field>
+        </ui-grid>
+        <p id="theme-selection" role="status">UI default · system preference.</p>
+        <noscript><p>The default brand follows the system theme. Enable JavaScript to compare brands and modes.</p></noscript>
+      </section>
+      <ui-grid>
+        <ui-panel><section aria-labelledby="preview-title"><h2 id="preview-title">A familiar task</h2><p>Links, actions, errors and surfaces retain their roles in each theme.</p>
+          <ui-form id="theme-editor"><form id="theme-form"><ui-stack id="theme-preview">
+            <ui-field><label for="theme-name">Project name</label><ui-hint id="theme-name-hint">Required. Use a short, recognisable name.</ui-hint><ui-error hidden>Error: Enter a project name</ui-error><input id="theme-name" name="project" aria-describedby="theme-name-hint" required></ui-field>
+            <ui-field><label for="theme-stage">Stage</label><select id="theme-stage" name="stage"><option>Planning</option><option>In progress</option></select></ui-field>
+            <ui-field><label for="theme-notes">Notes (optional)</label><textarea id="theme-notes" name="notes" rows="3"></textarea></ui-field>
+            <label><input type="checkbox" name="updates" value="yes"> Send project updates</label>
+            <ui-field><label for="theme-reference">Read-only reference</label><input id="theme-reference" value="UI-2026" readonly></ui-field>
+            <ui-field><label for="theme-disabled">Unavailable answer</label><input id="theme-disabled" value="Unavailable while access is pending" disabled></ui-field>
+            <button type="button" disabled>Unavailable action</button>
+            <ui-cluster><button id="theme-submit" type="submit" hidden>Check project</button><a href="../workspace.html">Open workspace</a></ui-cluster>
+            <output id="theme-result" role="status"></output>
+          </ui-stack></form></ui-form>
+        </section></ui-panel>
+        <section aria-labelledby="tokens-title"><h2 id="tokens-title">Semantic choices</h2><p>The forest brand overrides action, link, selection and header colors for both light and dark modes. Shared surfaces, readable text and focus styles remain coordinated.</p><pre tabindex="0" role="region" aria-label="Forest theme markup"><code>&lt;html data-brand="forest" data-theme="dark"&gt;
+
+&lt;link rel="stylesheet" href="css/ui.css"&gt;
+&lt;link rel="stylesheet" href="themes/forest.css"&gt;</code></pre><p><a href="../docs/theming.html">Read the theme contract</a> for reference scales, semantic states, local geometry and token inheritance.</p><details><summary>What still needs manual review?</summary><p>Native control popups, forced colors, zoom, text spacing and screen-reader behavior require platform testing. Changing theme tokens is not an automatic accessibility certification.</p></details></section>
+      </ui-grid>
+      <section id="action-variants" aria-labelledby="actions-title">
+        <h2 id="actions-title">Action variants</h2>
+        <p>Buttons keep their native behavior. These appearance previews change no project data. Use one primary action per task group and label destructive actions clearly.</p>
+        <ui-cluster>
+          <button type="button" data-variant="primary">Save draft</button>
+          <button type="button" data-variant="secondary">Cancel edits</button>
+          <button type="button" data-variant="quiet">Clear filters</button>
+          <button type="button" data-variant="danger">Delete draft</button>
+        </ui-cluster>
+        <ui-cluster aria-label="Disabled appearance examples" role="group">
+          <button type="button" data-variant="primary" disabled>Save unavailable</button>
+          <button type="button" data-variant="secondary" disabled>Cancel unavailable</button>
+          <button type="button" data-variant="quiet" disabled>Clear unavailable</button>
+          <button type="button" data-variant="danger" disabled>Delete unavailable</button>
+        </ui-cluster>
+        <output id="variant-result" role="status"></output>
+        <noscript><p>Appearance previews work without JavaScript; action feedback needs the demo script.</p></noscript>
+        <pre tabindex="0" role="region" aria-label="Native button variant markup"><code>&lt;button type="submit"&gt;Save project&lt;/button&gt;
+&lt;button type="reset" data-variant="secondary"&gt;Reset answers&lt;/button&gt;
+&lt;button type="button" data-variant="quiet"&gt;Clear filters&lt;/button&gt;
+&lt;button type="button" data-variant="danger"&gt;Delete draft&lt;/button&gt;</code></pre>
+      </section>
+      <section aria-labelledby="sizes-title">
+        <h2 id="sizes-title">Shared control sizes</h2>
+        <p>Size is an opt-in on the native control. Small keeps 1rem text and a 2.5rem minimum target; default preserves the existing comfortable sizing; large has a 3.5rem minimum. Content can grow without being clipped.</p>
+        <ui-grid id="control-sizes">
+          <ui-panel><section aria-labelledby="size-small-title"><h3 id="size-small-title">Small</h3><ui-stack>
+            <ui-field><label for="size-small-name">Project name (small)</label><input id="size-small-name" data-size="small" value="Field guide"></ui-field>
+            <ui-field><label for="size-small-stage">Stage (small)</label><select id="size-small-stage" data-size="small"><option>Planning</option><option>In progress</option></select></ui-field>
+            <ui-field><label for="size-small-notes">Notes (small)</label><textarea id="size-small-notes" data-size="small" rows="2"></textarea></ui-field>
+            <button type="button" data-size="small">Preview small action</button>
+          </ui-stack></section></ui-panel>
+          <ui-panel><section aria-labelledby="size-default-title"><h3 id="size-default-title">Default</h3><ui-stack>
+            <ui-field><label for="size-default-name">Project name (default)</label><input id="size-default-name" data-size="default" value="Field guide"></ui-field>
+            <ui-field><label for="size-default-stage">Stage (default)</label><select id="size-default-stage" data-size="default"><option>Planning</option><option>In progress</option></select></ui-field>
+            <ui-field><label for="size-default-notes">Notes (default)</label><textarea id="size-default-notes" data-size="default" rows="2"></textarea></ui-field>
+            <button type="button" data-size="default">Preview default action</button>
+          </ui-stack></section></ui-panel>
+          <ui-panel><section aria-labelledby="size-large-title"><h3 id="size-large-title">Large</h3><ui-stack>
+            <ui-field><label for="size-large-name">Project name (large)</label><input id="size-large-name" data-size="large" value="Field guide"></ui-field>
+            <ui-field><label for="size-large-stage">Stage (large)</label><select id="size-large-stage" data-size="large"><option>Planning</option><option>In progress</option></select></ui-field>
+            <ui-field><label for="size-large-notes">Notes (large)</label><textarea id="size-large-notes" data-size="large" rows="2"></textarea></ui-field>
+            <button type="button" data-size="large">Preview large action</button>
+          </ui-stack></section></ui-panel>
+        </ui-grid>
+        <output id="size-result" role="status"></output>
+        <p>Checkboxes, radios and their labels retain their native sizing conventions. Size attributes do not create a compact-density scope.</p>
+        <p><a href="../docs/controls.html">Read the control contract</a> for supported types, geometry tokens, native form behavior and target-size guidance.</p>
+      </section>
+      <section id="density-examples" aria-labelledby="density-title">
+        <h2 id="density-title">Comfortable and compact composition</h2>
+        <p>Compare the same native form in two spacing profiles. Compact reduces gaps and panel padding while keeping control sizes, readable text, choice-label targets and focus styles. You can edit the answers and try validation.</p>
+        <ui-grid id="density-comparison">
+          <ui-panel data-density="comfortable"><section aria-labelledby="density-comfortable-title">
+            <h3 id="density-comfortable-title">Comfortable</h3>
+            <ui-form id="density-comfortable-editor"><form id="density-comfortable-form">
+              <ui-field><label for="density-comfortable-name">Project name (comfortable)</label><ui-hint id="density-comfortable-hint">Use a short, recognisable name.</ui-hint><ui-error hidden>Error: Enter a project name</ui-error><input id="density-comfortable-name" name="project" value="Field guide" required aria-describedby="density-comfortable-hint"></ui-field>
+              <ui-field><label for="density-comfortable-stage">Stage (comfortable)</label><select id="density-comfortable-stage" name="stage"><option>Planning</option><option>In progress</option></select></ui-field>
+              <fieldset><legend>Updates (comfortable)</legend><label><input name="updates" type="checkbox" value="yes" checked> Send project updates</label></fieldset>
+              <ui-cluster><button type="submit" hidden>Check comfortable project</button><button type="reset" data-variant="secondary">Reset answers</button></ui-cluster>
+              <output id="density-comfortable-result" role="status"></output>
+            </form></ui-form>
+          </section></ui-panel>
+          <ui-panel data-density="compact"><section aria-labelledby="density-compact-title">
+            <h3 id="density-compact-title">Compact</h3>
+            <ui-form id="density-compact-editor"><form id="density-compact-form">
+              <ui-field><label for="density-compact-name">Project name (compact)</label><ui-hint id="density-compact-hint">Use a short, recognisable name.</ui-hint><ui-error hidden>Error: Enter a project name</ui-error><input id="density-compact-name" name="project" value="Field guide" required aria-describedby="density-compact-hint"></ui-field>
+              <ui-field><label for="density-compact-stage">Stage (compact)</label><select id="density-compact-stage" name="stage"><option>Planning</option><option>In progress</option></select></ui-field>
+              <fieldset><legend>Updates (compact)</legend><label><input name="updates" type="checkbox" value="yes" checked> Send project updates</label></fieldset>
+              <ui-cluster><button type="submit" hidden>Check compact project</button><button type="reset" data-variant="secondary">Reset answers</button></ui-cluster>
+              <output id="density-compact-result" role="status"></output>
+            </form></ui-form>
+          </section></ui-panel>
+        </ui-grid>
+        <ui-panel data-density="compact"><section aria-labelledby="density-nested-title">
+          <h3 id="density-nested-title">Restore comfortable spacing inside a compact panel</h3>
+          <ui-stack><p>The outer panel has compact padding and layout spacing.</p>
+            <ui-panel data-density="comfortable"><ui-stack><p>This nested panel restores normal padding and gaps.</p><ui-cluster><button type="button" data-size="small">Small action</button><button type="button">Default action</button><button type="button" data-size="large">Large action</button></ui-cluster></ui-stack></ui-panel>
+          </ui-stack>
+        </section></ui-panel>
+        <noscript><p>Both spacing profiles work without JavaScript. The form checks and feedback need the demo script; native reset remains available.</p></noscript>
+        <pre tabindex="0" role="region" aria-label="Density scope markup"><code>&lt;ui-panel data-density="compact"&gt;
+  &lt;ui-stack&gt;
+    &lt;p&gt;Compact layout, normal text and control sizes.&lt;/p&gt;
+    &lt;ui-panel data-density="comfortable"&gt;Comfortable again&lt;/ui-panel&gt;
+  &lt;/ui-stack&gt;
+&lt;/ui-panel&gt;</code></pre>
+        <p><a href="../docs/density.html">Read the density contract</a> for scope, tokens, nesting and accessibility checks.</p>
+      </section>
+      <section aria-labelledby="state-title">
+        <h2 id="state-title">Shared state colors</h2>
+        <p>Static color samples use semantic text, background and border tokens. Their headings explain the state without relying on color. These samples are application CSS; callout, badge and toast components remain planned.</p>
+        <ui-grid id="state-tokens">
+          <article data-token-state="info"><h3>Information</h3><p>Your project stays on this device.</p></article>
+          <article data-token-state="success"><h3>Success</h3><p>The project details were saved.</p></article>
+          <article data-token-state="warning"><h3>Warning</h3><p>Review your changes before sharing.</p></article>
+          <article data-token-state="danger"><h3>Danger</h3><p>The export failed. Try again.</p></article>
+          <article data-token-state="selected"><h3>Selected</h3><p>Current project: Coastal field guide.</p></article>
+          <article data-token-state="disabled"><h3>Disabled</h3><p>This action is currently unavailable.</p></article>
+          <article data-token-state="busy"><h3>Busy</h3><p>The export is in progress. Keep its status near the task.</p></article>
+        </ui-grid>
+      </section>
+      <section aria-labelledby="focus-title">
+        <h2 id="focus-title">Keyboard focus</h2>
+        <p>Choose a focus palette, then use Tab through links, inputs, buttons and this disclosure. Both colors also apply to the skip link, header links and error summary.</p>
+        <ui-cluster><a href="#preview-title">Return to the form preview</a><a href="../workspace.html">Inspect current-page selection in the workspace</a></ui-cluster>
+        <details><summary>Focus on a disclosure</summary><p>The focused text uses the same background and dark edge as focused links. Form controls and error summaries retain a two-color outline.</p></details>
+        <pre tabindex="0" role="region" aria-label="Focus palette CSS"><code>:root {
+  --ui-focus: #bde9ff;
+  --ui-focus-edge: #102a43;
+  --ui-focus-width: 3px;
+}</code></pre>
+      </section>
+    </ui-stack></main>
+  <footer><p>UI · <a href="../docs/index.html">Documentation</a> · <a href="../docs/roadmap.html">Roadmap</a> · <a href="../tests/accessibility.html">Browser checks</a></p></footer>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/ui.css" />
+    <title>UI - Form</title>
+  <link rel="stylesheet" href="css/site.css">
+</head>
+
+  <body>
+    <ui-skip-link><a href="#main">Skip to main content</a></ui-skip-link>
+    <header class="site-header" aria-label="Native form example"><a class="site-wordmark" href="index.html">UI <span>HTML first</span></a><nav aria-label="Native form example navigation" data-site-nav><ul><li><a href="index.html">About</a></li><li><a href="examples/components.html">Components</a></li><li><a href="docs/index.html" aria-current="page">Docs</a></li><li><a href="examples/themes.html">Themes</a></li><li><a href="tests/accessibility.html">Tests</a></li></ul></nav></header>
+    <main id="main" tabindex="-1" aria-label="Form example">
+<h1>Complete native form</h1>
+      <section>
+        <header>
+          <h2>Form example</h2>
+        </header>
+        <p>A complete form using conventional HTML. No classes required.</p>
+        <form action="form.html" method="get">
+          <p>
+            <label for="name">Name (4 to 8 characters):</label>
+            <input type="text" id="name" name="name" required minlength="4" maxlength="8" size="20" value="Hello!" />
+          </p>
+
+          <p>
+            <label for="address">Address:</label>
+            <textarea name="address" id="address" cols="100" rows="10"></textarea>
+          </p>
+          <fieldset>
+            <legend>About your monster</legend>
+            <label for="kraken"> <input type="radio" id="kraken" name="monster" value="Kraken" /> Kraken</label>
+            <label for="sasquatch"> <input type="radio" id="sasquatch" name="monster" value="Sasquatch" /> Sasquatch</label>
+            <label for="mothman"> <input type="radio" id="mothman" name="monster" value="Mothman" /> Mothman</label>
+
+            <hr />
+            <label for="checkbox1">
+              <input id="checkbox1" name="interests" type="checkbox" value="a" checked="checked" /> Choice A</label>
+              <label for="checkbox2"><input id="checkbox2" name="interests" type="checkbox" value="b" /> Choice B</label>
+              <label for="checkbox3"><input id="checkbox3" name="interests" type="checkbox" value="c" /> Choice C</label>
+          </fieldset>
+        
+          <p>
+            <label for="pet-select">Choose a pet:</label>
+
+            <select name="pets" id="pet-select">
+              <option value="">Please choose an option</option>
+              <option value="dog">Dog</option>
+              <option value="cat">Cat</option>
+              <option value="hamster">Hamster</option>
+              <option value="parrot">Parrot</option>
+              <option value="spider">Spider</option>
+              <option value="goldfish">Goldfish</option>
+            </select>
+          </p>
+
+          <p>
+            <label for="tentacles">Number of tentacles (10-100):</label>
+            <input type="number" id="tentacles" name="tentacles" min="10" max="100" />
+          </p>
+
+          <p>
+            <label for="start">Start date:</label>
+            <input type="date" name="start" id="start" />
+          </p>
+
+          <p>
+            <label for="avatar">Choose a profile picture:</label>
+            <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" />
+          </p>
+
+          <p>
+            <label for="terms"><input type="checkbox" id="terms" name="terms" /> Agree to terms and conditions</label>
+          </p>
+
+          <input type="submit" value="Submit" /> <input type="reset" value="Reset" />
+        </form>
+      </section>
+    </main>
+    <footer aria-label="UI form example">
+      <p><a href="index.html">All examples</a> · UI - <a href="https://github.com/ocodia/UI/">Github</a></p>
+    </footer>
+  </body>
+</html>

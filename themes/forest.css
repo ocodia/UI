@@ -1,0 +1,36 @@
+/* Optional brand. Load after ui.css and set data-brand="forest" on html. */
+:root[data-brand="forest"] {
+  --ui-selected-bg: #e7f4eb;
+  --ui-link: #146b45;
+  --ui-link-hover: #0d5032;
+  --ui-action-bg: #146b45;
+  --ui-action-hover: #0d5032;
+  --ui-action-text: #ffffff;
+  --ui-header-bg: #123d2d;
+  --ui-header-border: #438c68;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-brand="forest"]:not([data-theme="light"]) {
+    --ui-selected-bg: #183b2a;
+    --ui-link: #8cdbb3;
+    --ui-link-hover: #bbefd2;
+    --ui-action-bg: #176b47;
+    --ui-action-hover: #125337;
+    --ui-action-text: #ffffff;
+    --ui-header-bg: #0b281d;
+    --ui-header-border: #438c68;
+  }
+}
+:root[data-brand="forest"][data-theme="dark"] {
+  --ui-selected-bg: #183b2a;
+  --ui-link: #8cdbb3;
+  --ui-link-hover: #bbefd2;
+  --ui-action-bg: #176b47;
+  --ui-action-hover: #125337;
+  --ui-action-text: #ffffff;
+  --ui-header-bg: #0b281d;
+  --ui-header-border: #438c68;
+}
+@media print {
+  :root[data-brand="forest"] { --ui-link: #000; --ui-action-bg: #fff; --ui-action-hover: #fff; --ui-action-text: #000; --ui-header-bg: #fff; --ui-header-border: #000; }
+}

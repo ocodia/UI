@@ -1,0 +1,101 @@
+/* Documentation application only. Library defaults remain in css/ui.css. */
+:root { --ui-content-width: 94rem; }
+.site-header { --ui-link: inherit; --ui-link-hover: inherit; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ui-space); padding-block: 1.1rem; background: var(--ui-canvas); border-block-end: 1px solid var(--ui-border); }
+.site-header .site-wordmark { display: inline-flex; align-items: baseline; gap: .8rem; color: var(--ui-heading); font-size: 1.6rem; font-weight: var(--ui-font-weight-bold); text-decoration: none; }
+.site-wordmark span { font-size: .85rem; color: var(--ui-muted); font-weight: var(--ui-font-weight-normal); }
+.site-header a { margin-inline-start: 0; }
+[data-site-nav] ul { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem 1.3rem; margin: 0; padding: 0; list-style: none; }
+[data-site-nav] a { display: inline-block; padding-block: .5rem; text-decoration: none; color: var(--ui-text); }
+[data-site-nav] a[aria-current] { color: var(--ui-link); text-decoration: underline; text-decoration-thickness: .15em; text-underline-offset: .5em; }
+.site-header a:focus-visible, .site-header .site-wordmark:focus-visible { color: var(--ui-focus-edge); background: var(--ui-focus); }
+.site-wordmark:focus-visible span { color: inherit; }
+body > main { padding-block: 2.5rem; }
+.site-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--ui-space); padding-block: 1.5rem; margin-block-start: 3rem; border-block-start: 1px solid var(--ui-border); color: var(--ui-muted); font-size: .9rem; }
+.site-footer p { margin: 0; }
+.docs-layout { --ui-sidebar-width: 15rem; --ui-sidebar-content-min: 42rem; --ui-sidebar-gap: 3rem; align-items: start; }
+.docs-navigation { padding: 0; margin: 0; border: 0; background: transparent; }
+.docs-navigation > summary { margin-block-end: 1rem; }
+.docs-sidebar { font-size: .9rem; }
+.docs-sidebar details { padding: 0; margin-block: 0 1.15rem; background: transparent; border: 0; }
+.docs-sidebar summary { padding-block: .35rem; font-weight: var(--ui-font-weight-bold); }
+.docs-sidebar ul, .docs-toc ul { display: block; padding: 0; margin: 0; list-style: none; }
+.docs-sidebar li { margin: 0; }
+.docs-sidebar a { display: block; padding: .35rem .6rem; text-decoration: none; border-inline-start: 2px solid transparent; }
+.docs-sidebar a[aria-current] { color: var(--ui-selected-text); background: var(--ui-selected-bg); border-color: var(--ui-link); }
+.docs-sidebar a:focus-visible { color: var(--ui-focus-edge); background: var(--ui-focus); }
+.docs-sidebar small { color: var(--ui-muted); font-size: .75em; }
+.docs-reading { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem; }
+.docs-article { min-inline-size: 0; max-inline-size: 54rem; }
+.docs-article > h1 { margin-block-start: 0; }
+.docs-article > h2 { margin-block-start: 2.5rem; padding-block-start: .5rem; }
+.docs-article > h3 { margin-block-start: 2rem; }
+.docs-article pre { font-size: .85rem; padding: 1.15rem; }
+.docs-article :is(h1,h2,h3), [id] { scroll-margin-block-start: 1.5rem; }
+.docs-toc { font-size: .8rem; color: var(--ui-muted); }
+.docs-toc a { display: block; padding-block: .3rem; text-decoration: none; }
+.docs-toc p { font-weight: var(--ui-font-weight-bold); color: var(--ui-heading); }
+.doc-source { font-size: .85rem; padding-block-start: 2rem; margin-block-start: 3rem; border-block-start: 1px solid var(--ui-border); }
+.eyebrow { color: var(--ui-muted); font-size: .85rem; margin-block-end: .65rem; }
+.component-meta { --ui-cluster-gap: .6rem; font-size: .85rem; }
+.component-meta span { border: 1px solid var(--ui-border); border-radius: var(--ui-radius-pill); padding: .15rem .6rem; }
+.component-meta code { overflow-wrap: anywhere; }
+.component-lead { font-size: 1.15rem; margin-block: 1.5rem 2rem; }
+.catalog-grid { --ui-grid-min: 18rem; --ui-grid-gap: 1rem; }
+.catalog-grid ui-panel { margin: 0; }
+.catalog-grid h2 { font-size: 1.2rem; margin-block: 0 .5rem; }
+.catalog-grid p { font-size: .9rem; }
+.catalog-grid .eyebrow { font-size: .75rem; }
+#catalog-filter { border: 1px solid var(--ui-border); border-radius: var(--ui-radius); padding: 1.2rem; }
+#catalog-filter ui-grid { --ui-grid-min: 12rem; }
+.hero { max-inline-size: 54rem; padding-block: 2rem 3rem; }
+.hero h1 { font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1.05; letter-spacing: -.035em; margin-block: 0 1.5rem; }
+.hero > p:not(.eyebrow) { max-inline-size: 42rem; font-size: 1.2rem; }
+.home-grid { --ui-grid-min: 18rem; }
+.home-grid h2 { font-size: 1.35rem; margin-block-start: 0; }
+.example { border: 1px solid var(--ui-border); border-radius: var(--ui-radius-lg); margin-block: 1.5rem 2rem; overflow: hidden; }
+.example-stage { padding: .75rem; background: var(--ui-surface); min-inline-size: 0; }
+.example-viewport { position: relative; inline-size: 100%; max-inline-size: 100%; min-inline-size: min(15rem,100%); resize: horizontal; overflow: auto; border: 1px solid var(--ui-border); background: var(--ui-canvas); }
+.example-viewport iframe { display: block; inline-size: 100%; block-size: 22rem; max-inline-size: none; border: 0; }
+.example[data-enhanced] .example-viewport { resize: none; overflow: hidden; }
+.example-handle { position: absolute; inset-inline-end: 0; inset-block-start: 0; block-size: 100%; min-block-size: 0; inline-size: 1.5rem; min-inline-size: 1.5rem; padding: 0; border: 0; border-inline-start: 1px solid var(--ui-border); border-radius: 0; background: var(--ui-surface); color: var(--ui-muted); cursor: ew-resize; touch-action: none; }
+.example-handle:focus-visible { outline-offset: -6px; }
+.example-tools { --ui-cluster-gap: .75rem; margin: 0; padding: .65rem 1rem; font-size: .8rem; border-block-start: 1px solid var(--ui-border); }
+.example-help { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.example-tools label { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin: 0; }
+.example-tools input[type=range] { inline-size: 8rem; min-block-size: 1.5rem; margin: 0; }
+.example-tools output { font-variant-numeric: tabular-nums; min-inline-size: 4rem; }
+.example-tools button { min-block-size: 2rem; font-size: .8rem; padding: .25rem .5rem; }
+.example details { margin: 0; padding: 0; border: 0; border-block-start: 1px solid var(--ui-border); border-radius: 0; background: var(--ui-canvas); }
+.example summary { padding: .8rem 1rem; font-size: .85rem; }
+.example details[open] > summary { margin: 0; border-block-end: 1px solid var(--ui-border); }
+.example pre { margin: 0; border: 0; border-radius: 0; }
+.example-caption { padding: .6rem 1rem; border-block-start: 1px solid var(--ui-border); margin: 0; max-inline-size: none; font-size: .8rem; color: var(--ui-muted); }
+.example-caption a { display: inline-block; }
+.preview-help { font-size: .8rem; color: var(--ui-muted); }
+@media (min-width: 70rem) {
+  .docs-navigation { position: sticky; inset-block-start: 1.5rem; max-block-size: calc(100vh - 3rem); overflow: auto; padding-inline-end: .75rem; }
+  .docs-navigation[open] > summary { display: none; }
+}
+@media (min-width: 88rem) {
+  .docs-reading { grid-template-columns: minmax(0, 1fr) 10rem; }
+  .docs-toc { position: sticky; inset-block-start: 1.5rem; align-self: start; max-block-size: calc(100vh - 3rem); overflow: auto; }
+}
+@media (max-width: 45rem) {
+  .docs-layout { --ui-sidebar-gap: 1.5rem; }
+  .docs-sidebar { border-block-end: 1px solid var(--ui-border); padding-block-end: 1rem; }
+  .docs-sidebar details { margin-block-end: .5rem; }
+  .docs-toc { grid-row: 1; }
+  .site-header { gap: .5rem; }
+  [data-site-nav] ul { column-gap: 1rem; }
+}
+@media (forced-colors: active) {
+  .site-header a:focus-visible, .site-header .site-wordmark:focus-visible { color: LinkText; background: Canvas; }
+  .example-handle { border: 1px solid ButtonText; }
+  .docs-sidebar a[aria-current] { border-color: Highlight; }
+  .docs-sidebar a:focus-visible { color: LinkText; background: Canvas; }
+}
+@media print {
+  .site-header nav, .docs-navigation, .docs-toc, .example-tools, .example-handle { display: none; }
+  .docs-layout, .docs-reading { display: block; }
+  .docs-article { max-inline-size: none; }
+}

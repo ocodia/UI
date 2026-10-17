@@ -1,0 +1,460 @@
+/* UI: conventional HTML, useful defaults, optional layout classes. */
+@layer ui {
+  @layer tokens, base, content, forms, layout;
+
+  @layer tokens {
+    :root {
+      color-scheme: light;
+      /* Reference scales. Existing semantic aliases below keep their defaults. */
+      --ui-space-0: 0;
+      --ui-space-1: .25rem;
+      --ui-space-2: .5rem;
+      --ui-space-3: .75rem;
+      --ui-space-4: 1rem;
+      --ui-space-5: 1.5rem;
+      --ui-space-6: 2rem;
+      --ui-space-7: 3rem;
+      --ui-space-8: 4rem;
+      --ui-radius-none: 0;
+      --ui-radius-sm: .125rem;
+      --ui-radius-md: .375rem;
+      --ui-radius-lg: .75rem;
+      --ui-radius-pill: 999px;
+      --ui-font-size-xs: .75rem;
+      --ui-font-size-sm: .875rem;
+      --ui-font-size-md: 1rem;
+      --ui-font-size-lg: 1.2rem;
+      --ui-font-size-xl: 1.4rem;
+      --ui-font-size-2xl: 2.25rem;
+      --ui-font-size-3xl: 3rem;
+      --ui-font-size-body: clamp(var(--ui-font-size-md), .96rem + .2vw, 1.125rem);
+      --ui-font-size-heading-1: clamp(2rem, 1.5rem + 2vw, var(--ui-font-size-3xl));
+      --ui-font-size-heading-2: clamp(1.65rem, 1.35rem + 1vw, var(--ui-font-size-2xl));
+      --ui-line-height-body: 1.6;
+      --ui-line-height-heading: 1.2;
+      --ui-font-weight-normal: 400;
+      --ui-font-weight-medium: 600;
+      --ui-font-weight-bold: 700;
+      --ui-focus-width: 3px;
+      --ui-font-sans: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+      --ui-font-mono: var(--font-mono, ui-monospace, Consolas, monospace);
+      --ui-text: var(--text, #1a1a1a);
+      --ui-heading: var(--headings, #111827);
+      --ui-canvas: var(--body-bg, #ffffff);
+      --ui-surface: var(--details, #f6f8fa);
+      --ui-border: var(--borders, #c4cbd4);
+      --ui-link: var(--interactive, #005cc5);
+      --ui-link-hover: var(--interactive-alt, #004799);
+      --ui-action-bg: #005cc5;
+      --ui-action-hover: #004799;
+      --ui-action-text: var(--btn-text, #ffffff);
+      --ui-muted: #526070;
+      --ui-focus: #ffdd00;
+      --ui-focus-edge: #0b0c0c;
+      --ui-control-border: #657387;
+      --ui-info-text: #123c69;
+      --ui-info-bg: #edf4ff;
+      --ui-info-border: #2161a6;
+      --ui-success-text: #14532d;
+      --ui-success-bg: #edf8f0;
+      --ui-success-border: #287a45;
+      --ui-warning-text: #6b3d00;
+      --ui-warning-bg: #fff5db;
+      --ui-warning-border: #9a6700;
+      --ui-danger-text: #8a1c13;
+      --ui-danger-bg: #fff0ee;
+      --ui-danger-border: #b42318;
+      --ui-selected-text: var(--ui-heading);
+      --ui-selected-bg: #e8f1fc;
+      --ui-selected-border: var(--ui-link);
+      --ui-disabled-text: #5b6675;
+      --ui-disabled-bg: #e8ecf0;
+      --ui-disabled-border: #8794a6;
+      --ui-busy-text: var(--ui-info-text);
+      --ui-busy-bg: var(--ui-info-bg);
+      --ui-busy-border: var(--ui-info-border);
+      --ui-invalid: var(--ui-danger-border);
+      --ui-header-bg: var(--header-bg, #003285);
+      --ui-header-border: var(--header-border, #3d74d2);
+      --ui-mark-bg: var(--highlight-bg, #fff0a6);
+      --ui-mark-text: var(--highlight-text, #1a1a1a);
+      --ui-space: var(--ui-space-4);
+      --ui-radius: var(--ui-radius-md);
+      --ui-content-width: 72rem;
+      --ui-reading-width: 68ch;
+      --ui-gutter: clamp(1rem, 3vw, 2rem);
+      --ui-action-secondary-bg: var(--ui-surface);
+      --ui-action-secondary-hover: var(--ui-selected-bg);
+      --ui-action-secondary-text: var(--ui-text);
+      --ui-action-secondary-border: var(--ui-control-border);
+      --ui-action-quiet-bg: transparent;
+      --ui-action-quiet-hover: var(--ui-surface);
+      --ui-action-quiet-text: var(--ui-link);
+      --ui-action-quiet-border: transparent;
+      --ui-action-danger-bg: #b42318;
+      --ui-action-danger-hover: #8a1c13;
+      --ui-action-danger-text: #ffffff;
+      --ui-action-danger-border: transparent;
+      --ui-control-min-size: 2.75rem;
+      --ui-control-padding-block: .6rem;
+      --ui-control-padding-inline: .75rem;
+      --ui-button-padding-block: .55rem;
+      --ui-button-padding-inline: 1rem;
+      --ui-control-small-min-size: 2.5rem;
+      --ui-control-small-padding-block: .375rem;
+      --ui-control-small-padding-inline: .625rem;
+      --ui-control-small-font-size: var(--ui-font-size-md);
+      --ui-control-large-min-size: 3.5rem;
+      --ui-control-large-padding-block: .75rem;
+      --ui-control-large-padding-inline: 1.25rem;
+      --ui-control-large-font-size: var(--ui-font-size-lg);
+      --ui-density-compact-space: var(--ui-space-3);
+      --ui-density-compact-label-gap: var(--ui-space-1);
+      --ui-density-compact-message-gap: .375rem;
+      --ui-density-compact-fieldset-padding: var(--ui-space-3);
+    }
+    /* Density changes composition, never native control or text sizing. */
+    :where([data-density="compact"]) {
+      --_ui-density-space: var(--ui-density-compact-space);
+      --_ui-density-label-gap: var(--ui-density-compact-label-gap);
+      --_ui-density-message-gap: var(--ui-density-compact-message-gap);
+      --_ui-density-fieldset-padding: var(--ui-density-compact-fieldset-padding);
+    }
+    :where([data-density="comfortable"]) {
+      /* Clear inherited compact values; consumers recover their local defaults. */
+      --_ui-density-space: initial;
+      --_ui-density-label-gap: initial;
+      --_ui-density-message-gap: initial;
+      --_ui-density-fieldset-padding: initial;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --ui-text: var(--dark-text, #eeeeee);
+        --ui-heading: var(--dark-headings, #ffffff);
+        --ui-canvas: var(--dark-body-bg, #11151b);
+        --ui-surface: var(--dark-details, #1c2430);
+        --ui-border: var(--dark-borders, #657387);
+        --ui-link: var(--dark-link-1, #80baff);
+        --ui-link-hover: var(--dark-link-2, #b3d5ff);
+        --ui-action-bg: #145dbb;
+        --ui-action-hover: #0d4d9f;
+        --ui-action-text: var(--dark-btn-text, #ffffff);
+        --ui-muted: #b3bfce;
+        --ui-focus: #ffdd00;
+        --ui-control-border: #8794a6;
+        --ui-info-text: #c9e2ff;
+        --ui-info-bg: #162d48;
+        --ui-info-border: #80baff;
+        --ui-success-text: #b9edc9;
+        --ui-success-bg: #153522;
+        --ui-success-border: #78c995;
+        --ui-warning-text: #ffe1a3;
+        --ui-warning-bg: #3b2c10;
+        --ui-warning-border: #e6b95c;
+        --ui-danger-text: #ffd2cc;
+        --ui-danger-bg: #431e1b;
+        --ui-danger-border: #ffaaa3;
+        --ui-selected-bg: #1d3553;
+        --ui-disabled-text: #b3bfce;
+        --ui-disabled-bg: #26303d;
+        --ui-disabled-border: #8794a6;
+        --ui-invalid: var(--ui-danger-border);
+        --ui-header-bg: var(--dark-header-bg, #071d3b);
+        --ui-header-border: var(--dark-header-border, #406797);
+        --ui-mark-bg: var(--dark-highlight-bg, #514000);
+        --ui-mark-text: var(--dark-highlight-text, #fff0a6);
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --ui-text: var(--dark-text, #eeeeee);
+      --ui-heading: var(--dark-headings, #ffffff);
+      --ui-canvas: var(--dark-body-bg, #11151b);
+      --ui-surface: var(--dark-details, #1c2430);
+      --ui-border: var(--dark-borders, #657387);
+      --ui-link: var(--dark-link-1, #80baff);
+      --ui-link-hover: var(--dark-link-2, #b3d5ff);
+      --ui-action-bg: #145dbb;
+      --ui-action-hover: #0d4d9f;
+      --ui-action-text: var(--dark-btn-text, #ffffff);
+      --ui-muted: #b3bfce;
+      --ui-focus: #ffdd00;
+      --ui-control-border: #8794a6;
+      --ui-info-text: #c9e2ff;
+      --ui-info-bg: #162d48;
+      --ui-info-border: #80baff;
+      --ui-success-text: #b9edc9;
+      --ui-success-bg: #153522;
+      --ui-success-border: #78c995;
+      --ui-warning-text: #ffe1a3;
+      --ui-warning-bg: #3b2c10;
+      --ui-warning-border: #e6b95c;
+      --ui-danger-text: #ffd2cc;
+      --ui-danger-bg: #431e1b;
+      --ui-danger-border: #ffaaa3;
+      --ui-selected-bg: #1d3553;
+      --ui-disabled-text: #b3bfce;
+      --ui-disabled-bg: #26303d;
+      --ui-disabled-border: #8794a6;
+      --ui-invalid: var(--ui-danger-border);
+      --ui-header-bg: var(--dark-header-bg, #071d3b);
+      --ui-header-border: var(--dark-header-border, #406797);
+      --ui-mark-bg: var(--dark-highlight-bg, #514000);
+      --ui-mark-text: var(--dark-highlight-text, #fff0a6);
+    }
+  }
+
+  @layer base {
+    *, *::before, *::after { box-sizing: border-box; }
+    :where(html) { font-family: var(--ui-font-sans); font-weight: var(--ui-font-weight-normal); line-height: var(--ui-line-height-body); overflow-wrap: anywhere; }
+    :where(body) {
+      margin: 0;
+      color: var(--ui-text);
+      background: var(--ui-canvas);
+      font-size: var(--ui-font-size-body);
+    }
+    :where(button, input, select, textarea) { font: inherit; }
+    :where(a) { color: var(--ui-link); text-underline-offset: .18em; }
+    :where(a:hover) { color: var(--ui-link-hover); }
+    :where(:focus-visible) { outline: var(--ui-focus-width) solid var(--ui-focus); outline-offset: 0; box-shadow: 0 0 0 calc(var(--ui-focus-width) * 2) var(--ui-focus-edge); }
+    :where(a:focus-visible, summary:focus-visible) { color: var(--ui-focus-edge); background: var(--ui-focus); outline-color: var(--ui-focus); text-decoration: none; box-shadow: 0 calc(var(--ui-focus-width) + 1px) 0 var(--ui-focus-edge); }
+    :where([id]) { scroll-margin-block-start: 1rem; }
+    ::selection { background: var(--ui-mark-bg); color: var(--ui-mark-text); }
+    :where([hidden]:not([hidden="until-found"])) { display: none !important; }
+  }
+
+  @layer content {
+    :where(h1, h2, h3, h4, h5, h6) {
+      color: var(--ui-heading);
+      font-weight: var(--ui-font-weight-bold);
+      line-height: var(--ui-line-height-heading);
+      margin-block: 1.5em .6em;
+      text-wrap: balance;
+    }
+    :where(h1) { font-size: var(--ui-font-size-heading-1); }
+    :where(h2) { font-size: var(--ui-font-size-heading-2); }
+    :where(h3) { font-size: var(--ui-font-size-xl); }
+    :where(h4) { font-size: var(--ui-font-size-lg); }
+    :where(h5) { font-size: var(--ui-font-size-md); }
+    :where(h6) { font-size: var(--ui-font-size-sm); }
+    :where(p, ul, ol, dl, figure, blockquote, pre, details, table, fieldset) { margin-block: 0 var(--ui-space); }
+    :where(article, section) { margin-block-end: calc(var(--ui-space) * 2); }
+    :where(p) { max-inline-size: var(--ui-reading-width); }
+    :where(ul, ol) { padding-inline-start: 1.75em; }
+    :where(li + li) { margin-block-start: .25em; }
+    :where(li > ul, li > ol) { margin-block: .25em 0; }
+    :where(dt) { font-weight: var(--ui-font-weight-bold); }
+    :where(dd) { margin-inline-start: 1.5em; margin-block-end: .75em; }
+    :where(small, figcaption) { font-size: .875em; }
+    :where(small) { color: var(--ui-muted); }
+    :where(abbr[title]) { cursor: help; }
+    :where(blockquote) { padding: 1rem 1.5rem; border-inline-start: .25rem solid var(--ui-border); background: var(--ui-surface); }
+    :where(blockquote > :last-child, details > :last-child, dialog > :last-child, [popover] > :last-child) { margin-block-end: 0; }
+    :where(hr) { margin-block: 2rem; border: 0; border-block-start: 1px solid var(--ui-border); }
+    :where(code, pre, kbd, samp) { font-family: var(--ui-font-mono); font-size: .9em; }
+    :where(code, kbd, samp) { padding: .1em .35em; background: var(--ui-surface); border: 1px solid var(--ui-border); border-radius: var(--ui-radius); }
+    :where(kbd) { border-block-end-width: 3px; }
+    :where(pre) { padding: 1rem; overflow: auto; background: var(--ui-surface); border: 1px solid var(--ui-border); border-radius: var(--ui-radius); }
+    :where(pre code) { padding: 0; border: 0; background: transparent; font-size: inherit; }
+    :where(mark) { padding: .1em .25em; color: var(--ui-mark-text); background: var(--ui-mark-bg); }
+    :where(img, video, svg, canvas, iframe) { max-inline-size: 100%; }
+    :where(img, video) { block-size: auto; }
+    :where(video, audio) { inline-size: 100%; }
+    :where(figure) { margin-inline: 0; }
+    :where(figcaption) { padding-block: .5rem; color: var(--ui-muted); }
+    :where(iframe) { inline-size: 100%; border: 1px solid var(--ui-border); }
+    :where(table) { inline-size: 100%; border-collapse: collapse; }
+    :where(th, td) { padding: .65rem; border: 1px solid var(--ui-border); text-align: start; }
+    :where(th, tbody tr:nth-child(even)) { background: var(--ui-surface); }
+    :where(caption) { margin-block-end: .5rem; text-align: start; font-weight: var(--ui-font-weight-bold); }
+    :where(details) { padding: .75rem 1rem; background: var(--ui-surface); border: 1px solid var(--ui-border); border-radius: var(--ui-radius); }
+    :where(summary) { cursor: pointer; font-weight: var(--ui-font-weight-bold); }
+    :where(details[open] > summary) { margin-block-end: .75rem; }
+    :where(dialog, [popover]) {
+      padding: 1.5rem;
+      max-inline-size: min(34rem, calc(100% - 2rem));
+      max-block-size: calc(100% - 2rem);
+      overflow: auto;
+      color: var(--ui-text);
+      background: var(--ui-canvas);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--ui-radius);
+      box-shadow: 0 1rem 3rem #0003;
+    }
+    :where(dialog > :first-child, [popover] > :first-child) { margin-block-start: 0; }
+    dialog::backdrop { background: #0009; }
+  }
+
+  @layer forms {
+    :where(ui-form, ui-field, ui-hint, ui-error, ui-error-summary) { display: block; }
+    :where(ui-field) { margin-block-end: var(--_ui-density-space, var(--ui-space)); }
+    :where(ui-hint) { margin-block: 0 var(--_ui-density-message-gap, .5rem); color: var(--ui-muted); }
+    :where(ui-error) { margin-block: 0 var(--_ui-density-message-gap, .5rem); color: var(--ui-invalid); font-weight: var(--ui-font-weight-bold); }
+    :where(ui-field:has([aria-invalid="true"])) { border-inline-start: .25rem solid var(--ui-invalid); padding-inline-start: 1rem; }
+    :where(ui-error-summary) { padding: 1.25rem; margin-block-end: 2rem; border: .25rem solid var(--ui-invalid); }
+    :where(ui-error-summary h2) { margin-block-start: 0; font-size: var(--ui-font-size-xl); }
+    :where(ui-error-summary > :last-child) { margin-block-end: 0; }
+    :where(ui-error-summary:focus) { outline: var(--ui-focus-width) solid var(--ui-focus); outline-offset: 0; box-shadow: 0 0 0 calc(var(--ui-focus-width) * 2) var(--ui-focus-edge); }
+    :where(form) { margin-block-end: var(--_ui-density-space, var(--ui-space)); }
+    :where(label) { display: block; margin-block-end: var(--_ui-density-label-gap, .35rem); font-weight: var(--ui-font-weight-medium); }
+    :where(input, select, textarea, progress, meter) { accent-color: var(--ui-action-bg); }
+    :where(:is(button, input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="hidden"], [type="image"]), select, textarea)) {
+      --_ui-control-min: var(--ui-control-min-size);
+      --_ui-control-block: var(--ui-control-padding-block);
+      --_ui-control-inline: var(--ui-control-padding-inline);
+    }
+    :where(input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="hidden"], [type="image"], [type="submit"], [type="reset"], [type="button"]), select, textarea) {
+      inline-size: 100%;
+      max-inline-size: 36rem;
+      min-inline-size: 0;
+      min-block-size: var(--_ui-control-min);
+      padding: var(--_ui-control-block) var(--_ui-control-inline);
+      color: var(--ui-text);
+      background: var(--ui-canvas);
+      border: 1px solid var(--ui-control-border);
+      border-radius: var(--ui-radius);
+    }
+    /* Native menu appearance can ignore padding, especially in Safari. */
+    :where(select:not([multiple]):not([size]), select[size="1"]:not([multiple])) {
+      appearance: none;
+      min-block-size: var(--_ui-control-min);
+      padding-inline-end: 2.5rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='m4 6 4 4 4-4' fill='none' stroke='%23657387' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right .75rem center;
+    }
+    :where(select:dir(rtl)) { background-position: left .75rem center; }
+    @media (forced-colors: active) {
+      :where(select) { appearance: auto; background-image: none; }
+    }
+    :where(textarea) { display: block; resize: vertical; }
+    :where(input::placeholder, textarea::placeholder) { color: var(--ui-muted); opacity: 1; }
+    :where(input[type="checkbox"], input[type="radio"]) { margin: 0 .4em 0 0; inline-size: 1.1em; block-size: 1.1em; vertical-align: -.1em; }
+    :where(label:has(input[type="checkbox"], input[type="radio"])) { font-weight: var(--ui-font-weight-normal); padding-block: .6rem; min-block-size: 2.75rem; }
+    :where(input[type="file"], input[type="range"]) { max-inline-size: 100%; }
+    :where(input[type="color"]) { padding: .15rem; inline-size: 3rem; block-size: 2.75rem; border: 1px solid var(--ui-control-border); border-radius: var(--ui-radius); }
+    :where(button, input[type="submit"], input[type="reset"], input[type="button"]) {
+      --_ui-control-block: var(--ui-button-padding-block);
+      --_ui-control-inline: var(--ui-button-padding-inline);
+      --_ui-button-bg: var(--ui-action-bg);
+      --_ui-button-hover: var(--ui-action-hover);
+      --_ui-button-text: var(--ui-action-text);
+      --_ui-button-border: transparent;
+      display: inline-block;
+      max-inline-size: 100%;
+      min-inline-size: var(--_ui-control-min);
+      min-block-size: var(--_ui-control-min);
+      padding: var(--_ui-control-block) var(--_ui-control-inline);
+      border: 1px solid var(--_ui-button-border);
+      border-radius: var(--ui-radius);
+      color: var(--_ui-button-text);
+      background: var(--_ui-button-bg);
+      text-align: center;
+      cursor: pointer;
+    }
+
+    :where(:is(button, input[type="submit"], input[type="reset"], input[type="button"])[data-variant="secondary"]) {
+      --_ui-button-bg: var(--ui-action-secondary-bg);
+      --_ui-button-hover: var(--ui-action-secondary-hover);
+      --_ui-button-text: var(--ui-action-secondary-text);
+      --_ui-button-border: var(--ui-action-secondary-border);
+    }
+    :where(:is(button, input[type="submit"], input[type="reset"], input[type="button"])[data-variant="quiet"]) {
+      --_ui-button-bg: var(--ui-action-quiet-bg);
+      --_ui-button-hover: var(--ui-action-quiet-hover);
+      --_ui-button-text: var(--ui-action-quiet-text);
+      --_ui-button-border: var(--ui-action-quiet-border);
+    }
+    :where(:is(button, input[type="submit"], input[type="reset"], input[type="button"])[data-variant="danger"]) {
+      --_ui-button-bg: var(--ui-action-danger-bg);
+      --_ui-button-hover: var(--ui-action-danger-hover);
+      --_ui-button-text: var(--ui-action-danger-text);
+      --_ui-button-border: var(--ui-action-danger-border);
+    }
+    :where(:is(button, input[type="submit"], input[type="reset"], input[type="button"]):enabled:is(:hover, :active)) { background: var(--_ui-button-hover); }
+    :where(:is(button, input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="hidden"], [type="image"]), select, textarea)[data-size="small"]) {
+      --_ui-control-min: var(--ui-control-small-min-size);
+      --_ui-control-block: var(--ui-control-small-padding-block);
+      --_ui-control-inline: var(--ui-control-small-padding-inline);
+      font-size: var(--ui-control-small-font-size);
+    }
+    :where(:is(button, input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="hidden"], [type="image"]), select, textarea)[data-size="large"]) {
+      --_ui-control-min: var(--ui-control-large-min-size);
+      --_ui-control-block: var(--ui-control-large-padding-block);
+      --_ui-control-inline: var(--ui-control-large-padding-inline);
+      font-size: var(--ui-control-large-font-size);
+    }
+    :where(button:disabled, input:disabled, select:disabled, textarea:disabled) { color: var(--ui-disabled-text); background-color: var(--ui-disabled-bg); border-color: var(--ui-disabled-border); accent-color: var(--ui-disabled-text); opacity: 1; cursor: not-allowed; }
+    :where(input[readonly], textarea[readonly]) { background: var(--ui-surface); }
+    :where(input:user-invalid, select:user-invalid, textarea:user-invalid, [aria-invalid="true"]) { border-color: var(--ui-invalid); border-width: 2px; }
+    :where([aria-invalid="true"] + small) { color: var(--ui-invalid); }
+    :where(fieldset) { min-inline-size: 0; padding: var(--_ui-density-fieldset-padding, 1rem); border: 1px solid var(--ui-border); border-radius: var(--ui-radius); }
+    :where(legend) { padding-inline: .4rem; font-weight: var(--ui-font-weight-bold); }
+  }
+
+  @layer layout {
+    :where(body) { padding-block-end: 2rem; }
+    /* Direct body content remains readable, including pages without a main. */
+    :where(body > *) {
+      inline-size: min(var(--ui-content-width), calc(100% - var(--ui-gutter) * 2));
+      margin-inline: auto;
+    }
+    :where(body > header) {
+      inline-size: 100%;
+      padding-block: clamp(2rem, 5vw, 4rem);
+      padding-inline: max(var(--ui-gutter), calc((100% - var(--ui-content-width)) / 2));
+      margin-block-end: 2rem;
+      color: #ffffff;
+      background: var(--ui-header-bg);
+      border-block-end: .25rem solid var(--ui-header-border);
+      --ui-link: #ffffff;
+      --ui-link-hover: #dbeafe;
+    }
+    :where(body > header h1) { margin-block-start: 0; color: inherit; }
+    :where(body > header > :last-child) { margin-block-end: 0; }
+    :where(nav > ul, nav > ol) { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; padding-inline-start: 0; list-style: none; }
+    :where(nav > ul > li, nav > ol > li) { margin-block: 0; }
+    :where(body > footer) { padding-block-start: 1rem; border-block-start: 1px solid var(--ui-border); }
+    :where(ui-stack, ui-cluster, ui-grid, ui-sidebar, ui-panel, .stack, .cluster, .grid) { margin-block-end: var(--_ui-density-space, var(--ui-space)); }
+    :where(ui-stack, .stack) { --ui-stack-gap: var(--_ui-density-space, var(--ui-space)); display: block; }
+    :where(ui-stack > *, .stack > *) { margin-block: 0; }
+    :where(ui-stack > * + *, .stack > * + *) { margin-block-start: var(--ui-stack-gap); }
+    :where(ui-cluster, .cluster) { --ui-cluster-gap: var(--_ui-density-space, var(--ui-space)); --ui-cluster-align: center; display: flex; flex-wrap: wrap; align-items: var(--ui-cluster-align); gap: var(--ui-cluster-gap); }
+    :where(ui-cluster > *, .cluster > *) { min-inline-size: 0; max-inline-size: 100%; margin-block: 0; }
+    :where(ui-grid, .grid) { --ui-grid-min: 16rem; --ui-grid-gap: var(--_ui-density-space, var(--ui-space)); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ui-grid-min)), 1fr)); gap: var(--ui-grid-gap); }
+    :where(ui-grid > *, .grid > *) { min-inline-size: 0; margin-block: 0; }
+    :where(ui-sidebar) { --ui-sidebar-width: 13rem; --ui-sidebar-content-min: 36rem; --ui-sidebar-gap: var(--_ui-density-space, var(--ui-space)); display: flex; flex-wrap: wrap; align-items: start; gap: var(--ui-sidebar-gap); }
+    :where(ui-sidebar > *) { min-inline-size: 0; margin-block: 0; }
+    :where(ui-sidebar > :first-child) { flex: 1 1 var(--ui-sidebar-width); }
+    :where(ui-sidebar > :last-child) { flex: 999 1 0; min-inline-size: min(100%, var(--ui-sidebar-content-min)); }
+    :where(ui-panel) { --ui-panel-padding: var(--_ui-density-space, var(--ui-space)); display: block; padding: var(--ui-panel-padding); border: 1px solid var(--ui-border); border-radius: var(--ui-radius); background: var(--ui-surface); }
+    :where(ui-panel > :first-child) { margin-block-start: 0; }
+    :where(ui-panel > :last-child) { margin-block-end: 0; }
+    :where(.table-scroll) { overflow-x: auto; margin-block-end: var(--ui-space); }
+    :where(.table-scroll > table) { inline-size: max-content; min-inline-size: 100%; margin-block-end: 0; }
+    :where(ui-skip-link) { position: absolute; inset-block-start: 0; inset-inline-start: var(--ui-gutter); z-index: 10; inline-size: auto; margin: 0; }
+    :where(ui-skip-link > a) { position: absolute; inset-block-start: -10rem; inline-size: max-content; max-inline-size: calc(100vw - var(--ui-gutter) * 2); padding: .75rem; }
+    :where(ui-skip-link > a:focus) { inset-block-start: .5rem; color: var(--ui-focus-edge); background: var(--ui-focus); outline: var(--ui-focus-width) solid var(--ui-focus-edge); box-shadow: none; }
+  }
+
+
+  @media (forced-colors: active) {
+    :where(:is(button, input[type="submit"], input[type="reset"], input[type="button"])) { border-color: ButtonText; }
+    :where(:focus-visible, ui-error-summary:focus, ui-skip-link > a:focus) { outline: var(--ui-focus-width) solid Highlight; outline-offset: 3px; box-shadow: none; }
+    :where(a:focus-visible, summary:focus-visible, ui-skip-link > a:focus) { color: LinkText; background: Canvas; }
+    :where(button:disabled, input:disabled, select:disabled, textarea:disabled) { color: GrayText; border-color: GrayText; }
+  }
+
+  @media print {
+    :where(:root) { color-scheme: light; --ui-text: #000; --ui-heading: #000; --ui-canvas: #fff; --ui-surface: #fff; --ui-border: #666; --ui-muted: #333; --ui-link: #000; --ui-invalid: #000; }
+    :where(body) { color: #000; background: #fff; font-size: 11pt; }
+    :where(body > header) { color: #000; background: transparent; border-color: #000; --ui-link: #000; }
+    :where(h1, h2, h3, h4, h5, h6, a, small, figcaption) { color: #000; }
+    :where(pre, blockquote, details, th, td, fieldset) { color: #000; background: #fff; }
+    :where(pre) { white-space: pre-wrap; }
+    :where(.table-scroll) { overflow: visible; }
+    :where(.table-scroll > table) { inline-size: 100%; min-inline-size: 0; }
+    :where(button, input[type="submit"], input[type="reset"], input[type="button"]) { color: #000; background: #fff; border-color: #666; }
+  }
+}
