@@ -733,5 +733,37 @@
         "js/menu-report-example.js"
       ]
     }
+  ],
+  "icon": [
+    {
+      "title": "Download a field survey",
+      "note": "A real CSV destination, a visible label and an inline SVG fallback. Native download remains usable without enhancement.",
+      "code": "<ui-panel>\n  <article>\n    <h2>Coastal survey · October</h2>\n    <p>12 observation sites, checked and ready for analysis.</p>\n    <a href=\"../../examples/menu-report.csv\" download>\n      <ui-icon library=\"fluent\" name=\"arrow-download-20-regular\" aria-hidden=\"true\">\n        <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\">\n          <path fill=\"currentColor\" d=\"M9 2h2v10l3-3 1 1-5 5-5-5 1-1 3 3zM3 17h14v2H3z\"/>\n        </svg>\n      </ui-icon>\n      Download survey CSV\n    </a>\n  </article>\n</ui-panel>",
+      "script": ""
+    },
+    {
+      "title": "Document actions with icons and dividers",
+      "note": "Native navigation and download links share the same command styling as a disabled button. Icons add no keyboard stops or typeahead text.",
+      "code": "<ui-panel>\n  <article>\n    <h2>Coastal habitat report</h2>\n    <p>Draft · Last reviewed today</p>\n    <ui-menu>\n      <button type=\"button\" id=\"document-actions\" hidden>\n        Document actions\n        <ui-icon library=\"fluent\" name=\"chevron-down-20-regular\" aria-hidden=\"true\"></ui-icon>\n      </button>\n      <ul id=\"document-commands\" aria-labelledby=\"document-actions\">\n        <li>\n          <a href=\"../../examples/menu-report.html\">\n            <ui-icon library=\"fluent\" name=\"document-20-regular\" aria-hidden=\"true\"></ui-icon>\n            Read report\n          </a>\n        </li>\n        <li>\n          <a href=\"../../examples/menu-report.csv\" download>\n            <ui-icon library=\"fluent\" name=\"arrow-download-20-regular\" aria-hidden=\"true\"></ui-icon>\n            Download survey CSV\n          </a>\n        </li>\n        <li><hr></li>\n        <li>\n          <button type=\"button\" disabled>\n            <ui-icon library=\"fluent\" name=\"lock-closed-20-regular\" aria-hidden=\"true\"></ui-icon>\n            Publish after approval\n          </button>\n        </li>\n      </ul>\n    </ui-menu>\n  </article>\n</ui-panel>",
+      "script": ""
+    },
+    {
+      "title": "Invoice status stays readable",
+      "note": "Status text carries meaning. Color and icons reinforce it; scaling uses font-size, independently of the optical filename size.",
+      "code": "<ui-stack>\n  <p>\n    <ui-icon library=\"fluent\" name=\"checkmark-circle-20-regular\" aria-hidden=\"true\"></ui-icon>\n    Invoice INV-1042 · Paid\n  </p>\n  <p style=\"color:var(--ui-warning-text)\">\n    <ui-icon library=\"fluent\" name=\"clock-20-regular\" aria-hidden=\"true\"></ui-icon>\n    Invoice INV-1043 · Awaiting payment\n  </p>\n  <p style=\"font-size:var(--ui-font-size-xl)\">\n    <ui-icon library=\"fluent\" name=\"receipt-24-regular\" aria-hidden=\"true\"></ui-icon>\n    October invoices\n  </p>\n</ui-stack>",
+      "script": ""
+    },
+    {
+      "title": "Dismiss a delivery notice",
+      "note": "The native button owns its accessible name and target size. An authored SVG remains visible if the asset cannot load. Dismissal is example application behavior.",
+      "code": "<ui-panel id=\"delivery-notice\">\n  <article>\n    <h2>Survey export ready</h2>\n    <p>Your team can now download the latest observations.</p>\n    <a href=\"../../examples/menu-report.csv\" download>Download CSV</a>\n    <button id=\"dismiss-notice\" type=\"button\" data-variant=\"quiet\"\n            aria-label=\"Dismiss export notice\" hidden>\n      <ui-icon name=\"dismiss-20-regular\" aria-hidden=\"true\">\n        <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\">\n          <path fill=\"currentColor\" d=\"m5 4 5 5 5-5 1 1-5 5 5 5-1 1-5-5-5 5-1-1 5-5-5-5z\"/>\n        </svg>\n      </ui-icon>\n    </button>\n  </article>\n</ui-panel>\n<p id=\"delivery-status\" role=\"status\"></p>\n<button id=\"restore-notice\" type=\"button\" data-variant=\"secondary\" hidden>\n  Show notice again\n</button>",
+      "script": "const notice=document.querySelector('#delivery-notice'), dismiss=document.querySelector('#dismiss-notice'), restore=document.querySelector('#restore-notice'), status=document.querySelector('#delivery-status'); dismiss.hidden=false; dismiss.addEventListener('click',()=>{restore.hidden=false;restore.focus();notice.hidden=true;status.textContent='Export notice dismissed.';}); restore.addEventListener('click',()=>{notice.hidden=false;dismiss.focus();restore.hidden=true;status.textContent='';});"
+    },
+    {
+      "title": "Your own library and a missing asset",
+      "note": "Fieldwork is a separate local stroke library. A deliberately unavailable icon retains its inline fallback and visible text.",
+      "code": "<ui-stack>\n  <p>\n    <ui-icon name=\"route\" aria-hidden=\"true\"></ui-icon>\n    Coastal site route · 4 stops\n  </p>\n  <p>\n    <ui-icon name=\"route\" library=\"fieldwork\" aria-hidden=\"true\"></ui-icon>\n    Fieldwork route mark · custom library\n  </p>\n  <p>\n    <ui-icon name=\"missing-export-icon\" aria-hidden=\"true\">\n      <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\">\n        <path fill=\"currentColor\" d=\"M9 2h2v10l3-3 1 1-5 5-5-5 1-1 3 3zM3 17h14v2H3z\"/>\n      </svg>\n    </ui-icon>\n    Download remains recognizable when an icon is missing\n  </p>\n</ui-stack>",
+      "script": ""
+    }
   ]
 }

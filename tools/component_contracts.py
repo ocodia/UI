@@ -2,6 +2,7 @@
 from html import escape
 
 PURPOSE = {
+    'icon': 'Load a named SVG from a local library folder. Keep native action labels and useful inline SVG fallbacks.',
     'button': 'Buttons perform actions. Use their emphasis and size to make the next step clear while keeping native activation, submission and reset behavior.',
     'button-group': 'Keep related actions together in a wrapping row. Each button keeps its own label, focus stop and native behavior.',
     'checkbox': 'A checkbox toggles an independent choice. Several checkboxes can collect multiple answers to one question; an indeterminate appearance can represent a partial selection.',
@@ -30,6 +31,7 @@ PURPOSE = {
 
 COMMON = [('name / value','Use a meaningful form key and answer. An enabled successful native control contributes its value.'),('disabled','Boolean presence disables interaction and excludes the control from form submission.'),('required','Where supported, the native control must satisfy its missing-value constraint before submission.'),('form','Associate with a native form by ID when outside its subtree. Labels and DOM layout stay independent of ownership.'),('aria-describedby','Space-separated hint/error IDs. Preserve existing descriptions when adding feedback.')]
 EXTRA = {
+    'icon': [('name', 'Required SVG filename stem, without extension.'), ('library', 'Local folder name; defaults to fluent.'), ('label', 'Optional meaningful image name; decorative when absent/empty.'), ('data-ui-icons-base', 'Directory URL on the shared script; same-origin HTTP(S), trailing slash.'), ('data-ui-icon-state', 'Owned read-only loading, ready or error state; use explicit enhance to retry errors.'), ('font-size / color', '1em by default; currentColor artwork inherits text color.')],
     'checkbox':[('checked / defaultChecked','checked is the current Boolean property; checked markup sets the reset default.'),('indeterminate','JavaScript-only property; changes appearance independently of checked. It is not a custom HTML attribute.'),('value','Defaults to on when omitted. Only a checked, enabled checkbox contributes it.')],
     'checkbox-group':[('fieldset / legend','Native grouping and the question’s visible name.'),('name','Repeat the same key on individual inputs to collect several values.'),('validator','Optional ui-form application callback can enforce a group rule. This is not an attribute of fieldset.')],
     'radio':[('name / value','Group by the same name and native form owner; give each answer a distinct value.'),('checked','Initial selection in markup; current selection is the checked property.')],

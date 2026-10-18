@@ -295,6 +295,9 @@
   }
 
   @layer forms {
+    :where(ui-icon) { display: inline-block; inline-size: 1em; block-size: 1em; flex: none; vertical-align: -.125em; line-height: 1; }
+    :where(ui-icon > svg) { display: block; inline-size: 100%; block-size: 100%; }
+    :where(ui-icon > svg[hidden]) { display: none; }
     :where(ui-form, ui-field, ui-hint, ui-error, ui-error-summary, ui-accordion, ui-tabs, ui-menu) { display: block; }
     :where(ui-pagination) { display: block; }
     :where(ui-pagination > nav > :is(ul, ol)) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ui-space-2); list-style: none; margin-block: var(--ui-space-4); padding: 0; }

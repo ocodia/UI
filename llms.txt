@@ -34,3 +34,5 @@ Only ui-form and ui-error-summary are registered behavior elements today. CSS-on
 - [Pagination](docs/pagination.md): CSS-only ui-pagination around native navigation links; no script or registration. Applications own URLs, totals and updates.
 
 - [Stepper / Step](docs/stepper.md): CSS-only ui-steps around native ol/li stages; real links only to reachable tasks. No JavaScript progression API.
+
+- [Icon](docs/icon.md): Experimental ui-icon, local Fluent/custom SVG libraries, decorative/meaningful naming, safe loading and inline fallback. [Icon browser](examples/icons.html).

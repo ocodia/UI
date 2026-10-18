@@ -7,6 +7,7 @@ from build_catalog import generate as catalogue
 from site_shell import ROOT, document, sidebar, markdown, relative
 from site_content import example_markup
 from build_ui import generate as combined_ui
+from build_icons import generate as icon_catalogue
 
 
 def generate():
@@ -46,6 +47,12 @@ def main():
     parser.add_argument('--check',action='store_true')
     args = parser.parse_args()
     stale = []
+    icons = ROOT/'icons/catalogue.json'
+    icon_content = icon_catalogue()
+    if args.check:
+        if not icons.exists() or icons.read_text() != icon_content: stale.append('icons/catalogue.json')
+    else:
+        icons.write_text(icon_content)
     ui = ROOT/'js/ui.js'
     if args.check:
         if not ui.exists() or ui.read_text() != combined_ui(): stale.append('js/ui.js')

@@ -7,6 +7,7 @@ import re
 from urllib.parse import unquote, urlsplit
 from build_docs import ROOT, generate
 from build_ui import generate as combined_ui
+from build_icons import generate as icon_catalogue
 
 class Page(HTMLParser):
     def __init__(self, text):
@@ -57,6 +58,8 @@ def main():
     documented={item['id'] for item in data['uiComponents'] if item['mode']=='Optional JS'}
     if registered != documented:
         errors.append('Behavior registrations and the machine-readable current API disagree.')
+    if not (ROOT/'icons/catalogue.json').exists() or (ROOT/'icons/catalogue.json').read_text() != icon_catalogue():
+        errors.append('Stale icon catalogue; run python3 tools/build_icons.py')
     for name, expected in generate().items():
         path=ROOT/name
         if not path.exists() or path.read_text()!=expected:

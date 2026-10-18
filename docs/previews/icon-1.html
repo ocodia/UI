@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- Generated from docs/recipes.json. Trusted repository examples only. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Document actions with icons and dividers — UI example</title>
+<link rel="stylesheet" href="../../css/ui.css?v=80dd24bf2b51"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/ui.js?v=e96cee4cd408" defer></script><script src="../../js/docs-preview.js?v=910f4f17837f" defer></script>
+<style>body { padding: 1.5rem; padding-inline-end: 3rem; } body > main { max-inline-size: none; inline-size: auto; margin: 0; padding: 0; } h1 { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); } output { display: block; margin-block-start: 1rem; } .table-scroll table { min-inline-size: 38rem; } :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) { display: none; }</style></head>
+<body><main aria-label="Document actions with icons and dividers example"><h1>Document actions with icons and dividers</h1><ui-panel>
+  <article>
+    <h2>Coastal habitat report</h2>
+    <p>Draft · Last reviewed today</p>
+    <ui-menu>
+      <button type="button" id="document-actions" hidden>
+        Document actions
+        <ui-icon library="fluent" name="chevron-down-20-regular" aria-hidden="true"></ui-icon>
+      </button>
+      <ul id="document-commands" aria-labelledby="document-actions">
+        <li>
+          <a href="../../examples/menu-report.html">
+            <ui-icon library="fluent" name="document-20-regular" aria-hidden="true"></ui-icon>
+            Read report
+          </a>
+        </li>
+        <li>
+          <a href="../../examples/menu-report.csv" download>
+            <ui-icon library="fluent" name="arrow-download-20-regular" aria-hidden="true"></ui-icon>
+            Download survey CSV
+          </a>
+        </li>
+        <li><hr></li>
+        <li>
+          <button type="button" disabled>
+            <ui-icon library="fluent" name="lock-closed-20-regular" aria-hidden="true"></ui-icon>
+            Publish after approval
+          </button>
+        </li>
+      </ul>
+    </ui-menu>
+  </article>
+</ui-panel></main></body></html>

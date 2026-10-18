@@ -752,11 +752,18 @@
       "name": "Icon",
       "category": "Media",
       "reference": "https://webawesome.com/docs/components/icon/",
-      "ui": "ui-icon around inline svg (proposed)",
-      "status": "planned",
+      "ui": "ui-icon with local SVG libraries",
+      "status": "foundation",
       "phase": 2,
-      "contract": "Use a curated SVG contract; icons are decorative unless they independently carry meaning.",
-      "acceptance": "Decorative aria-hidden, meaningful accessible name, currentColor, forced colors, and visible labels for unfamiliar actions."
+      "contract": "Local library/name SVG loading in light DOM; decorative by default, optional meaningful label, authored inline fallback and shared lifecycle.",
+      "acceptance": "Safe SVG subset, local paths, bounded/deduplicated fetch, stale responses, teardown/retry, inherited size/color, meaningful names and fallback. Manual platform/assistive-technology release evidence remains open.",
+      "maturity": "experimental",
+      "specification": "docs/specs/icon.md",
+      "elements": [
+        "ui-icon"
+      ],
+      "example": "<ui-panel>\n  <article>\n    <h2>Coastal survey · October</h2>\n    <p>12 observation sites, checked and ready for analysis.</p>\n    <a href=\"../../examples/menu-report.csv\" download>\n      <ui-icon library=\"fluent\" name=\"arrow-download-20-regular\" aria-hidden=\"true\">\n        <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\">\n          <path fill=\"currentColor\" d=\"M9 2h2v10l3-3 1 1-5 5-5-5 1-1 3 3zM3 17h14v2H3z\"/>\n        </svg>\n      </ui-icon>\n      Download survey CSV\n    </a>\n  </article>\n</ui-panel>",
+      "exampleNote": "[Icon guide](icon.md) · [Searchable icon browser](../examples/icons.html) · [Focused checks](../tests/icon.html)."
     },
     {
       "id": "markdown",

@@ -7,7 +7,7 @@ Load `js/ui.js` once for the behaviors UI currently ships. It includes forms/err
 <script src="js/ui.js" defer></script>
 ```
 
-The combined file registers only the existing `ui-form` and `ui-error-summary` elements. Native overlays use explicit `data-ui` markers. The `ui-accordion`, `ui-tabs` and `ui-menu` elements opt in by element name; tooltips and other planned widgets remain unavailable. CSS-only ui- wrappers need no initializer. Keep data attributes for actual configuration, relationships and runtime state rather than repeating a custom element name. The shared API and overlay convenience patterns are experimental; existing component APIs retain their contracts.
+The combined file registers only the existing `ui-form` and `ui-error-summary` elements. Native overlays use explicit `data-ui` markers. The `ui-accordion`, `ui-tabs`, `ui-menu` and `ui-icon` elements opt in by element name; tooltips and other planned widgets remain unavailable. CSS-only ui- wrappers need no initializer. Keep data attributes for actual configuration, relationships and runtime state rather than repeating a custom element name. The shared API and overlay convenience patterns are experimental; existing component APIs retain their contracts.
 
 ## What UI initializes
 
@@ -20,6 +20,7 @@ The combined file registers only the existing `ui-form` and `ui-error-summary` e
 | Accordion | ui-accordion around direct native details/summary items | Optional summary navigation, fragment reveal and collapsed-content focus recovery; expansion stays native |
 | Tabs | ui-tabs with a named direct native nav, fragment anchors and paired sections | Selection, keyboard navigation, coordinated fragment/form-error reveal and readable teardown; see [Tabs](tabs.md) |
 | Command menus | ui-menu with one hidden native trigger and named ul of button/link commands | Native popover dismissal, Popup geometry, keyboard/typeahead and inline recovery; see [Dropdown](dropdown.md) |
+| Icons | ui-icon with name and optional library/label/inline SVG fallback | Local SVG loading and validation, decorative/meaningful naming, asynchronous stale-result guards and fallback; see [Icon](icon.md) |
 | Pagination | ui-pagination around named native nav/list/links | CSS/native navigation only; no initializer, teardown or library requests; see [Pagination](pagination.md) |
 | Stepper / Step | ui-steps around a native ol of li stages | CSS/native text and reachable links only; application owns progression and validation; see [Stepper](stepper.md) |
 | Native controls, plain details outside ui-accordion, progress and CSS-only layouts | Existing native/UI markup | Native/CSS behavior; no new initialization or roles |
@@ -66,7 +67,7 @@ Escape and background inertness stay native; no duplicate focus trap or document
 
 ## Dynamic applications
 
-The bundle initializes once after parsing. Newly connected ui-form/ui-error-summary elements continue using their native custom-element lifecycle. Newly inserted marked native overlays and ui-accordion/ui-tabs/ui-menu elements require an explicit scoped call after insertion:
+The bundle initializes once after parsing. Newly connected ui-form/ui-error-summary elements continue using their native custom-element lifecycle. Newly inserted marked native overlays and ui-accordion/ui-tabs/ui-menu/ui-icon elements require an explicit scoped call after insertion:
 
 ```js
 container.append(newSection);
@@ -79,8 +80,8 @@ newSection.remove();
 
 | API | Contract |
 | --- | --- |
-| UI.enhance(root = document) | Synchronous, idempotent; returns undefined. Includes the root and descendants. Resumes/refreshes forms and summaries and installs/reconciles supported marked native surfaces and ui-accordion/ui-tabs/ui-menu elements. Unchanged active patterns remain open. |
-| UI.destroy(root = document) | Synchronous, idempotent; returns undefined. Releases owned overlays and Accordion/Tabs/Menu groups deepest first, restores readable presentation and suspends contained form/summary automatic behavior. Answers remain on their native controls. |
+| UI.enhance(root = document) | Synchronous, idempotent; returns undefined. Includes the root and descendants. Resumes/refreshes forms and summaries and installs/reconciles supported marked native surfaces and ui-accordion/ui-tabs/ui-menu/ui-icon elements. Unchanged active patterns remain open. |
+| UI.destroy(root = document) | Synchronous, idempotent; returns undefined. Releases Icon loading and owned overlays/Accordion/Tabs/Menu groups (groups deepest first), restores readable presentation and suspends contained form/summary automatic behavior. Answers remain on their native controls. |
 | UI.popup.attach(options) | The same lower-level geometry adapter as UIPopup.attach; see the complete Popup contract. |
 
 Roots must be a Document, Element or DocumentFragment from this runtime's document; invalid/foreign roots throw TypeError. Disconnected fragments are not initialized. Destroy also accepts detached subtrees for cleanup. If an invoker was added outside its surface, pass the surface or a shared ancestor/document to enhance; passing only the button does not include its target.
@@ -101,8 +102,12 @@ Application requests, custom validation rules, asynchronous cancellation/respons
 
 Existing js/components.js and js/popup.js remain compatible. Loading them before or after ui.js does not replace registered constructors or geometry ownership, and repeated ui.js does not initialize twice. UI.popup.attach and UIPopup.attach are the same function. Pages using only form behavior can keep the smaller original entry; the combined entry includes every currently shipped behavior.
 
-Edit js/components.js, js/popup.js and js/enhance.js; generate js/ui.js with python3 tools/build_ui.py, or use python3 tools/build_docs.py to rebuild both the bundle and documentation with matching fingerprints. There is no runtime script fetch, npm package, module import or component autoloader. Commit the generated file with its sources when committing changes.
+Edit js/components.js, js/popup.js, js/icons.js and js/enhance.js; generate js/ui.js with python3 tools/build_ui.py, or use python3 tools/build_docs.py to rebuild both the bundle and documentation with matching fingerprints. There is no runtime script fetch, npm package, module import or component autoloader. Commit the generated file with its sources when committing changes.
 
 ## Verification
 
 The [focused shared-entry harness](../tests/enhancement.html) and [full browser harness](../tests/accessibility.html) cover lifecycle, mixed/repeated loading, native form ownership, declarative overlays, fallback and reflow. The [specification](specs/enhancement.md) records the intended ownership boundaries. Dated browser results and open manual/platform release gates remain in [ACCESSIBILITY.md](../ACCESSIBILITY.md); the convenience API does not establish accessibility conformance.
+
+## Local SVG icons
+
+The [Icon loader](icon.md) initializes static ui-icon elements by name. New/reinserted hosts need UI.enhance; name/library/label changes are observed on existing hosts. UI.enhance is synchronous while SVG fetch/render is asynchronous; UI.destroy invalidates pending results and restores authored fallback. Shared fetches may finish for other consumers. Configure an optional same-origin icon directory with data-ui-icons-base on the shared script.

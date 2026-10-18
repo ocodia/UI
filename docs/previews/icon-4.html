@@ -1,0 +1,23 @@
+<!doctype html>
+<!-- Generated from docs/recipes.json. Trusted repository examples only. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Your own library and a missing asset — UI example</title>
+<link rel="stylesheet" href="../../css/ui.css?v=80dd24bf2b51"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/ui.js?v=e96cee4cd408" defer></script><script src="../../js/docs-preview.js?v=910f4f17837f" defer></script>
+<style>body { padding: 1.5rem; padding-inline-end: 3rem; } body > main { max-inline-size: none; inline-size: auto; margin: 0; padding: 0; } h1 { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); } output { display: block; margin-block-start: 1rem; } .table-scroll table { min-inline-size: 38rem; } :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) { display: none; }</style></head>
+<body><main aria-label="Your own library and a missing asset example"><h1>Your own library and a missing asset</h1><ui-stack>
+  <p>
+    <ui-icon name="route" aria-hidden="true"></ui-icon>
+    Coastal site route · 4 stops
+  </p>
+  <p>
+    <ui-icon name="route" library="fieldwork" aria-hidden="true"></ui-icon>
+    Fieldwork route mark · custom library
+  </p>
+  <p>
+    <ui-icon name="missing-export-icon" aria-hidden="true">
+      <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="M9 2h2v10l3-3 1 1-5 5-5-5 1-1 3 3zM3 17h14v2H3z"/>
+      </svg>
+    </ui-icon>
+    Download remains recognizable when an icon is missing
+  </p>
+</ui-stack></main></body></html>

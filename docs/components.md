@@ -995,11 +995,32 @@ Present both labelled originals before enhancement and retain separate links to 
 
 ### Icon
 
-**Planned · Phase 2.** UI route: `ui-icon around inline svg (proposed)`.
+**Foundation · Phase 2.** UI route: `ui-icon with local SVG libraries`.
 
-Use a curated SVG contract; icons are decorative unless they independently carry meaning.
+Local library/name SVG loading in light DOM; decorative by default, optional meaningful label, authored inline fallback and shared lifecycle.
 
-**Acceptance work:** Decorative aria-hidden, meaningful accessible name, currentColor, forced colors, and visible labels for unfamiliar actions.
+**Acceptance work:** Safe SVG subset, local paths, bounded/deduplicated fetch, stale responses, teardown/retry, inherited size/color, meaningful names and fallback. Manual platform/assistive-technology release evidence remains open.
+
+```html
+<ui-panel>
+  <article>
+    <h2>Coastal survey · October</h2>
+    <p>12 observation sites, checked and ready for analysis.</p>
+    <a href="../../examples/menu-report.csv" download>
+      <ui-icon library="fluent" name="arrow-download-20-regular" aria-hidden="true">
+        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M9 2h2v10l3-3 1 1-5 5-5-5 1-1 3 3zM3 17h14v2H3z"/>
+        </svg>
+      </ui-icon>
+      Download survey CSV
+    </a>
+  </article>
+</ui-panel>
+```
+
+[Icon guide](icon.md) · [Searchable icon browser](../examples/icons.html) · [Focused checks](../tests/icon.html).
+
+[Component specification](specs/icon.md)
 
 [Reference component](https://webawesome.com/docs/components/icon/) · [Specification template](component-template.md)
 

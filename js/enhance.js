@@ -1,4 +1,4 @@
-// Shared opt-in lifecycle for shipped behaviors. No application data or async ownership.
+// Shared opt-in lifecycle for shipped behaviors. Applications retain business data and async form ownership.
 (() => {
   const key = Symbol.for('ui.enhancement.runtime');
   if (globalThis[key]) { globalThis.UI = globalThis[key]; return; }
@@ -645,6 +645,7 @@
   }
   function initialize(root, automatic = false) {
     rootNode(root);
+    globalThis[Symbol.for('ui.icons.runtime')]?.enhance(root, automatic);
     for (const node of within(root, 'ui-error-summary,ui-form')) if (node.isConnected && (!automatic || !node._uiSuspended)) node._uiResume?.();
     for (const surface of within(root, '[data-ui],ui-tabs,ui-accordion,ui-menu')) {
       if (automatic && stopped.has(surface)) continue;
@@ -660,6 +661,7 @@
   function enhance(root = doc) { initialize(root); }
   function destroy(root = doc) {
     rootNode(root);
+    globalThis[Symbol.for('ui.icons.runtime')]?.destroy(root);
     for (const surface of within(root, '[data-ui],ui-tabs,ui-accordion,ui-menu')) stopped.add(surface);
     for (const record of deepestRecords()) if (record.surface === root || root.contains(record.surface)) release(record);
     for (const node of within(root, 'ui-form,ui-error-summary').reverse()) node._uiSuspend?.();

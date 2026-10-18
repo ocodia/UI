@@ -36,7 +36,8 @@ The native form owns submission. UI adds linked errors and focus management. Bas
 | Control presentation | Native button variants and control sizes; [contract](docs/controls.md). Comfortable/compact composition; [density](docs/density.md) |
 | Composition | `ui-stack`, `ui-cluster`, `ui-grid`, `ui-sidebar`, `ui-panel` |
 | Form structure | `ui-field`, `ui-hint`, `ui-error`, `ui-skip-link` |
-| Optional behavior | Combined `js/ui.js`: forms/summaries, declarative dialog/popover/Popup setup and opt-in Accordion/Tabs; [shared API](docs/enhancement.md). Original smaller entries remain available. |
+| Optional behavior | Combined `js/ui.js`: forms/summaries, declarative dialog/popover/Popup setup and opt-in Accordion/Tabs/Dropdown/Icon; [shared API](docs/enhancement.md). Original smaller entries remain available. |
+| Icons | Local SVG libraries through `ui-icon`, including Fluent; [guide](docs/icon.md) and [searchable browser](examples/icons.html) |
 | Themes | System/light/dark, spacing/type/radius scales, semantic state/focus tokens, an optional forest brand |
 | Examples | Element gallery, complete form, Fieldwork workspace, recipes, server error recovery, async form integration, native input values and theme workbench |
 

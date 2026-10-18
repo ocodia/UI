@@ -1,0 +1,26 @@
+<!doctype html>
+<!-- Generated from docs/recipes.json. Trusted repository examples only. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Dismiss a delivery notice — UI example</title>
+<link rel="stylesheet" href="../../css/ui.css?v=80dd24bf2b51"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/ui.js?v=e96cee4cd408" defer></script><script src="../../js/docs-preview.js?v=910f4f17837f" defer></script>
+<style>body { padding: 1.5rem; padding-inline-end: 3rem; } body > main { max-inline-size: none; inline-size: auto; margin: 0; padding: 0; } h1 { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); } output { display: block; margin-block-start: 1rem; } .table-scroll table { min-inline-size: 38rem; } :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) { display: none; }</style></head>
+<body><main aria-label="Dismiss a delivery notice example"><h1>Dismiss a delivery notice</h1><ui-panel id="delivery-notice">
+  <article>
+    <h2>Survey export ready</h2>
+    <p>Your team can now download the latest observations.</p>
+    <a href="../../examples/menu-report.csv" download>Download CSV</a>
+    <button id="dismiss-notice" type="button" data-variant="quiet"
+            aria-label="Dismiss export notice" hidden>
+      <ui-icon name="dismiss-20-regular" aria-hidden="true">
+        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="m5 4 5 5 5-5 1 1-5 5 5 5-1 1-5-5-5 5-1-1 5-5-5-5z"/>
+        </svg>
+      </ui-icon>
+    </button>
+  </article>
+</ui-panel>
+<p id="delivery-status" role="status"></p>
+<button id="restore-notice" type="button" data-variant="secondary" hidden>
+  Show notice again
+</button></main><script>
+const notice=document.querySelector('#delivery-notice'), dismiss=document.querySelector('#dismiss-notice'), restore=document.querySelector('#restore-notice'), status=document.querySelector('#delivery-status'); dismiss.hidden=false; dismiss.addEventListener('click',()=>{restore.hidden=false;restore.focus();notice.hidden=true;status.textContent='Export notice dismissed.';}); restore.addEventListener('click',()=>{notice.hidden=false;dismiss.focus();restore.hidden=true;status.textContent='';});
+</script></body></html>
