@@ -24,11 +24,11 @@ Use `data-ui="dialog"` on an authored open native dialog, or `data-ui="popover|p
 
 ## Pagination
 
-The experimental CSS-only [Pagination pattern](pagination.md) uses `ui-pagination` around a named native nav and ul/ol of real links. Author one current-page link with `aria-current="page"`, omit unavailable previous/next links, and keep ellipses as text. No JavaScript, data-ui marker, registration, page-count API or initialization is required. Applications own URLs, totals, loading and focus after updates.
+The experimental CSS-only [Pagination pattern](pagination.md) uses `ui-pagination` around a named native nav and ul/ol of real links. Author one current-page link with `aria-current="page"`, omit unavailable previous/next links, and keep ellipses as text. The pattern uses CSS and native links. Applications own URLs, totals, loading and focus after updates.
 
 ## Stepper / Step
 
-The experimental CSS-only [Stepper pattern](stepper.md) uses `ui-steps` around a native ol; each Step is a li. Author aria-current="step" on the current item, visible completed/error/future status, and real links only for reachable stages. There is no ui-step registration, data marker or initializer. Applications own validation, persistence, progression and task focus.
+The experimental CSS-only [Stepper pattern](stepper.md) uses `ui-steps` around a native ol; each Step is a li. Author aria-current="step" on the current item, visible completed/error/future status, and real links only for reachable stages. Applications own validation, persistence, progression and task focus.
 
 ## HTML conventions
 

@@ -24,7 +24,7 @@ Only `css/ui.css` is required. The wrapper scopes presentation; `nav` provides t
 <h2 id="results" tabindex="-1">Reports: page 2 of 8</h2>
 ```
 
-Replace illustrative report URLs with application routes that return the corresponding results. The runnable examples below use separate repository pages with different report records. Their documentation host loads shared preview scripts for resizing and themes; Pagination itself uses no script, data marker, registration or initializer. There is no page-count property, selected index, generated link set or custom event.
+Replace illustrative report URLs with application routes that return the corresponding results. The runnable examples below use separate repository pages with different report records. Their documentation host loads shared preview scripts for resizing and themes; Pagination itself uses CSS and native links. There is no page-count property, selected index, generated link set or custom event.
 
 ## Current page, boundaries and empty results
 
@@ -52,4 +52,4 @@ On success, update results, counts, current link and history together, then focu
 
 `UI.enhance` and `UI.destroy` leave Pagination unchanged. Late links, replacement, nesting, disconnect/reconnect and adoption need only native HTML/CSS; applications own valid markup and focus before removing a task. The pattern acquires no listeners, observers, generated IDs, mutations or pending work. Native controls elsewhere in the task keep their labels, values, form ownership, validation and reset behavior.
 
-Without CSS the named list and destinations remain readable; without JavaScript the pages navigate normally. Invalid markup or duplicate current markers remain authoring errors rather than being silently repaired. Print retains navigation in document order. Actual forced-colors, zoom, print, touch and assistive-technology evidence remains in the component release gate. The original library entries and two existing registrations are unchanged.
+Without CSS the named list and destinations remain readable; without JavaScript the pages navigate normally. Invalid markup or duplicate current markers remain authoring errors rather than being silently repaired. Print retains navigation in document order. Actual forced-colors, zoom, print, touch and assistive-technology evidence remains in the component release gate.

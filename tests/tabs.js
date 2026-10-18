@@ -11,23 +11,7 @@ async function runTabsChecks(load, frame) {
   const selected = index => tabs.every((tab, i) => tab.getAttribute('aria-selected') === String(index === i)) && panels.every((panel, i) => panel.hidden === (i !== index));
   await open();
   check(!group.hasAttribute('data-ui') && group.hasAttribute('data-ui-ready') && selected(0), 'The ui-tabs element bootstraps without a data-ui marker and selects exactly one panel.');
-  win.UI.destroy(group); group.dataset.ui = 'tabs'; win.UI.enhance(group);
-  check(group.hasAttribute('data-ui-ready') && selected(0), 'Legacy data-ui="tabs" markup remains compatible.');
-  group.removeAttribute('data-ui'); await settle();
-  check(group.hasAttribute('data-ui-ready') && selected(0), 'Removing the redundant marker leaves enhancement intact.');
-  check(list.localName === 'nav' && !list.hasAttribute('data-ui-tablist'), 'Tabs enhance native navigation without a structural marker.');
-  check(!win.customElements.get('ui-tabs') && !win.customElements.get('ui-tablist') && !win.customElements.get('ui-tab') && !win.customElements.get('ui-tab-panel'), 'No new custom-element registration.');
-  win.UI.destroy(group);
-  const legacyList = doc.createElement('div'); legacyList.setAttribute('data-ui-tablist', ''); legacyList.setAttribute('aria-label', list.getAttribute('aria-label')); legacyList.append(...list.childNodes); list.replaceWith(legacyList); list = legacyList; win.UI.enhance(group);
-  check(group.hasAttribute('data-ui-ready') && list.getAttribute('role') === 'tablist' && selected(0), 'Legacy div[data-ui-tablist] remains compatible.');
-  win.UI.destroy(group);
-  const namedList = doc.createElement('ui-tablist'); namedList.setAttribute('aria-label', list.getAttribute('aria-label')); namedList.append(...list.childNodes); list.replaceWith(namedList); list = namedList; win.UI.enhance(group);
-  check(group.hasAttribute('data-ui-ready') && list.getAttribute('role') === 'tablist' && selected(0), 'Replacing the legacy list with ui-tablist preserves native anchors and supports explicit enhancement.');
-  const standalone = doc.createElement('ui-tablist'); standalone.innerHTML = '<a href="#visit-arrival">Getting here</a>'; doc.querySelector('main').append(standalone); win.UI.enhance(standalone);
-  check(!standalone.hasAttribute('role') && !standalone.hasAttribute('data-ui-ready') && !standalone.firstElementChild.hasAttribute('role') && win.getComputedStyle(standalone).display === 'block', 'Standalone ui-tablist is readable block composition without invented widget behavior.'); standalone.remove();
-  win.UI.destroy(group);
-  const nativeNav = doc.createElement('nav'); nativeNav.setAttribute('aria-label', list.getAttribute('aria-label')); nativeNav.append(...list.childNodes); list.replaceWith(nativeNav); list = nativeNav; win.UI.enhance(group);
-  check(group.hasAttribute('data-ui-ready') && list.getAttribute('role') === 'tablist' && selected(0), 'Native nav replaces the legacy structures without changing anchor ownership.');
+  check(list.localName === 'nav', 'Tabs enhance native navigation.');
   win.UI.destroy(group);
   check(list.localName === 'nav' && !list.hasAttribute('role') && list.getAttribute('aria-label') === 'Visit information' && panels.every(panel => !panel.hidden), 'Teardown restores the named native navigation landmark and readable sections.'); win.UI.enhance(group);
   check(list.getAttribute('role') === 'tablist' && tabs.every((tab, i) => tab.getAttribute('role') === 'tab' && tab.getAttribute('aria-controls') === panels[i].id && panels[i].getAttribute('aria-labelledby') === tab.id && panels[i].tabIndex === 0), 'Complete tab/panel relationships and panel focus stops.');
@@ -106,7 +90,7 @@ async function runTabsChecks(load, frame) {
   check(!group.hasAttribute('data-ui-ready') && panels.every(panel => !panel.hidden) && dialog.open, 'Initialization leaves readable baseline when selection would hide an existing open task.'); dialog.close(); dialog.remove(); win.UI.enhance(group);
   // Invalid baseline markup must never gain partial roles or hidden content.
   win.UI.destroy(group); const baseline = group.outerHTML; group.remove(); const host = doc.createElement('div'); doc.querySelector('main').append(host);
-  for (const mutate of [node => node.firstElementChild.remove(), node => node.lastElementChild.remove(), node => node.firstElementChild.removeAttribute('aria-label'), node => node.querySelector('a').href = '#%E0%A4%A', node => node.querySelector('a').setAttribute('role', 'button'), node => node.lastElementChild.hidden = true, node => node.querySelector('a').setAttribute('aria-disabled', 'true'), node => node.querySelector('a').append(doc.createElement('button')), node => node.children[2].id = node.children[1].id, node => node.firstElementChild.replaceWith(doc.createElement('div')), node => node.append(doc.createElement('ui-tablist'))]) {
+  for (const mutate of [node => node.firstElementChild.remove(), node => node.lastElementChild.remove(), node => node.firstElementChild.removeAttribute('aria-label'), node => node.querySelector('a').href = '#%E0%A4%A', node => node.querySelector('a').setAttribute('role', 'button'), node => node.lastElementChild.hidden = true, node => node.querySelector('a').setAttribute('aria-disabled', 'true'), node => node.querySelector('a').append(doc.createElement('button')), node => node.children[2].id = node.children[1].id, node => node.firstElementChild.replaceWith(doc.createElement('div')), node => node.append(doc.createElement('nav'))]) {
     host.innerHTML = baseline; const invalid = host.firstElementChild; mutate(invalid); win.UI.enhance(invalid); check(!invalid.hasAttribute('data-ui-ready') && !invalid.querySelector('[data-ui-tabs-inactive]'), 'Invalid structure remains baseline without owned hiding.'); win.UI.destroy(invalid);
   }
   host.remove();

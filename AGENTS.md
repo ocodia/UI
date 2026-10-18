@@ -13,7 +13,7 @@ UI is an HTML-first UI system in development. This file applies to the entire re
 ## Current implementation
 
 - Library CSS: `css/ui.css`, named `ui` layer and low-specificity native styles.
-- Combined library entry: generated `js/ui.js` from `js/components.js`, `js/popup.js`, `js/enhance.js`. Registers **only `ui-form` and `ui-error-summary`**, plus `UI.enhance(root)` / `UI.destroy(root)` and `UI.popup.attach`. Standard native overlays opt in with `data-ui`; `ui-accordion` and `ui-tabs` opt in by element name without redundant markers. Tabs enhance a direct native `nav` followed by sibling `section` panels (legacy `ui-tablist` remains compatible); see `docs/enhancement.md`. CSS-only `ui-pagination` scopes a native named navigation list and requires no script. The original form/geometry entries remain compatible.
+- Combined library entry: generated `js/ui.js` from `js/components.js`, `js/popup.js`, `js/enhance.js`. Registers **only `ui-form` and `ui-error-summary`**, plus `UI.enhance(root)` / `UI.destroy(root)` and `UI.popup.attach`. Standard native overlays opt in with `data-ui`; `ui-accordion` and `ui-tabs` opt in by element name. Tabs enhance a direct native `nav` followed by sibling `section` panels; see `docs/enhancement.md`. CSS-only `ui-pagination` scopes a native named navigation list and requires no script. The original form/geometry entries remain compatible.
 - Optional experimental geometry: `js/popup.js`, exposes `UIPopup.attach` for native auto popovers; no registration; also included in `js/ui.js`. See `docs/popup.md`.
 - CSS-only elements: `ui-stack`, `ui-cluster`, `ui-grid`, `ui-sidebar`, `ui-panel`, `ui-field`, `ui-hint`, `ui-error`, `ui-skip-link`, `ui-pagination`, `ui-steps`.
 - Optional brand: `themes/forest.css`, root `data-brand="forest"`.
@@ -41,4 +41,4 @@ Run `python3 tools/build_docs.py` after changing Markdown, catalogue, recipe sou
 
 For runtime changes, serve with `python3 -m http.server 8765` and run relevant checks in `tests/accessibility.html`. Record actual browser/manual results. Do not treat axe as proof of WCAG conformance or hide findings with exclusions. Do not mark roadmap release gates complete without evidence.
 
-Preserve user changes and existing APIs. Do not commit or publish unless requested. Keep `README.md`, current reference, examples and machine catalogue consistent with implemented code. Update this file if entry points or registration counts change.
+Preserve user changes. During development, replace superseded component APIs and remove their code, tests and documentation rather than maintaining compatibility aliases unless explicitly requested. Do not commit or publish unless requested. Keep `README.md`, current reference, examples and machine catalogue consistent with implemented code. Update this file if entry points or registration counts change.

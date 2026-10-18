@@ -295,7 +295,7 @@
   }
 
   @layer forms {
-    :where(ui-form, ui-field, ui-hint, ui-error, ui-error-summary, ui-accordion, ui-tabs, ui-tablist) { display: block; }
+    :where(ui-form, ui-field, ui-hint, ui-error, ui-error-summary, ui-accordion, ui-tabs) { display: block; }
     :where(ui-pagination) { display: block; }
     :where(ui-pagination > nav > :is(ul, ol)) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ui-space-2); list-style: none; margin-block: var(--ui-space-4); padding: 0; }
     :where(ui-pagination > nav > :is(ul, ol) > li) { margin: 0; min-inline-size: 0; max-inline-size: 100%; }

@@ -4,7 +4,7 @@
 
 **Status: experimental implementation. Phase: 2. Owner: UI foundation; navigation, data and state belong to the application.** Pagination connects pages of one result set using real URLs. Follow the [shared lifecycle and ownership contract](../lifecycle.md). Prefer one readable page when splitting content would make comparison or finding information harder. Infinite scrolling, virtual lists, page-size inputs and process steppers are separate patterns.
 
-`ui-pagination` is an unregistered, CSS-only composition boundary. Its purpose is to scope wrapping layout, link targets, current-page presentation and spacing without styling every native navigation list. A native `nav` supplies the landmark, a native list supplies grouping, and anchors supply destinations. No JavaScript, data-ui marker, component loader, custom events or composite-widget roles are required.
+`ui-pagination` is a CSS-only composition boundary. Its purpose is to scope wrapping layout, link targets, current-page presentation and spacing without styling every native navigation list. A native `nav` supplies the landmark, a native list supplies grouping, and anchors supply destinations.
 
 ## Minimal markup
 
@@ -34,7 +34,7 @@ Use one direct named `nav` and one direct `ul` or `ol`, with native `li` childre
 
 | Surface | Decision |
 | --- | --- |
-| ui-pagination | CSS-only block boundary; no registration, methods, properties, generated IDs, implicit landmark, readiness marker or initialization. |
+| ui-pagination | CSS-only block boundary around native navigation and a list of links. |
 | nav name | Authored aria-label or aria-labelledby names the result set. Different pagers have distinct names; identical top/bottom link sets may share a name. |
 | ul / ol / li | Native grouping and DOM order. List role is authored, not installed by UI. No arbitrary child selector can repair invalid HTML. |
 | a href | Native destination, including existing filters/sort parameters and an optional result-heading fragment. Never use href="#", javascript URLs or data-page as the only destination. |
@@ -67,7 +67,7 @@ No-results pages omit pagination and explain the empty state. A one-page result 
 
 There is no enhancement lifecycle or owned mutation: `UI.enhance` and `UI.destroy` leave pagination alone. Static/dynamic content, late links, replacement, nesting, disconnect/reconnect and adoption use native HTML/CSS. The application owns valid markup and moving focus before removing a focused task. No observer, timer, global listener, generated node, pending scroll or application state is acquired by this pattern. Do not nest navigation landmarks inside one pager or put a custom wrapper between a list and its li children.
 
-Without CSS the list, names, links and current-page state remain useful. Without JavaScript, real pages continue to navigate. Unsupported custom-element registration APIs are irrelevant: no registration is attempted. Empty/invalid markup gains no inferred semantics or synthetic behavior. Print preserves the links and text in document order; test actual target output rather than promising print conformance. Existing native nav, class helpers, components and entry points remain compatible.
+Without CSS the list, names, links and current-page state remain useful. Without JavaScript, real pages continue to navigate. Empty/invalid markup gains no inferred semantics or synthetic behavior. Print preserves the links and text in document order; test actual target output rather than promising print conformance. Existing native nav, class helpers, components and entry points remain compatible.
 
 ## Examples and evidence
 

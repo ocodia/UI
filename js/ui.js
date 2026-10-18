@@ -681,7 +681,7 @@
     if (record?.writes) for (const [node, attrs] of record.writes) for (const [name, state] of attrs) if (node.getAttribute(name) !== state.last) return null;
     const [list, ...panels] = surface.children, tabs = list ? [...list.children] : [];
     const text = node => [...node.childNodes].some(child => child.nodeType === 3 && child.textContent.trim());
-    if (!list?.matches('nav,ui-tablist,div[data-ui-tablist]') || !panels.length || panels.length !== tabs.length || text(surface) || text(list) || panels.some(panel => panel.localName !== 'section')) return null;
+    if (!list?.matches('nav') || !panels.length || panels.length !== tabs.length || text(surface) || text(list) || panels.some(panel => panel.localName !== 'section')) return null;
     const names = (list.getAttribute('aria-labelledby') || '').trim().split(/\s+/).filter(Boolean);
     const name = list.getAttribute('aria-label')?.trim();
     if (names.length ? names.some(id => { const label = uniqueID(id); return !label?.textContent.trim() || list.contains(label) || unavailable(label); }) : !name) return null;
@@ -921,7 +921,7 @@
           if (!record.surface.isConnected || record.surface.ownerDocument !== doc || record.config.kind === 'popup' && missing.length || !record.config.modal && missing.length === record.config.openers.length) release(record, false);
         }
       });
-      lifetime.observe(doc.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['name', 'id', 'href', 'hidden', 'inert', 'tabindex', 'target', 'download', 'contenteditable', 'disabled', 'aria-busy', 'aria-label', 'aria-labelledby', 'aria-selected', 'aria-orientation', 'aria-current', 'data-ui-tabs-inactive', 'data-ui-ready', 'data-ui-tablist', 'data-activation', 'data-orientation', 'data-ui', ...accordionARIA] });
+      lifetime.observe(doc.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['name', 'id', 'href', 'hidden', 'inert', 'tabindex', 'target', 'download', 'contenteditable', 'disabled', 'aria-busy', 'aria-label', 'aria-labelledby', 'aria-selected', 'aria-orientation', 'aria-current', 'data-ui-tabs-inactive', 'data-ui-ready', 'data-activation', 'data-orientation', 'data-ui', ...accordionARIA] });
     } else if (!records.size && lifetime) { lifetime.disconnect(); lifetime = null; }
   }
   function release(record, recover = true) {

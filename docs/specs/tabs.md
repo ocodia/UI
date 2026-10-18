@@ -6,7 +6,7 @@
 
 Use tabs to switch between related views of one topic when readers need one view at a time. Prefer headings and visible sections for comparison, essential instructions or sequential forms. Use ordinary named navigation and real page URLs for site navigation. Tabs are neither a menu nor a stepper.
 
-The `ui-tabs` is a light-DOM ownership boundary around native fragment links and sections. It requires no custom-element registration, `ui-tab` or `ui-tab-panel`. Its native `nav` child provides section navigation before enhancement; the parent installs tab-list behavior only when ready. A wrapper is useful for validating the complete family, coordinating one selected panel and isolating nested instances. Selection and keyboard behavior arrive together through shared-entry enhancement of the wrapper. Manual activation is the default; automatic activation is an explicit alternative for already available content. Routing, persistence, remote loading, closable/reorderable tabs and animation are outside the first slice.
+The `ui-tabs` is a light-DOM ownership boundary around native fragment links and sections. Its native `nav` child provides section navigation before enhancement; the parent installs tab-list behavior only when ready. A wrapper is useful for validating the complete family, coordinating one selected panel and isolating nested instances. Selection and keyboard behavior arrive together through shared-entry enhancement of the wrapper. Manual activation is the default; automatic activation is an explicit alternative for already available content. Routing, persistence, remote loading, closable/reorderable tabs and animation are outside the first slice.
 
 ## Minimal markup
 
@@ -46,9 +46,9 @@ This experimental contract is implemented in the shared entry.
 
 | Surface | Implemented decision |
 | --- | --- |
-| ui-tabs | Block composition and ownership boundary; no implicit role, focus stop, registration or form value. |
-| Enhancement opt-in | The ui-tabs element itself opts in through the shared entry; no data-ui marker is required. Existing data-ui="tabs" remains compatible. Other data-ui values on this wrapper do not configure or disable Tabs. Ordinary linked sections without the wrapper remain native. |
-| nav | Required direct native child containing fragment anchors. Native named navigation before enhancement and after teardown; UI temporarily applies role=tablist when ready. Legacy ui-tablist and div[data-ui-tablist] remain compatible, with the old marker value ignored. No separate panel/item markers. |
+| ui-tabs | Block composition and ownership boundary around native navigation and sections. |
+| Enhancement opt-in | The shared entry enhances ui-tabs elements after parsing. |
+| nav | Required direct native child containing fragment anchors. Native named navigation before enhancement and after teardown; UI temporarily applies role=tablist when ready. |
 | data-activation | Wrapper string, manual by default; accepts manual or automatic. Missing, empty or unknown values use manual. No property reflection. Automatic is appropriate only when every panel is available without noticeable latency. |
 | data-orientation | Wrapper string, horizontal by default; accepts horizontal or vertical. Missing, empty or unknown values use horizontal. No property reflection. Layout and key map must agree; no automatic orientation switch at a breakpoint. |
 | href / id | Authored native fragment relationships. UI never rewrites them, navigates to another document or removes these IDs. |
@@ -105,7 +105,7 @@ For native validation without ui-form, capture invalid events belonging to a con
 
 ## Lifecycle and failure
 
-Use the existing shared entry and explicit scoped lifecycle. No new registration, loader or source entry is proposed. Static ui-tabs groups initialize after parsing; late groups and late/replaced pairs require explicit `UI.enhance(group)`. An ownership observer watches only relevant structure, href/ID, configuration, naming and conflicting owned-state changes. It releases invalidated ownership and stale hidden/role state; it does not silently initialize late children or react to arbitrary panel text. Coalesce observation and ignore owned writes. Missing capabilities leave the baseline untouched.
+Use the existing shared entry and explicit scoped lifecycle. Static ui-tabs groups initialize after parsing; late groups and late/replaced pairs require explicit `UI.enhance(group)`. An ownership observer watches only relevant structure, href/ID, configuration, naming and conflicting owned-state changes. It releases invalidated ownership and stale hidden/role state; it does not silently initialize late children or react to arbitrary panel text. Coalesce observation and ignore owned writes. Missing capabilities leave the baseline untouched.
 
 Before ownership, validate the complete structure, unique same-document IDs, list name and absence of conflicting authored compound state. Reject authored roles/tabindex/selection/control ARIA on the list or tabs, and authored panel roles, tabindex, hidden (including until-found), inert or aria-hidden. Allow baseline panel aria-labelledby and content-level ARIA, preserving unrelated relationships. A hidden/inert wrapper or ancestor postpones enhancement; retry explicitly when available. An empty/incomplete/ambiguous wrapper has no readiness, roles or script-hidden panels. One invalid group must not block independent valid groups.
 
@@ -123,7 +123,7 @@ The [focused harness](../../tests/tabs.html) and [runnable recipes](../tabs.md) 
 
 | Area | Required fixtures and assertions |
 | --- | --- |
-| Baseline and parsing | Scripts blocked/failed, wrapper without a marker, legacy marker, empty/one pair, malformed fragments, missing/duplicate IDs, mismatched order/count, extra children, authored hiding/roles/conflicting state, missing name/capabilities and independent invalid/valid groups. No baseline content hidden by CSS. |
+| Baseline and parsing | Scripts blocked/failed, empty/one pair, malformed fragments, missing/duplicate IDs, mismatched order/count, extra children, authored hiding/roles/conflicting state, missing name/capabilities and independent invalid/valid groups. No baseline content hidden by CSS. |
 | Keys and selection | Real Enter/Space/click/touch, manual focus versus selection, automatic eager content, Tab/Shift+Tab reentry, wrapping/Home/End, both orientations/directions, runtime dir change, ignored modifiers/composition/prevented events, modified/middle click, content controls, nested ownership, no positive tabindex and distinct focus/selection markers. |
 | Names and focus | Tablist name, complete unique controls/labelledby relationships, exactly one selected tab/visible panel, hidden-content exclusion, panel focus stop, focus-safe initialization/selection, externally moved focus, programmatic click/focus and selection event count/source/order. Verify actual screen-reader output. |
 | Fragments and forms | Initial panel/descendant hash, Back/Forward, ordinary external link, nested Tabs/details/Accordion reveal, malformed/text fragments, one final scroll, interruption/stale work, retained input values, FormData/submitters/reset/cancelled reset/autofill, native invalid event ordering, error-summary focus, external form controls and original form-only compatibility. |
@@ -135,4 +135,4 @@ Implement focused browser checks and wire them into the existing accessibility h
 
 ## Completion
 
-The wrapper, shared-entry behavior, minimal CSS, recipes and focused harness ship experimentally with the two existing registrations unchanged. Current reference, catalogue, generated output and dated evidence must stay aligned. Applications opt in from readable linked sections; ordinary linked content and original form-only scripts remain compatible. Stable maturity requires the [component release gate](../../ROADMAP.md#release-gate-for-every-component).
+The wrapper, shared-entry behavior, minimal CSS, recipes and focused harness ship experimentally. Current reference, catalogue, generated output and dated evidence must stay aligned. Applications opt in from readable linked sections. Stable maturity requires the [component release gate](../../ROADMAP.md#release-gate-for-every-component).

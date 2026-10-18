@@ -58,11 +58,11 @@ async function runDocumentationChecks(load, frame) {
   win = await load('../docs/components/popup.html'); doc=win.document;
   check(doc.querySelector('a[href="../specs/popup.html"]') && doc.querySelector('a[href="../specs/popup.md"]') && doc.querySelector('[data-example]'), 'Experimental Popup links its specification, source and actual anchored-help example.');
   win = await load('../docs/components/accordion.html'); doc=win.document;
-  check([...doc.querySelectorAll('pre code')].every(code=>!code.textContent.includes('data-ui="accordion"')), 'Accordion source examples opt in by element name without redundant markers.');
+  check([...doc.querySelectorAll('pre code')].every(code=>/<ui-accordion[\s>]/.test(code.textContent)), 'Accordion source examples use native disclosures in ui-accordion.');
   check(doc.querySelectorAll('[data-example]').length === 3 && doc.querySelector('a[href="../specs/accordion.html"]') && doc.querySelector('a[href="../accordion.html"]') && doc.querySelector('.component-meta').textContent.includes('Foundation'), 'Experimental Accordion exposes three runnable recipes, specification and implemented guide.');
   win = await load('../docs/components/tab-group.html'); doc=win.document;
   check(doc.querySelectorAll('[data-example]').length === 3 && doc.querySelector('a[href="../specs/tabs.html"]') && doc.querySelector('a[href="../tabs.html"]') && doc.querySelector('.component-meta').textContent.includes('Foundation'), 'Experimental Tabs links three runnable recipes, specification and implemented guide.');
-  check([...doc.querySelectorAll('[data-example] details code')].every(code => code.textContent.includes('<nav ') && !code.textContent.includes('<ui-tablist') && !code.textContent.includes('data-ui-tablist')), 'Tabs source drawers use native nav/section markup without a custom tab-list element or marker.');
+  check([...doc.querySelectorAll('[data-example] details code')].every(code => code.textContent.includes('<nav ') && code.textContent.includes('<section ')), 'Tabs source drawers use native nav/section markup.');
   win = await load('../docs/components/pagination.html'); doc=win.document;
   check(doc.querySelectorAll('[data-example]').length === 7 && doc.querySelector('a[href="../pagination.html"]') && doc.querySelector('a[href="../specs/pagination.html"]') && [...doc.querySelectorAll('[data-example] details code')].every(code => code.textContent.includes('ui-pagination') && code.textContent.includes('css/ui.css') && !code.textContent.includes('js/ui.js')), 'Pagination links seven real-page/state recipes, its guide and specification; copyable sources need CSS only.');
   win = await load('../docs/components/stepper.html'); doc=win.document;

@@ -24,7 +24,7 @@ Load `css/ui.css` and `js/ui.js`. Author a `ui-tabs` with one direct native `nav
 </ui-tabs>
 ```
 
-The element name itself opts into enhancement; `data-ui="tabs"` is unnecessary and remains compatible when present. Use ordinary linked sections without a `ui-tabs` wrapper when no Tabs behavior is wanted. The named native `nav` supplies section navigation before enhancement. UI overrides its navigation role with `role="tablist"` only after setup succeeds, then restores the native navigation landmark on teardown. Existing `ui-tablist` and `div[data-ui-tablist]` markup remain compatible. No new custom element is registered. The combined entry still registers only `ui-form` and `ui-error-summary`. Original form-only and Popup entries cannot initialize Tabs. Failed scripts, incomplete/ambiguous markup and missing capabilities retain native linked sections. CSS never hides baseline content. Keep labels free of interactive children; put nested groups inside panels. UI generates no IDs, moves no content and adds no live region.
+The element name opts into enhancement. Use ordinary linked sections without a `ui-tabs` wrapper when no Tabs behavior is wanted. The named native `nav` supplies section navigation before enhancement. UI overrides its navigation role with `role="tablist"` only after setup succeeds, then restores the native navigation landmark on teardown. Original form-only and Popup entries cannot initialize Tabs. Failed scripts, incomplete/ambiguous markup and missing capabilities retain native linked sections. CSS never hides baseline content. Keep labels free of interactive children; put nested groups inside panels. UI generates no IDs, moves no content and adds no live region.
 
 ## Activation and focus
 

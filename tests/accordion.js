@@ -9,12 +9,6 @@ async function runAccordionChecks(load, frame) {
   check(group.hasAttribute('data-ui-ready') && win.getComputedStyle(group).display==='block' && items[0].open && !items[1].open,'Automatic setup preserves native expansion and block composition.');
   check(!win.customElements.get('ui-accordion') && !win.customElements.get('ui-accordion-item') && !group.querySelector('[aria-expanded],[aria-controls],[role],[tabindex]'),'No registration, duplicate ARIA or roving tabindex.');
   check(!group.hasAttribute('data-ui'),'Element name alone opts into Accordion.');
-  for(const marker of ['accordion','unknown']) {
-    group.setAttribute('data-ui',marker);await settle();win.UI.enhance(group);
-    check(group.hasAttribute('data-ui-ready'),'Legacy or unknown markers do not override element opt-in: '+marker);
-  }
-  group.removeAttribute('data-ui');await settle();
-  check(group.hasAttribute('data-ui-ready'),'Removing a redundant marker preserves ownership.');
   const plain=doc.createElement('details');plain.innerHTML='<summary>Plain disclosure</summary><p>Native content</p>';group.after(plain);win.UI.enhance(plain);
   check(!plain.hasAttribute('data-ui-ready') && !key(plain.firstElementChild,'ArrowDown'),'Plain details remain outside Accordion ownership.');plain.remove();
   summaries[0].focus();

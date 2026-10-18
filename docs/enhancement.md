@@ -7,7 +7,7 @@ Load `js/ui.js` once for the behaviors UI currently ships. It includes forms/err
 <script src="js/ui.js" defer></script>
 ```
 
-The combined file registers only the existing `ui-form` and `ui-error-summary` elements. Native overlays use explicit `data-ui` markers. The `ui-accordion` and `ui-tabs` elements opt in by element name without a marker; menus, tooltips and other planned widgets remain unavailable. CSS-only ui- wrappers need no initializer. Keep data attributes for actual configuration, relationships and runtime state rather than repeating a custom element name. The shared API and overlay convenience patterns are experimental; existing component APIs retain their contracts.
+The combined file registers only the existing `ui-form` and `ui-error-summary` elements. Native overlays use explicit `data-ui` markers. The `ui-accordion` and `ui-tabs` elements opt in by element name; menus, tooltips and other planned widgets remain unavailable. CSS-only ui- wrappers need no initializer. Keep data attributes for actual configuration, relationships and runtime state rather than repeating a custom element name. The shared API and overlay convenience patterns are experimental; existing component APIs retain their contracts.
 
 ## What UI initializes
 
@@ -24,7 +24,7 @@ The combined file registers only the existing `ui-form` and `ui-error-summary` e
 | Native controls, plain details outside ui-accordion, progress and CSS-only layouts | Existing native/UI markup | Native/CSS behavior; no new initialization or roles |
 | Application tasks | Application scripts | Requests, storage, routing, permission checks, async ordering and business feedback |
 
-Unknown data-ui values on native patterns stay unenhanced. The ui-accordion and ui-tabs elements are discovered by name and ignore data-ui; earlier data-ui="accordion" and data-ui="tabs" markers remain compatible. Unmarked dialogs/popovers are left to their existing owner. The original manual recipes remain available for advanced integration and compatibility checks; use the declarative examples below for ordinary authoring.
+Unknown data-ui values on native patterns stay unenhanced. Unmarked dialogs/popovers are left to their existing owner. The original manual recipes remain available for advanced integration and compatibility checks; use the declarative examples below for ordinary authoring.
 
 ## Single-copy help
 

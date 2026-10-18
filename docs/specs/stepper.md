@@ -4,7 +4,7 @@
 
 **Status: experimental implementation. Phase: 2. Owner: UI foundation; workflow rules and data belong to the application.** This family describes the ordered stages of a task. Follow the [shared lifecycle and ownership contract](../lifecycle.md). Prefer a heading and ordinary form for a short single-stage task. Use Tabs for switching related views and Pagination for pages of results.
 
-`ui-steps` is an unregistered CSS-only boundary around one native ordered list. Each Step is a native `li`; there is no `ui-step`, registration, data marker or initializer. The wrapper scopes responsive layout and current-step presentation. Native list markers supply numbers; text supplies completed/error/unavailable status. A surrounding named `nav` is optional when the list contains actual navigation links; a noninteractive progress list does not need a navigation landmark.
+`ui-steps` is a CSS-only boundary around one native ordered list. Each Step is a native `li`. The wrapper scopes responsive layout and current-step presentation. Native list markers supply numbers; text supplies completed/error/unavailable status. A surrounding named `nav` is optional when the list contains actual navigation links; a noninteractive progress list does not need a navigation landmark.
 
 ## Minimal markup
 
@@ -30,7 +30,7 @@ Require a direct `ol` with direct `li` children; never put custom wrappers betwe
 
 | Surface | Decision |
 | --- | --- |
-| ui-steps | CSS-only block scope around one ol; no implicit role, value, registration, properties, methods, readiness, event or UI initializer. |
+| ui-steps | CSS-only block scope around one native ol. |
 | Step | Native li, in task order. No ui-step placeholder or custom item role. |
 | aria-current="step" | Authored on the current li, not also on its child link. UI styles it but does not infer, validate, rewrite or move it. One per active task, none after completion. |
 | Completed / error status | Visible authored text, such as Completed or Needs attention: add a project title. No data-state/variant API, checkmark-only state, CSS-generated status or aria-invalid on a step. Actual invalid fields keep native/form-owned error semantics. |
@@ -59,7 +59,7 @@ Async save/loading, retry and completion announcements belong to one application
 
 ## Lifecycle and failure
 
-No lifecycle state, observer, listener, mutation, generated ID, timer, routing or transport is acquired. UI.enhance/UI.destroy leave this pattern alone. Late items, replacement, disconnect/reconnect, adoption and nested tasks are native/application-owned. No missing-browser-API capability gate or registration is needed for CSS composition.
+No lifecycle state, observer, listener, mutation, generated ID, timer, routing or transport is acquired. UI.enhance/UI.destroy leave this pattern alone. Late items, replacement, disconnect/reconnect, adoption and nested tasks are native/application-owned.
 
 Without JavaScript, readable status and real links remain available. Without CSS, the native numbered list and task still work. Empty/invalid markup or duplicate current markers are authored errors; UI invents no semantics and silently repairs nothing. For zero stages, omit the wrapper and explain the task state. A single stage may be omitted or shown as one current item; completion has no current marker. Print preserves authored order and status text; verify actual target output before claiming print readiness.
 

@@ -20,7 +20,7 @@ Only `css/ui.css` is required. Use one direct `ol` inside the wrapper and direct
 <h2 id="task" tabindex="-1">Review your application</h2>
 ```
 
-Replace illustrative URLs with routes that return the corresponding task. `ui-steps` adds layout and current-step presentation; the native list provides order/numbers and optional links provide navigation. There is no `ui-step`, registration, data marker, state configuration, JavaScript property/method, custom event or initializer. The documentation preview host loads shared scripts for resizing/themes; copyable Stepper sources need CSS only.
+Replace illustrative URLs with routes that return the corresponding task. `ui-steps` adds layout and current-step presentation; the native list provides order/numbers and optional links provide navigation. The documentation preview host loads shared scripts for resizing/themes; copyable Stepper sources need CSS only.
 
 ## Current, completed, error and unavailable stages
 
@@ -48,4 +48,4 @@ Loading/save/error/retry feedback belongs to one application announcement owner 
 
 `UI.enhance` and `UI.destroy` leave this CSS-only pattern unchanged. Late stages, replacement, detach/reconnect, adoption and nested tasks use native HTML/CSS. No observers, listeners, pending work, generated nodes or IDs are acquired. Invalid/empty markup gains no automatic roles or current state. Do not put a custom wrapper between ol and li.
 
-Without JavaScript, real links and text work. Without CSS, the ordered list and task remain readable. Print retains authored order and state text; actual print/platform checks remain in the release gate. Existing library JavaScript, entry points, native lists and two registrations are unchanged.
+Without JavaScript, real links and text work. Without CSS, the ordered list and task remain readable. Print retains authored order and state text; actual print/platform checks remain in the release gate.

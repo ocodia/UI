@@ -481,7 +481,7 @@ Use native normalized form values; locale formatting stays with the browser init
 
 **Foundation · Phase 2.** UI route: `ui-accordion with native details`.
 
-Native disclosures own expansion and optional name-group exclusivity. Shared enhancement opts in by the ui-accordion element name without a data-ui marker and adds summary navigation, fragment reveal and collapsed-content focus recovery.
+Native disclosures own expansion and optional name-group exclusivity. Shared enhancement opts in by the ui-accordion element name and adds summary navigation, fragment reveal and collapsed-content focus recovery.
 
 **Acceptance work:** Native summary activation; optional summary navigation; native name-group boundaries; deep-link and form-error reveal; collapsed-content focus; nested and dynamic teardown. See the proposal's evidence matrix.
 
@@ -495,7 +495,7 @@ Native disclosures own expansion and optional name-group exclusivity. Shared enh
 
 **Foundation · Phase 2.** UI route: `details and summary inside ui-accordion`.
 
-The native details/summary is the item. Preserve open state, content semantics and native form ownership; no item registration or replacement button.
+The native details/summary is the item. Preserve open state, content semantics and native form ownership; each item retains its native summary control.
 
 **Acceptance work:** Native accessible summary/open state, optional heading exposure, content controls and form ownership, programmatic collapse focus recovery, late/replaced summaries and nested groups.
 
@@ -712,7 +712,7 @@ CSS-only ordered task stages. Author current location with aria-current=step and
 
 **Foundation · Phase 2.** UI route: `ui-tabs around native nav and section panels`.
 
-Experimental ui-tabs enhancement of linked sections with a named native nav and sibling section panels through js/ui.js, opted into by element name without a data-ui marker. Manual activation by default, optional eager automatic activation and horizontal/vertical navigation; see docs/tabs.md.
+Experimental ui-tabs enhancement of linked sections with a named native nav and sibling section panels through js/ui.js, opted into by element name. Manual activation by default, optional eager automatic activation and horizontal/vertical navigation; see docs/tabs.md.
 
 **Acceptance work:** Focused Tabs checks cover selection, keyboard ownership, fragments, nested form-error reveal, lifecycle and reflow. Real platform, assistive-technology, print and mobile/touch release evidence remains open; see ACCESSIBILITY.md.
 

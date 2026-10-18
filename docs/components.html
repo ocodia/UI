@@ -243,14 +243,14 @@
 <h2 id="layout">Layout</h2>
 <h3 id="accordion">Accordion</h3>
 <p><strong>Foundation · Phase 2.</strong> UI route: <code>ui-accordion with native details</code>.</p>
-<p>Native disclosures own expansion and optional name-group exclusivity. Shared enhancement opts in by the ui-accordion element name without a data-ui marker and adds summary navigation, fragment reveal and collapsed-content focus recovery.</p>
+<p>Native disclosures own expansion and optional name-group exclusivity. Shared enhancement opts in by the ui-accordion element name and adds summary navigation, fragment reveal and collapsed-content focus recovery.</p>
 <p><strong>Acceptance work:</strong> Native summary activation; optional summary navigation; native name-group boundaries; deep-link and form-error reveal; collapsed-content focus; nested and dynamic teardown. See the proposal&#x27;s evidence matrix.</p>
 <p><a href="accordion.html">Accordion guide</a> · <a href="specs/accordion.html">Specification</a> · <a href="../tests/accordion.html">Focused checks</a>. Experimental; manual platform and assistive-technology evidence remains open.</p>
 <p><a href="specs/accordion.html">Component specification</a></p>
 <p><a href="https://webawesome.com/docs/components/accordion/">Reference component</a> · <a href="component-template.html">Specification template</a></p>
 <h3 id="accordion-item">Accordion Item</h3>
 <p><strong>Foundation · Phase 2.</strong> UI route: <code>details and summary inside ui-accordion</code>.</p>
-<p>The native details/summary is the item. Preserve open state, content semantics and native form ownership; no item registration or replacement button.</p>
+<p>The native details/summary is the item. Preserve open state, content semantics and native form ownership; each item retains its native summary control.</p>
 <p><strong>Acceptance work:</strong> Native accessible summary/open state, optional heading exposure, content controls and form ownership, programmatic collapse focus recovery, late/replaced summaries and nested groups.</p>
 <p><a href="accordion.html">Accordion guide</a> · <a href="specs/accordion.html">Specification</a> · <a href="../tests/accordion.html">Focused checks</a>. Experimental; manual platform and assistive-technology evidence remains open.</p>
 <p><a href="specs/accordion.html">Component specification</a></p>
@@ -363,7 +363,7 @@
 <p><a href="https://webawesome.com/docs/components/step/">Reference component</a> · <a href="component-template.html">Specification template</a></p>
 <h3 id="tab-group">Tab Group</h3>
 <p><strong>Foundation · Phase 2.</strong> UI route: <code>ui-tabs around native nav and section panels</code>.</p>
-<p>Experimental ui-tabs enhancement of linked sections with a named native nav and sibling section panels through js/ui.js, opted into by element name without a data-ui marker. Manual activation by default, optional eager automatic activation and horizontal/vertical navigation; see docs/tabs.md.</p>
+<p>Experimental ui-tabs enhancement of linked sections with a named native nav and sibling section panels through js/ui.js, opted into by element name. Manual activation by default, optional eager automatic activation and horizontal/vertical navigation; see docs/tabs.md.</p>
 <p><strong>Acceptance work:</strong> Focused Tabs checks cover selection, keyboard ownership, fragments, nested form-error reveal, lifecycle and reflow. Real platform, assistive-technology, print and mobile/touch release evidence remains open; see ACCESSIBILITY.md.</p>
 <p><a href="tabs.html">Tabs guide</a> · <a href="specs/tabs.html">Specification</a> · <a href="../tests/tabs.html">Focused checks</a>. Experimental; manual/platform release evidence remains open.</p>
 <p><a href="specs/tabs.html">Component specification</a></p>

@@ -6,7 +6,7 @@
 
 Use an accordion for related sections that readers may independently reveal. Prefer ordinary headings and visible sections for essential instructions, comparison tasks or a sequential form. One optional disclosure needs only native `details` and `summary`. Follow the [lifecycle and ownership contract](../lifecycle.md).
 
-The `ui-accordion` is a light-DOM composition boundary around native disclosures. It needs no custom-element registration and no `ui-accordion-item`: each item is a `details`. Optional enhancement by element name through the existing shared entry adds summary navigation, fragment reveal and collapsed-content focus recovery. Native HTML owns expansion, including optional exclusive groups. No custom expansion controller, animation, expand-all action, persistence or async loader is included in this slice.
+The `ui-accordion` is a light-DOM composition boundary around native disclosures. Each item is a native `details`. Optional enhancement by element name through the existing shared entry adds summary navigation, fragment reveal and collapsed-content focus recovery. Native HTML owns expansion, including optional exclusive groups. No custom expansion controller, animation, expand-all action, persistence or async loader is included in this slice.
 
 ## Minimal markup
 
@@ -42,8 +42,8 @@ The following experimental contract is implemented in the shared entry.
 
 | Surface | Implemented decision |
 | --- | --- |
-| ui-accordion | CSS block composition boundary; no registration, implicit role, tabindex or value. Direct details are the owned items. |
-| Element opt-in | ui-accordion opts in by name when the shared entry is loaded. No data-ui attribute is required; legacy values are ignored. Plain details outside this wrapper remain native. |
+| ui-accordion | Block composition boundary around direct details items. |
+| Element opt-in | The shared entry enhances ui-accordion elements after parsing. |
 | details open / open property | Native boolean expanded state, default absent/false. Presence, including open="false", means open. Native property and attribute reflection remain authoritative. |
 | details name / name property | Native grouping string. All direct items omit name, or share a nonempty name with no outside members. Empty/mixed/colliding names make the group ineligible for UI enhancement; UI never rewrites names or reverses native grouping effects. |
 | Shared methods | Existing UI.enhance(root) installs/reconciles this pattern; UI.destroy(root) releases it. Existing argument, root-inclusion, synchronous undefined return and idempotence rules apply. No accordion-specific methods or properties. |
@@ -82,7 +82,7 @@ There is no disabled/read-only accordion state because native details has neithe
 
 ## Lifecycle and failure
 
-Use the shared entry's explicit scoped lifecycle; no new loader or registration is required. Static ui-accordion groups initialize after parsing. New groups and late/replaced summaries/items require `UI.enhance(group)`; no automatic discovery of new items is promised. A small ownership observer may release removed/adopted items and invalidate an already-owned group's structure, but must not silently activate late children. Observe only relevant child structure and name changes, not arbitrary content or open mutations. Coalesce validation, ignore owned writes and install no perpetual frame loop.
+Use the shared entry's explicit scoped lifecycle. Static ui-accordion groups initialize after parsing. New groups and late/replaced summaries/items require `UI.enhance(group)`; no automatic discovery of new items is promised. A small ownership observer may release removed/adopted items and invalidate an already-owned group's structure, but must not silently activate late children. Observe only relevant child structure and name changes, not arbitrary content or open mutations. Coalesce validation, ignore owned writes and install no perpetual frame loop.
 
 Before acquiring ownership, validate connected same-document markup, summaries and grouping, and check required listener/observation capabilities. An empty wrapper is inert, without readiness. Invalid/incomplete structure leaves every native disclosure usable and releases stale enhancement, while independent valid groups continue. Conflicting authored roles or expansion ARIA on the wrapper, details or summaries are ineligible rather than overwritten. No IDs, content, tabindex or native names are generated. A nested ui-accordion belongs inside an item's content and owns only its own direct items; an outer group never consumes its keys or toggle handling.
 
@@ -101,11 +101,11 @@ The [focused harness](../../tests/accordion.html) and [runnable recipes](../acco
 | Baseline and groups | No script, script failure, plain unwrapped disclosures, empty group, multiple-open, all-closed exclusive group, native-name support fallback, mixed/empty/colliding names and invalid same-name nesting. No UI mutation of open/name on install or destroy. |
 | Keyboard and focus | Real Enter/Space, Tab/Shift+Tab, four navigation keys, wrap, one item, hidden/inert items, modified/composing/prevented keys, nested groups, content inputs, programmatic collapse while focused, rapid close/reopen and sibling opening without focus theft. |
 | Navigation and forms | Initial fragment, hash changes, nested closed ancestors, malformed/duplicate/missing IDs, text fragments, superseded/cancelled scrolling, field-error reveal/focus, native/custom validity, external form ownership, FormData, reset/cancelled reset and retained server errors. |
-| Lifecycle | Repeated enhance/destroy, initially incomplete/late items, summary replacement, name changes, optional legacy marker writes, removal while focused/open, detach/reinsert, adoption, scoped root inclusion, nested teardown, application attribute writes, listener/resource counts and no stale scrolling. |
+| Lifecycle | Repeated enhance/destroy, initially incomplete/late items, summary replacement, name changes, removal while focused/open, detach/reinsert, adoption, scoped root inclusion, nested teardown, application attribute writes, listener/resource counts and no stale scrolling. |
 | Content and presentation | Long/localized summaries, optional summary heading, rich content links/fields, empty content, content-owned busy/error/retry/success, disabled/read-only fields, two brands/light/dark, density scopes, RTL, reduced motion, forced colors, 320px reflow, text spacing/resize, 400% zoom and print limits. |
 
 Verify native names/states, reading order, optional headings, collapsed-content exclusion and focus recovery with VoiceOver/Safari and NVDA/Firefox or Chrome, plus the browser/mobile/touch combinations in the release gate. Review axe incomplete findings without exclusions. Tests must assert native toggle ordering/coalescing and actual focus destinations, rather than assume one event per write. Automated checks alone do not establish conformance.
 
 ## Completion
 
-The wrapper, shared-entry behavior, minimal CSS, recipes and focused harness ship experimentally with the two existing registrations unchanged. Native disclosures and original form-only scripts remain compatible; applications opt in by using ui-accordion with the combined entry. The earlier data-ui="accordion" attribute is compatible but redundant. Plain details remain native. Keep the current reference, catalogue, generated output, payload measurements and dated evidence aligned. Stable maturity still requires the [component release gate](../../ROADMAP.md#release-gate-for-every-component).
+The wrapper, shared-entry behavior, minimal CSS, recipes and focused harness ship experimentally. Applications use ui-accordion with the combined entry; plain details remain native. Keep the current reference, catalogue, generated output, payload measurements and dated evidence aligned. Stable maturity still requires the [component release gate](../../ROADMAP.md#release-gate-for-every-component).

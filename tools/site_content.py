@@ -105,14 +105,14 @@ def component_page(item, data, recipes):
             keyboard = 'The browser owns modal focus containment and inertness after showModal(). Choose initial focus, an explicit close action, Escape policy and a logical return target. The complete dialog guide covers these decisions and support failure.'
             values = 'A method=dialog form closes without network submission. Clear returnValue before opening; dismissal must not reuse a previous result. Closing is separate from resetting answers or saving data. Do not nest forms.'
         if key in ['accordion', 'accordion-item']:
-            keyboard = 'Native Enter/Space toggles each summary. The marked wrapper adds Up/Down and Home/End navigation in DOM order without changing expansion. Tab remains native; nested groups own their own keys.'
+            keyboard = 'Native Enter/Space toggles each summary. The wrapper adds Up/Down and Home/End navigation in DOM order without changing expansion. Tab remains native; nested groups own their own keys.'
             values = 'Native details owns open state and optional name groups. Closed fields retain native values and validation. Shared destroy preserves expansion; late children require explicit enhance. Read the Accordion guide for fragments, focus recovery and limits.'
         if key in ['tab-group', 'tab', 'tab-panel']:
             keyboard = 'Arrow keys and Home/End move within the list; Enter/Space activates in default manual mode. Automatic activation and vertical orientation are explicit alternatives. Tab leaves the list for the selected panel. RTL reverses horizontal arrows.'
             values = 'Readable fragment links and sections are the baseline. UI coordinates selection, fragment and form-error reveal without changing native values. Late pairs require explicit enhance; destroy restores all sections. Read the Tabs guide for validation and lifecycle limits.'
         if key == 'pagination':
             keyboard = 'Named native nav, list and real anchors. Tab/Shift+Tab and Enter remain native; no arrow-key handler, roving focus or custom role. aria-current=page marks one current link.'
-            values = 'CSS-only ui-pagination scopes wrapping and current-page presentation. Omit unavailable previous/next links; ellipses are text. Applications own URLs, totals, async loading and focus after updates. No script, registration or initializer is needed.'
+            values = 'CSS-only ui-pagination scopes wrapping and current-page presentation. Omit unavailable previous/next links; ellipses are text. Applications own URLs, totals, async loading and focus after updates.'
         if key in ['stepper', 'step']:
             keyboard = 'Native ordered steps with optional real links. Tab/Shift+Tab reaches only links; Enter navigates normally. Plain future/current text is not a focus stop. No composite roles, roving focus or progression handler.'
             values = 'CSS-only ui-steps scopes an ordered list; each step is a native li. Author aria-current=step on the current item and completed/error status as text. Applications own validation, saving, permissions, current location and focus after transitions.'
