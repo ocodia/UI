@@ -2,7 +2,7 @@
 
 ## Identity and purpose
 
-Status: experimental implementation of the shared UI entry point. UI behavior owns initialization and teardown for its existing forms/error summaries and explicitly marked native dialog, popover and positioned-help patterns. CSS-only layouts and native buttons/fields/details/progress retain their native behavior. Planned compound widgets are not registered or initialized.
+Status: experimental implementation of the shared UI entry point. UI behavior owns initialization and teardown for its existing forms/error summaries and explicitly marked native dialog, popover positioned-help patterns and the experimental native-disclosure [Accordion pattern](../accordion.md). CSS-only layouts and native buttons/fields/unmarked details/progress retain their native behavior. Other planned compound widgets are not registered or initialized.
 
 The combined classic script is generated as `js/ui.js` from `js/components.js`, `js/popup.js` and `js/enhance.js`. Existing entry points remain usable. Repeated or mixed loading shares the same registered constructors, geometry ownership and high-level runtime. No runtime fetching, modules, package or arbitrary plugin registry is introduced.
 
@@ -31,16 +31,16 @@ Dialogs use a native `dialog open data-ui="dialog"` baseline with an explicit ac
 | UI.destroy(root = document) | Synchronous, idempotent, returns undefined. Release owned patterns within the root, deepest first, and suspend form/summary automatic behavior without removing nodes. Restore baseline presentation, preserve answers, and do not cancel application requests. |
 | Roots | Document, Element or DocumentFragment from this runtime's document. Disconnected fragments are not enhanced; destroy can clean a detached subtree. Foreign-document roots require that document's runtime. |
 | UI.popup.attach | Alias of existing UIPopup.attach, retaining the lower-level geometry contract and compatibility alias. |
-| data-ui | Exact values dialog, popover or popup on the actual surface. No implicit enhancement of unmarked native overlays. |
+| data-ui | Exact values dialog, popover or popup on the actual surface; accordion on a ui-accordion wrapper (see its separate specification). No implicit enhancement of unmarked native overlays. |
 | data-ui-open | Native button target ID for dialogs; popover/popup use native popovertarget instead. Multiple distinct invokers are supported for unpositioned help/dialogs. Positioned help requires one unambiguous invoker. |
 | data-ui-focus | At most one focus destination owned by this surface. For dialogs, a focusable target is required; content needs an explicit accessible title. For popovers it is optional and supplies inline recovery only. |
 | data-ui-return-focus | Optional surviving focus destination ID for a dialog whose invoker becomes unavailable. Destination must be visible/focusable and outside nested unrelated tasks. |
 | data-ui-close | Native dialog close button; value defaults to close. Native method=dialog forms retain their own default action. Popover close buttons use native target/hide attributes. |
 | data-ui-placement | Popup only: block-end-start (default) or block-start-start. No JSON configuration or implicit semantic role. |
-| data-ui-ready | Library-owned empty readiness marker on enhanced overlays only. It is not open state or a signal for business success. |
+| data-ui-ready | Library-owned empty readiness marker on enhanced overlays and Accordion groups. It is not open state or a signal for business success. |
 | Events | Keep native toggle/beforetoggle/close/cancel/submit/reset. No new custom event or synthetic input/change. Application close listeners own result display or persistence. |
 
-The bundle initializes once after parsing, or in a microtask when loaded after parsing. Newly inserted marked overlays require explicit enhance(root); there is no automatic global discovery loop. Existing custom elements keep their native connection lifecycle. destroy suspends them until enhance is explicitly called, including across subsequent detach/reinsert.
+The bundle initializes once after parsing, or in a microtask when loaded after parsing. Newly inserted marked overlays and Accordion groups require explicit enhance(root); there is no automatic global discovery loop. Existing custom elements keep their native connection lifecycle. destroy suspends them until enhance is explicitly called, including across subsequent detach/reinsert.
 
 ## Interaction and accessibility
 
@@ -54,7 +54,7 @@ Unavailable/throwing/no-op native opening returns the pattern to readable baseli
 
 Track exact owned attribute values; conditionally restore only the last library-written scalar state. Preserve later application writes and all native values/labels/form associations. A private registry makes repeated initialization/mixed loading idempotent. Explicit enhance reconciles changed invokers/configuration by releasing and attaching anew; unchanged patterns keep their open state and listeners.
 
-A scoped lifetime document observer detects only removal/adoption of already-owned surfaces or invokers. It does not initialize new content. Destroy releases listeners, geometry, scheduled work and registry references; it closes owned open overlays before restoring baseline. Removed tasks cannot infer a meaningful application successor, so applications still choose survivor focus before removal. Reinsertion after cleanup requires enhance(root).
+A scoped lifetime document observer detects removal/adoption of already-owned surfaces or invokers. For Accordion it also revalidates owned structure and native name-group boundaries after relevant child/name/role/marker changes; invalidated groups require explicit enhancement. It does not initialize new content. Destroy releases listeners, geometry, scheduled work and registry references; it closes owned open overlays before restoring baseline. Removed tasks cannot infer a meaningful application successor, so applications still choose survivor focus before removal. Reinsertion after cleanup requires enhance(root).
 
 The existing form/summary cleanup behavior remains authoritative: native noValidate is restored, managed feedback/hints are released, generated IDs/nodes may remain. Shared lifecycle suspension is internal; existing validate/showErrors/clear/refresh methods and synchronous localization hooks remain the component APIs. Business async work stays application-owned.
 

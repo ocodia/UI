@@ -100,3 +100,5 @@ After changing guides, live recipe sources, site generators or `js/docs-preview.
 ## License
 
 [MIT](LICENSE). Reference systems inform scope and interaction design; UI uses its own implementation, vocabulary, and documentation.
+
+The experimental [Accordion pattern](docs/accordion.md) composes native `details`/`summary` inside `ui-accordion data-ui="accordion"`. The combined entry adds summary navigation, fragment reveal and focus recovery; expansion and optional single-open name groups remain native.

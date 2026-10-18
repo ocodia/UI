@@ -57,6 +57,8 @@ async function runDocumentationChecks(load, frame) {
   check(!doc.querySelector('[data-example]') && doc.querySelector('#proposal').nextElementSibling.textContent.includes('not implemented'), 'Planned component pages expose proposals without pretend live controls.');
   win = await load('../docs/components/popup.html'); doc=win.document;
   check(doc.querySelector('a[href="../specs/popup.html"]') && doc.querySelector('a[href="../specs/popup.md"]') && doc.querySelector('[data-example]'), 'Experimental Popup links its specification, source and actual anchored-help example.');
+  win = await load('../docs/components/accordion.html'); doc=win.document;
+  check(doc.querySelectorAll('[data-example]').length === 3 && doc.querySelector('a[href="../specs/accordion.html"]') && doc.querySelector('a[href="../accordion.html"]') && doc.querySelector('.component-meta').textContent.includes('Foundation'), 'Experimental Accordion exposes three runnable recipes, specification and implemented guide.');
   win = await load('../docs/specs/popup.html'); doc=win.document;
   check(doc.querySelector('link[href="../../css/site.css"]') && doc.querySelector('a[href="../lifecycle.html"]') && doc.querySelector('.doc-source a[href="popup.md"]') && !doc.querySelector('.docs-sidebar a[href="../components/popup.html"][aria-current]'), 'Nested specifications retain site assets, shared contracts and source links without marking a different page current.');
   win = await load('../docs/enhancement.html'); doc=win.document;
@@ -76,7 +78,7 @@ async function runDocumentationChecks(load, frame) {
   const range=doc.querySelector('input'); range.stepUp(); range.form.requestSubmit();
   check(range.value==='55' && doc.querySelector('#preview-result').textContent.includes('volume=55'), 'Range preview retains native stepping and numeric serialization.');
   frame.style.inlineSize='320px';
-  for (const route of ['../index.html','../docs/index.html','../docs/controls.html','../docs/forms.html','../docs/native-states.html','../docs/components/checkbox.html','../docs/components/combobox.html','../docs/lifecycle.html','../docs/specs/popup.html','../docs/popup.html','../docs/enhancement.html']) {
+  for (const route of ['../index.html','../docs/index.html','../docs/controls.html','../docs/forms.html','../docs/native-states.html','../docs/components/checkbox.html','../docs/components/combobox.html','../docs/lifecycle.html','../docs/specs/popup.html','../docs/popup.html','../docs/enhancement.html','../docs/accordion.html','../docs/components/accordion.html','../docs/specs/accordion.html']) {
     win=await load(route,true); doc=win.document;
     for (const dir of ['ltr','rtl']) {
       doc.documentElement.dir=dir;

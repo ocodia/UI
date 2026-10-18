@@ -87,6 +87,7 @@ Depends on Phase 0 state/focus contracts and Phase 1 recipes. Build one compound
 5. **Avatar** and **Icon** conventions, including SVG source/licensing policy and meaningful/decorative naming.
 
 - [ ] Specify each family before code using [the component template](docs/component-template.md).
+  - The [Accordion / Accordion Item proposal](docs/specs/accordion.md) defines native disclosure and name-group ownership, optional summary navigation, fragment/form-error reveal, focus recovery and lifecycle acceptance work. The wrapper, opt-in shared-entry behavior, runnable recipes and focused checks now ship experimentally; manual/platform evidence remains open.
 - [ ] Keep tabs' linked sections and navigation URLs useful before enhancement. Keep native disclosures as the accordion baseline.
 - [ ] Implement menu arrows/typeahead/Escape and focus restoration without applying menu semantics to ordinary site navigation.
 - [ ] Give feedback one announcement owner and persistent alternatives for important/actionable messages.
@@ -157,8 +158,8 @@ The target is [WCAG 2.2 AA](https://www.w3.org/WAI/WCAG22/quickref/). [APG](http
 
 ## Next implementation slice
 
-The [shared UI entry and declarative setup](docs/enhancement.md) now cover existing forms/summaries, native dialogs, popovers and anchored Popup help, including scoped teardown/resume. Planned widgets are not initialized.
+The [shared UI entry and declarative setup](docs/enhancement.md) now cover existing forms/summaries, native dialogs, popovers and anchored Popup help, including scoped teardown/resume. The experimental Accordion pattern is also initialized when explicitly marked; other planned widgets are not initialized.
 
-The first **Phase 2 Popup geometry utility** and anchored-help consumer are implemented experimentally; follow the [integration guide](docs/popup.md), [specification](docs/specs/popup.md) and [lifecycle and ownership contract](docs/lifecycle.md). Native Popover remains an implemented Phase 1 recipe; Popup adds anchored placement rather than replacing its semantics or dismissal. Keep remaining geometry/platform evidence open before stable maturity. Next specify the native-disclosure-based Accordion family before adding its compound behavior.
+The first **Phase 2 Popup geometry utility** and anchored-help consumer are implemented experimentally; follow the [integration guide](docs/popup.md), [specification](docs/specs/popup.md) and [lifecycle and ownership contract](docs/lifecycle.md). Native Popover remains an implemented Phase 1 recipe; Popup adds anchored placement rather than replacing its semantics or dismissal. Keep remaining geometry/platform evidence open before stable maturity. The [Accordion family](docs/accordion.md) now ships experimentally with native-disclosure composition, opt-in shared-entry behavior, runnable recipes and focused checks. Keep its manual/platform release evidence open. Next specify the Tab Group / Tab / Tab Panel family before adding its compound behavior.
 
 Continue the remaining Phase 0/1 manual browser, assistive-technology, touch, forced-colors and release evidence alongside this work. Shared feedback, payload budgets and maturity/migration work remain open. Tabs and other compound widgets require their own specifications after the positioning slice.

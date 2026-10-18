@@ -60,6 +60,8 @@ GEOMETRY = {
     'ui-panel':[('--ui-panel-padding','var(--ui-space), or density spacing.')],
 }
 GEOMETRY['card']=GEOMETRY['ui-panel']
+EXTRA['accordion'] = [('data-ui="accordion"', 'Opt in on ui-accordion with direct native details/summary items. No registration or additional role.'), ('open / name', 'Native details state and optional document-wide exclusive group. Never reuse a name outside the group.'), ('UI.enhance(root) / UI.destroy(root)', 'Explicit refresh after structural changes; teardown preserves expansion and answers.'), ('toggle', 'Native per-item event; read current open state. No custom events or live announcements.')]
+EXTRA['accordion-item'] = EXTRA['accordion']
 FORM_API = [('form','Read-only native form reference, or null for incomplete/ambiguous markup.'),('validate({ focus })','Validate and render; returns Boolean. focus defaults to true.'),('showErrors(errors, { focus })','Render application field errors without replacing answers. Each entry has control and message.'),('clear()','Clear managed error presentation and title state, preserving values.'),('refresh()','Rediscover native ownership, children and descriptions immediately.'),('validator','JavaScript-only synchronous callback returning additional error objects.'),('message','JavaScript-only synchronous constraint-message callback; must return a non-empty string.'),('error-prefix / error-title-prefix','Localized inline/title prefixes; see the complete form integration contract.')]
 
 

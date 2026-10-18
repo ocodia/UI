@@ -13,7 +13,7 @@ UI is an HTML-first UI system in development. This file applies to the entire re
 ## Current implementation
 
 - Library CSS: `css/ui.css`, named `ui` layer and low-specificity native styles.
-- Combined library entry: generated `js/ui.js` from `js/components.js`, `js/popup.js`, `js/enhance.js`. Registers **only `ui-form` and `ui-error-summary`**, plus `UI.enhance(root)` / `UI.destroy(root)` and `UI.popup.attach`. Standard native overlay patterns opt in with `data-ui`; see `docs/enhancement.md`. The original form/geometry entries remain compatible.
+- Combined library entry: generated `js/ui.js` from `js/components.js`, `js/popup.js`, `js/enhance.js`. Registers **only `ui-form` and `ui-error-summary`**, plus `UI.enhance(root)` / `UI.destroy(root)` and `UI.popup.attach`. Standard native overlay and experimental Accordion patterns opt in with `data-ui`; see `docs/enhancement.md`. The original form/geometry entries remain compatible.
 - Optional experimental geometry: `js/popup.js`, exposes `UIPopup.attach` for native auto popovers; no registration; also included in `js/ui.js`. See `docs/popup.md`.
 - CSS-only elements: `ui-stack`, `ui-cluster`, `ui-grid`, `ui-sidebar`, `ui-panel`, `ui-field`, `ui-hint`, `ui-error`, `ui-skip-link`.
 - Optional brand: `themes/forest.css`, root `data-brand="forest"`.

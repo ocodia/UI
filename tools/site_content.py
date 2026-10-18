@@ -45,7 +45,7 @@ def previews(recipes):
 <!-- Generated from docs/recipes.json. Trusted repository examples only. -->
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{title} — UI example</title>
 <link rel="stylesheet" href="../../css/ui.css?v={ui_style_version}"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/ui.js?v={ui_version}" defer></script><script src="../../js/docs-preview.js?v={preview_version}" defer></script>
-<style>body {{ padding: 1.5rem 2rem 1.5rem 1.5rem; }} body > main {{ max-inline-size: none; inline-size: auto; margin: 0; padding: 0; }} h1 {{ position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); }} output {{ display: block; margin-block-start: 1rem; }} .table-scroll table {{ min-inline-size: 38rem; }} :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) {{ display: none; }}</style></head>
+<style>body {{ padding: 1.5rem; padding-inline-end: 3rem; }} body > main {{ max-inline-size: none; inline-size: auto; margin: 0; padding: 0; }} h1 {{ position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); }} output {{ display: block; margin-block-start: 1rem; }} .table-scroll table {{ min-inline-size: 38rem; }} :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) {{ display: none; }}</style></head>
 <body><main aria-label="{title} example"><h1>{title}</h1>{recipe['code']}{nojs}</main>{script}</body></html>
 '''
     return pages
@@ -104,6 +104,9 @@ def component_page(item, data, recipes):
         if key == 'dialog':
             keyboard = 'The browser owns modal focus containment and inertness after showModal(). Choose initial focus, an explicit close action, Escape policy and a logical return target. The complete dialog guide covers these decisions and support failure.'
             values = 'A method=dialog form closes without network submission. Clear returnValue before opening; dismissal must not reuse a previous result. Closing is separate from resetting answers or saving data. Do not nest forms.'
+        if key in ['accordion', 'accordion-item']:
+            keyboard = 'Native Enter/Space toggles each summary. The marked wrapper adds Up/Down and Home/End navigation in DOM order without changing expansion. Tab remains native; nested groups own their own keys.'
+            values = 'Native details owns open state and optional name groups. Closed fields retain native values and validation. Shared destroy preserves expansion; late children require explicit enhance. Read the Accordion guide for fragments, focus recovery and limits.'
         if key == 'details': keyboard = 'Enter/Space toggles the native summary. The browser owns open state and the toggle event. Required instructions belong outside a closed disclosure. Keep summary text meaningful.'
         if key == 'popover': keyboard = 'Native popovertarget supplies non-modal disclosure. Content keeps its own semantics; do not add a menu role. Check Escape, light dismissal, trigger focus and a useful inline fallback in the actual supported browser.'
         body += section('behavior', 'Keyboard, focus & native state', '<p>'+escape(keyboard)+'</p>')
@@ -114,7 +117,7 @@ def component_page(item, data, recipes):
             body += '<p>The <a href="../../examples/composition.html">survey briefing recipe</a> combines nested panels, native multiple selection and named scroll regions. Read its <a href="../reference.html#panels-scroll-regions-and-multiple-selection">composition and selection contract</a>.</p>'
         if key in PURPOSE:
             body += '<p>See the <a href="../native-states.html">native family state audit</a> for default, long-content, disabled/read-only, invalid, busy and fallback coverage, including states that do not apply.</p>'
-        guide = 'forms' if key in FORM_NOTES or key in ['ui-form','ui-error-summary','ui-field','ui-hint','ui-error'] else key if key in ['dialog', 'popover', 'popup'] else 'controls' if key in ['button','button-group'] else 'reference'
+        guide = 'forms' if key in FORM_NOTES or key in ['ui-form','ui-error-summary','ui-field','ui-hint','ui-error'] else key if key in ['dialog', 'popover', 'popup', 'accordion'] else 'accordion' if key == 'accordion-item' else 'controls' if key in ['button','button-group'] else 'reference'
         body += section('api', 'API & styling', api_table(key)+f'<p>Use the <a href="../{guide}.html">implemented {guide} contract</a> for the full integration rules and supported cases. Native attributes retain their standard meanings. Only <code>ui-form</code> and <code>ui-error-summary</code> register behavior.</p><p>Styles come from <code>css/ui.css</code> in the <code>ui</code> layer. Geometry and semantic colors use <a href="../theming.html">UI theme variables</a>. <a href="../density.html">Density</a> and <a href="../controls.html">control sizes</a> have separate scopes; they do not apply to every element.</p>')
         if item.get('example'):
             body += section('minimal-markup', 'Catalogue markup', '<p>This minimal structure describes the route. Live examples above add the context needed to try it.</p><details><summary>Minimal markup</summary><pre><code>'+escape(item['example'])+'</code></pre></details>')

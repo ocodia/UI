@@ -479,21 +479,29 @@ Use native normalized form values; locale formatting stays with the browser init
 
 ### Accordion
 
-**Planned · Phase 2.** UI route: `ui-accordion around details (proposed)`.
+**Foundation · Phase 2.** UI route: `ui-accordion with native details`.
 
-Start with native disclosures; grouped single-open behavior must be optional and preserve readable fallback.
+Native disclosures own expansion and optional name-group exclusivity. Opt-in shared enhancement adds summary navigation, fragment reveal and collapsed-content focus recovery.
 
-**Acceptance work:** Summary keyboard use, headings, multi/single-open policy, deep links, and focus in collapsed content.
+**Acceptance work:** Native summary activation; optional summary navigation; native name-group boundaries; deep-link and form-error reveal; collapsed-content focus; nested and dynamic teardown. See the proposal's evidence matrix.
+
+[Accordion guide](accordion.md) · [Specification](specs/accordion.md) · [Focused checks](../tests/accordion.html). Experimental; manual platform and assistive-technology evidence remains open.
+
+[Component specification](specs/accordion.md)
 
 [Reference component](https://webawesome.com/docs/components/accordion/) · [Specification template](component-template.md)
 
 ### Accordion Item
 
-**Planned · Phase 2.** UI route: `details and summary inside ui-accordion (proposed)`.
+**Foundation · Phase 2.** UI route: `details and summary inside ui-accordion`.
 
-Keep the native disclosure as the item; no replacement custom button is needed for the baseline.
+The native details/summary is the item. Preserve open state, content semantics and native form ownership; no item registration or replacement button.
 
-**Acceptance work:** Accessible summary, open state, nested interactive content, and heading structure.
+**Acceptance work:** Native accessible summary/open state, optional heading exposure, content controls and form ownership, programmatic collapse focus recovery, late/replaced summaries and nested groups.
+
+[Accordion guide](accordion.md) · [Specification](specs/accordion.md) · [Focused checks](../tests/accordion.html). Experimental; manual platform and assistive-technology evidence remains open.
+
+[Component specification](specs/accordion.md)
 
 [Reference component](https://webawesome.com/docs/components/accordion-item/) · [Specification template](component-template.md)
 

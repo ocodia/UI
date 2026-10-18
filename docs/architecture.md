@@ -16,7 +16,7 @@ Use `ui-` as the project prefix. Keep native controls inside compound elements; 
 | Application | Persistence, routing, data loading, permissions, business rules | `js/workspace.js`, `css/workspace.css` |
 | Documentation | Current APIs, planned contracts, recipes and reference scope | `docs/`, `examples/` |
 
-The combined and form-only entries register only `ui-form` and `ui-error-summary`. Nine additional `ui-` elements are CSS-only: stack, cluster, grid, sidebar, panel, field, hint, error and skip-link. Native form values stay on input/select/textarea. Standard labels, autofill, FormData, submitter, reset and validation eligibility remain platform-owned.
+The combined and form-only entries register only `ui-form` and `ui-error-summary`. The original nine additional `ui-` elements are CSS-only: stack, cluster, grid, sidebar, panel, field, hint, error and skip-link. The experimental `ui-accordion` wrapper also has CSS block layout and optional shared-entry enhancement, with no registration. Native form values stay on input/select/textarea. Standard labels, autofill, FormData, submitter, reset and validation eligibility remain platform-owned.
 
 Do not wrap native elements in custom elements where HTML's content model forbids it: `option` stays inside `select`, `li` stays inside lists, and table rows/cells retain native parents. A wrapper surrounds a valid structure rather than replacing its required children.
 
@@ -51,7 +51,7 @@ These are design rules for future work; they do not add APIs to existing element
 
 ## Delivery shape
 
-Keep the current copyable files working. The generated `js/ui.js` combines existing form behavior, geometry and opt-in enhancement without runtime loading. `UI.enhance` and `UI.destroy` provide the [shared lifecycle API](enhancement.md); only implemented native overlay patterns are initialized. Later split behavior into optional per-component ES modules, publish versioned packages and generated manifests, and support SSR markup without requiring a framework. Do not advertise imports, CDN URLs, package names, autoloaders or a `dist/` directory before they exist.
+Keep the current copyable files working. The generated `js/ui.js` combines existing form behavior, geometry and opt-in enhancement without runtime loading. `UI.enhance` and `UI.destroy` provide the [shared lifecycle API](enhancement.md); only implemented native overlay and opt-in Accordion patterns are initialized. Later split behavior into optional per-component ES modules, publish versioned packages and generated manifests, and support SSR markup without requiring a framework. Do not advertise imports, CDN URLs, package names, autoloaders or a `dist/` directory before they exist.
 
 All visual tokens remain in the named `ui` cascade layer; unlayered application CSS can override them. Future sublayers and component styles must have declared order. Dependency selection requires a concrete benefit, license review, payload measurement and fallback plan; optional charts/Markdown/QR libraries must not enter the CSS foundation bundle.
 

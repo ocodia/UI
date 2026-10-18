@@ -51,6 +51,8 @@ def main():
         errors.append('js/ui.js: stale combined entry; run python3 tools/build_ui.py or tools/build_docs.py')
     data=json.loads((ROOT/'docs/components.json').read_text())
     implemented={item['id'] for item in data['uiComponents']}
+    # Reference families may add an unregistered composition wrapper of their own.
+    implemented.update(element for item in data['components'] if item['status'] != 'planned' for element in item.get('elements', []))
     registered=set(re.findall(r"customElements\.define\(['\"]([^'\"]+)", (ROOT/'js/components.js').read_text()))
     documented={item['id'] for item in data['uiComponents'] if item['mode']=='Optional JS'}
     if registered != documented:

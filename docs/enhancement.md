@@ -1,6 +1,6 @@
 # Shared UI JavaScript
 
-Load `js/ui.js` once for the behaviors UI currently ships. It includes forms/error summaries, native modal-dialog setup, native popover help and anchored Popup help. Static pages need HTML and this script; no per-example initialization code is required. Ordinary controls and CSS-only layouts keep working without JavaScript.
+Load `js/ui.js` once for the behaviors UI currently ships. It includes forms/error summaries, native modal-dialog setup, native popover help anchored Popup help and native-disclosure Accordion groups. Static pages need HTML and this script; no per-example initialization code is required. Ordinary controls and CSS-only layouts keep working without JavaScript.
 
 ```html
 <link rel="stylesheet" href="css/ui.css">
@@ -17,7 +17,8 @@ The combined file registers only the existing `ui-form` and `ui-error-summary` e
 | Modal information/task | dialog open data-ui="dialog", named title, initial focus and matching hidden opener | Standard setup, native modal opening/close, inline recovery and cleanup |
 | Supplemental help | One inline container with data-ui="popover"; native popovertarget buttons | Capability checks, native auto-popover setup, opener focus and inline recovery |
 | Anchored supplemental help | Same structure with data-ui="popup" | Standard popover setup plus experimental Popup geometry |
-| Native controls, details, progress and CSS-only layouts | Existing native/UI markup | Native/CSS behavior; no new initialization or roles |
+| Accordion | ui-accordion data-ui="accordion" around direct native details/summary items | Optional summary navigation, fragment reveal and collapsed-content focus recovery; expansion stays native |
+| Native controls, unmarked details, progress and CSS-only layouts | Existing native/UI markup | Native/CSS behavior; no new initialization or roles |
 | Application tasks | Application scripts | Requests, storage, routing, permission checks, async ordering and business feedback |
 
 Unknown data-ui values stay unenhanced. Unmarked dialogs/popovers are left to their existing owner. The original manual recipes remain available for advanced integration and compatibility checks; use the declarative examples below for ordinary authoring.
@@ -61,7 +62,7 @@ Escape and background inertness stay native; no duplicate focus trap or document
 
 ## Dynamic applications
 
-The bundle initializes once after parsing. Newly connected ui-form/ui-error-summary elements continue using their native custom-element lifecycle. Newly inserted marked overlays require an explicit scoped call after insertion:
+The bundle initializes once after parsing. Newly connected ui-form/ui-error-summary elements continue using their native custom-element lifecycle. Newly inserted marked overlays and Accordion groups require an explicit scoped call after insertion:
 
 ```js
 container.append(newSection);
@@ -75,7 +76,7 @@ newSection.remove();
 | API | Contract |
 | --- | --- |
 | UI.enhance(root = document) | Synchronous, idempotent; returns undefined. Includes the root and descendants. Resumes/refreshes forms and summaries and installs/reconciles supported marked surfaces. Unchanged active patterns remain open. |
-| UI.destroy(root = document) | Synchronous, idempotent; returns undefined. Releases owned overlays deepest first, restores readable presentation and suspends contained form/summary automatic behavior. Answers remain on their native controls. |
+| UI.destroy(root = document) | Synchronous, idempotent; returns undefined. Releases owned overlays and Accordion groups deepest first, restores readable presentation and suspends contained form/summary automatic behavior. Answers remain on their native controls. |
 | UI.popup.attach(options) | The same lower-level geometry adapter as UIPopup.attach; see the complete Popup contract. |
 
 Roots must be a Document, Element or DocumentFragment from this runtime's document; invalid/foreign roots throw TypeError. Disconnected fragments are not initialized. Destroy also accepts detached subtrees for cleanup. If an invoker was added outside its surface, pass the surface or a shared ancestor/document to enhance; passing only the button does not include its target.
@@ -83,6 +84,8 @@ Roots must be a Document, Element or DocumentFragment from this runtime's docume
 Call enhance again after changing invokers, required children or placement. Incomplete/ambiguous patterns keep their baseline; one broken pattern does not block another. A private lifetime observer cleans up already-owned removed/adopted nodes; it does not automatically initialize newly discovered overlays. Reinsertion after cleanup requires enhance. A deliberately destroyed form stays suspended across reconnect until enhance resumes it. Destroying an owned summary alone releases its link behavior and restores its form's native validation until resumed; destroy the ui-form root for complete validation-feedback teardown.
 
 ## Cleanup and limits
+
+The experimental [Accordion guide](accordion.md) defines valid group structure, optional native name grouping and explicit refresh after child changes. Destroy keeps its current expansion and answers. No new element is registered.
 
 UI owns only its listeners, geometry and explicit initialization attributes: popover mode/readiness, baseline dialog open state and hidden action states. Readiness is exposed as data-ui-ready; it is not an application-controlled open attribute. Later application scalar writes are conditionally preserved. Author baseline open/hidden state and configure relationships before enhancement; do not have concurrent owners write native open/popover/readiness while active.
 

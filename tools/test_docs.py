@@ -68,9 +68,9 @@ class DocumentationTests(unittest.TestCase):
             links = [attrs['href'] for tag,attrs in parsed.tags if tag=='a' and 'href' in attrs]
             self.assertIn('../lifecycle.html', links)
             self.assertIn('../../css/site.css', page)
-            self.assertIn('popup.md', links)
+            self.assertIn(source.rsplit('/', 1)[-1], links)
             component = self.pages[f'docs/components/{item["id"]}.html']
-            self.assertIn('../specs/popup.html', component)
+            self.assertIn('../specs/'+source.rsplit('/', 1)[-1][:-3]+'.html', component)
             if item['status'] == 'planned':
                 self.assertIn('not implemented', component)
                 self.assertNotIn('data-example', component)

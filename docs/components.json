@@ -310,22 +310,31 @@
       "name": "Accordion",
       "category": "Layout",
       "reference": "https://webawesome.com/docs/components/accordion/",
-      "ui": "ui-accordion around details (proposed)",
-      "status": "planned",
+      "ui": "ui-accordion with native details",
+      "status": "foundation",
       "phase": 2,
-      "contract": "Start with native disclosures; grouped single-open behavior must be optional and preserve readable fallback.",
-      "acceptance": "Summary keyboard use, headings, multi/single-open policy, deep links, and focus in collapsed content."
+      "contract": "Native disclosures own expansion and optional name-group exclusivity. Opt-in shared enhancement adds summary navigation, fragment reveal and collapsed-content focus recovery.",
+      "acceptance": "Native summary activation; optional summary navigation; native name-group boundaries; deep-link and form-error reveal; collapsed-content focus; nested and dynamic teardown. See the proposal's evidence matrix.",
+      "specification": "docs/specs/accordion.md",
+      "maturity": "experimental",
+      "exampleNote": "[Accordion guide](accordion.md) · [Specification](specs/accordion.md) · [Focused checks](../tests/accordion.html). Experimental; manual platform and assistive-technology evidence remains open.",
+      "elements": [
+        "ui-accordion"
+      ]
     },
     {
       "id": "accordion-item",
       "name": "Accordion Item",
       "category": "Layout",
       "reference": "https://webawesome.com/docs/components/accordion-item/",
-      "ui": "details and summary inside ui-accordion (proposed)",
-      "status": "planned",
+      "ui": "details and summary inside ui-accordion",
+      "status": "foundation",
       "phase": 2,
-      "contract": "Keep the native disclosure as the item; no replacement custom button is needed for the baseline.",
-      "acceptance": "Accessible summary, open state, nested interactive content, and heading structure."
+      "contract": "The native details/summary is the item. Preserve open state, content semantics and native form ownership; no item registration or replacement button.",
+      "acceptance": "Native accessible summary/open state, optional heading exposure, content controls and form ownership, programmatic collapse focus recovery, late/replaced summaries and nested groups.",
+      "specification": "docs/specs/accordion.md",
+      "maturity": "experimental",
+      "exampleNote": "[Accordion guide](accordion.md) · [Specification](specs/accordion.md) · [Focused checks](../tests/accordion.html). Experimental; manual platform and assistive-technology evidence remains open."
     },
     {
       "id": "card",

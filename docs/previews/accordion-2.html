@@ -1,0 +1,25 @@
+<!doctype html>
+<!-- Generated from docs/recipes.json. Trusted repository examples only. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Nested disclosures and form errors — UI example</title>
+<link rel="stylesheet" href="../../css/ui.css?v=bcb0355816b5"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/ui.js?v=789f999b2313" defer></script><script src="../../js/docs-preview.js?v=ca0c3101df0e" defer></script>
+<style>body { padding: 1.5rem; padding-inline-end: 3rem; } body > main { max-inline-size: none; inline-size: auto; margin: 0; padding: 0; } h1 { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); } output { display: block; margin-block-start: 1rem; } .table-scroll table { min-inline-size: 38rem; } :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) { display: none; }</style></head>
+<body><main aria-label="Nested disclosures and form errors example"><h1>Nested disclosures and form errors</h1><ui-form>
+  <form>
+    <h2>Visit notes</h2>
+    <p>Check this local draft to inspect errors. Nothing is saved.</p>
+    <ui-accordion data-ui="accordion">
+      <details open><summary>Observation</summary>
+        <ui-field><label for="observation">Observation title</label><input id="observation" name="observation" required aria-describedby="observation-hint"><ui-hint id="observation-hint">Give this observation a short title.</ui-hint><ui-error hidden>Error: Enter an observation title</ui-error></ui-field>
+        <ui-accordion data-ui="accordion">
+          <details><summary>Optional context</summary><label for="context">Field context</label><textarea id="context" name="context"></textarea></details>
+          <details><summary>Reference</summary><p>Keep the original reference with your notes.</p></details>
+        </ui-accordion>
+      </details>
+      <details><summary>Read-only and unavailable fields</summary><label for="reference">Original reference</label><input id="reference" name="reference" value="COAST-01" readonly><label for="upload">Upload unavailable in this local draft</label><input id="upload" type="file" disabled></details>
+    </ui-accordion>
+    <ui-cluster>
+      <button type="submit">Check draft</button>
+      <button type="reset">Reset draft</button>
+    </ui-cluster>
+  </form>
+</ui-form><noscript><p>Enable JavaScript to inspect values locally. Inputs remain editable. A production form needs a real server action.</p></noscript></main></body></html>
