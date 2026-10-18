@@ -295,7 +295,13 @@
   }
 
   @layer forms {
-    :where(ui-form, ui-field, ui-hint, ui-error, ui-error-summary, ui-accordion) { display: block; }
+    :where(ui-form, ui-field, ui-hint, ui-error, ui-error-summary, ui-accordion, ui-tabs, ui-tablist) { display: block; }
+    :where(ui-tabs[data-ui-ready] > [role="tablist"]) { display: flex; flex-wrap: wrap; gap: var(--ui-space-1); border-block-end: 1px solid var(--ui-border); margin-block-end: var(--ui-space-4); }
+    :where(ui-tabs[data-ui-ready] > [role="tablist"][aria-orientation="vertical"]) { flex-direction: column; align-items: stretch; }
+    :where(ui-tabs[data-ui-ready] > [role="tablist"] > [role="tab"]) { padding: var(--ui-space-2) var(--ui-space-3); min-block-size: 2.75rem; min-inline-size: 0; overflow-wrap: anywhere; border-block-end: .25rem solid transparent; text-decoration: none; }
+    :where(ui-tabs[data-ui-ready] > [role="tablist"] > [aria-selected="true"]) { color: var(--ui-selected-text); background: var(--ui-selected-bg); border-block-end-color: var(--ui-selected-border); font-weight: var(--ui-font-weight-bold); }
+    :where(ui-tabs[data-ui-ready] > [role="tablist"] > a:focus-visible) { color: var(--ui-focus-edge); background: var(--ui-focus); }
+    :where(ui-tabs[data-ui-ready] > [role="tabpanel"]) { margin-block: 0; }
     :where(ui-field) { margin-block-end: var(--_ui-density-space, var(--ui-space)); }
     :where(ui-hint) { margin-block: 0 var(--_ui-density-message-gap, .5rem); color: var(--ui-muted); }
     :where(ui-error) { margin-block: 0 var(--_ui-density-message-gap, .5rem); color: var(--ui-invalid); font-weight: var(--ui-font-weight-bold); }
@@ -449,6 +455,7 @@
 
 
   @media (forced-colors: active) {
+    :where(ui-tabs[data-ui-ready] > [role="tablist"] > [aria-selected="true"]) { border-block-end-color: Highlight; }
     :where(:is(button, input[type="submit"], input[type="reset"], input[type="button"])) { border-color: ButtonText; }
     :where(:focus-visible, ui-error-summary:focus, ui-skip-link > a:focus) { outline: var(--ui-focus-width) solid Highlight; outline-offset: 3px; box-shadow: none; }
     :where(a:focus-visible, summary:focus-visible, ui-skip-link > a:focus) { color: LinkText; background: Canvas; }
@@ -456,6 +463,10 @@
   }
 
   @media print {
+    @layer base {
+      :where(ui-tabs[data-ui-ready] > [role="tabpanel"][data-ui-tabs-inactive][hidden]) { display: block !important; }
+    }
+    :where(ui-tabs[data-ui-ready] > [role="tablist"]) { display: none; }
     :where(:root) { color-scheme: light; --ui-text: #000; --ui-heading: #000; --ui-canvas: #fff; --ui-surface: #fff; --ui-border: #666; --ui-muted: #333; --ui-link: #000; --ui-invalid: #000; }
     :where(body) { color: #000; background: #fff; font-size: 11pt; }
     :where(body > header) { color: #000; background: transparent; border-color: #000; --ui-link: #000; }

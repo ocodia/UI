@@ -493,33 +493,46 @@
       "name": "Tab Group",
       "category": "Navigation",
       "reference": "https://webawesome.com/docs/components/tab-group/",
-      "ui": "ui-tabs around links and sections (proposed)",
-      "status": "planned",
+      "ui": "ui-tabs and ui-tablist around links and sections",
+      "status": "foundation",
       "phase": 2,
-      "contract": "Enhance readable linked sections only when ready; manual activation is the default for slow panels.",
-      "acceptance": "Arrows/Home/End, selected/tabindex state, panel relationships, deep links, and focus on removal."
+      "specification": "docs/specs/tabs.md",
+      "contract": "Experimental ui-tabs enhancement of linked sections with a named ui-tablist through js/ui.js, opted into by element name without a data-ui marker. Manual activation by default, optional eager automatic activation and horizontal/vertical navigation; see docs/tabs.md.",
+      "acceptance": "Focused Tabs checks cover selection, keyboard ownership, fragments, nested form-error reveal, lifecycle and reflow. Real platform, assistive-technology, print and mobile/touch release evidence remains open; see ACCESSIBILITY.md.",
+      "maturity": "experimental",
+      "exampleNote": "[Tabs guide](tabs.md) · [Specification](specs/tabs.md) · [Focused checks](../tests/tabs.html). Experimental; manual/platform release evidence remains open.",
+      "elements": [
+        "ui-tabs",
+        "ui-tablist"
+      ]
     },
     {
       "id": "tab",
       "name": "Tab",
       "category": "Navigation",
       "reference": "https://webawesome.com/docs/components/tab/",
-      "ui": "native anchor enhanced within ui-tabs (proposed)",
-      "status": "planned",
+      "ui": "native anchor enhanced within ui-tabs",
+      "status": "foundation",
       "phase": 2,
-      "contract": "Keep a real fragment destination before enhancement; tab semantics and keyboard behavior arrive together.",
-      "acceptance": "Active-only Tab entry, focus versus selection, Enter/Space, and orientation/RTL."
+      "specification": "docs/specs/tabs.md",
+      "contract": "Native fragment anchor enhanced with tab semantics, roving focus, activation and orientation/RTL keyboard behavior. Modified links remain native; see docs/tabs.md.",
+      "acceptance": "Focused Tabs checks cover selection, keyboard ownership, fragments, nested form-error reveal, lifecycle and reflow. Real platform, assistive-technology, print and mobile/touch release evidence remains open; see ACCESSIBILITY.md.",
+      "maturity": "experimental",
+      "exampleNote": "[Tabs guide](tabs.md) · [Specification](specs/tabs.md) · [Focused checks](../tests/tabs.html). Experimental; manual/platform release evidence remains open."
     },
     {
       "id": "tab-panel",
       "name": "Tab Panel",
       "category": "Navigation",
       "reference": "https://webawesome.com/docs/components/tab-panel/",
-      "ui": "section inside ui-tabs (proposed)",
-      "status": "planned",
+      "ui": "section inside ui-tabs",
+      "status": "foundation",
       "phase": 2,
-      "contract": "Sections remain readable without scripts; enhanced inactive panels leave the focus order.",
-      "acceptance": "Label/control IDs, lazy content readiness, no hidden focused controls, and hash navigation."
+      "specification": "docs/specs/tabs.md",
+      "contract": "Authored section remains readable without scripts. Enhanced inactive panels leave the focus order; fragment and form-error reveal preserve native control values. See docs/tabs.md.",
+      "acceptance": "Focused Tabs checks cover selection, keyboard ownership, fragments, nested form-error reveal, lifecycle and reflow. Real platform, assistive-technology, print and mobile/touch release evidence remains open; see ACCESSIBILITY.md.",
+      "maturity": "experimental",
+      "exampleNote": "[Tabs guide](tabs.md) · [Specification](specs/tabs.md) · [Focused checks](../tests/tabs.html). Experimental; manual/platform release evidence remains open."
     },
     {
       "id": "tree",

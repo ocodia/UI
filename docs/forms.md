@@ -130,3 +130,7 @@ The example uses a local timer, not a real endpoint. A production application mu
 `aria-busy` describes pending work but does not disable controls. The example keeps submitters enabled and guards duplicates in JavaScript, preserving focus and FormData. If your product disables controls, save their previous state, capture values first, and restore state/focus predictably. Announcements and cancellation semantics still need browser/screen-reader task testing.
 
 These conventions follow the native platform and GOV.UK's [validation recovery](https://design-system.service.gov.uk/patterns/validation/) and [error summary](https://design-system.service.gov.uk/components/error-summary/) guidance. The [evidence record](../ACCESSIBILITY.md) distinguishes automated checks from outstanding manual verification.
+
+## Fields in Tabs
+
+The combined entry’s experimental [Tabs pattern](tabs.md) reveals containing panels and native disclosure ancestors before an error-summary link focuses its field. Summary focus/scroll remain form-owned; closing a panel never disables its controls or changes validation eligibility. Native validation reveals the first invalid destination in each synchronous validation task. Applications must reveal hidden destinations before focusing them directly. The original form-only entry keeps its native-details behavior; it cannot initialize Tabs.

@@ -549,5 +549,57 @@
       "note": "Multiple disclosures may stay open. Native summary activation also works without JavaScript. Essential arrangements should remain visible in your application.",
       "script": ""
     }
+  ],
+  "tabs": [
+    {
+      "title": "Visit information with manual activation",
+      "code": "<section aria-labelledby=\"visit-title\">\n  <h2 id=\"visit-title\">Plan your visit</h2>\n  <p>Use Left/Right or Home/End to move between tabs, then Enter or Space to show the panel. <a href=\"#visit-equipment-note\">Jump to equipment</a>.</p>\n  <ui-tabs id=\"visit\">\n    <ui-tablist aria-label=\"Visit information\">\n      <a id=\"visit-arrival-tab\" href=\"#visit-arrival\">Getting here</a>\n      <a id=\"visit-equipment-tab\" href=\"#visit-equipment\">What to bring when the weather changes during a long coastal visit</a>\n      <a id=\"visit-access-tab\" href=\"#visit-access\">Accessibility arrangements</a>\n    </ui-tablist>\n    <section id=\"visit-arrival\" aria-labelledby=\"arrival-title\"><h3 id=\"arrival-title\">Getting here</h3><p>Meet at the visitor centre at 09:30.</p><a href=\"../../docs/forms.html\">Read the preparation guide</a></section>\n    <section id=\"visit-equipment\" aria-labelledby=\"equipment-title\"><h3 id=\"equipment-title\">What to bring</h3><p id=\"visit-equipment-note\">Bring waterproof clothing, drinking water and your field notebook.</p></section>\n    <section id=\"visit-access\" aria-labelledby=\"access-title\"><h3 id=\"access-title\">Accessibility arrangements</h3><p>Contact the coordinator before the visit to discuss step-free routes and rest stops.</p></section>\n  </ui-tabs>\n</section>",
+      "script": ""
+    },
+    {
+      "title": "Vertical tabs with automatic activation",
+      "note": "Both panels are already available. Up/Down moves focus and selection together.",
+      "code": "<ui-tabs data-activation=\"automatic\" data-orientation=\"vertical\">\n  <ui-tablist aria-label=\"Route information\"><a id=\"coast-tab\" href=\"#coast\">Coast</a><a id=\"woodland-tab\" href=\"#woodland\">Woodland</a></ui-tablist>\n  <section id=\"coast\"><h2>Coastal route</h2><p>Allow three hours and check the tide before departure.</p></section>\n  <section id=\"woodland\"><h2>Woodland route</h2><p>Allow two hours. The path can be muddy.</p></section>\n</ui-tabs>",
+      "script": ""
+    },
+    {
+      "title": "Nested tabs, disclosures and form errors",
+      "note": "Error links reveal the field before focusing it. Reset preserves the selected view.",
+      "code": "<ui-form><form>\n  <h2>Visit notes</h2><p>Check this local draft to inspect errors. Nothing is saved.</p>\n  <ui-tabs>\n    <ui-tablist aria-label=\"Visit notes\"><a id=\"observation-tab\" href=\"#observation-panel\">Observation</a><a id=\"context-tab\" href=\"#context-panel\">Context</a></ui-tablist>\n    <section id=\"observation-panel\"><h3>Observation</h3><label for=\"observation\">Observation title</label><input id=\"observation\" name=\"observation\" value=\"Tide pools\" required></section>\n    <section id=\"context-panel\"><h3>Context</h3>\n      <ui-accordion data-ui=\"accordion\"><details><summary>Field context</summary><ui-field><label for=\"context\">Field context</label><input id=\"context\" name=\"context\" required><ui-error hidden>Error: Enter field context</ui-error></ui-field>\n        <ui-tabs><ui-tablist aria-label=\"Reference\"><a id=\"reference-tab\" href=\"#reference-panel\">Reference</a><a id=\"status-tab\" href=\"#status-panel\">Status</a></ui-tablist>\n          <section id=\"reference-panel\"><h4>Original reference</h4><label for=\"reference\">Reference (read-only)</label><input id=\"reference\" name=\"reference\" value=\"COAST-01\" readonly></section>\n          <section id=\"status-panel\"><h4>Draft status</h4><p role=\"status\">No files uploaded. Upload is unavailable in this local draft.</p><label for=\"upload\">Upload unavailable</label><input id=\"upload\" type=\"file\" disabled></section>\n        </ui-tabs>\n      </details></ui-accordion>\n    </section>\n  </ui-tabs>\n  <ui-cluster><button type=\"submit\">Check draft</button><button type=\"reset\">Reset draft</button></ui-cluster>\n</form></ui-form>",
+      "script": ""
+    }
+  ],
+  "tab-group": [
+    {
+      "title": "Visit information with manual activation",
+      "code": "<section aria-labelledby=\"visit-title\">\n  <h2 id=\"visit-title\">Plan your visit</h2>\n  <p>Use Left/Right or Home/End to move between tabs, then Enter or Space to show the panel. <a href=\"#visit-equipment-note\">Jump to equipment</a>.</p>\n  <ui-tabs id=\"visit\">\n    <ui-tablist aria-label=\"Visit information\">\n      <a id=\"visit-arrival-tab\" href=\"#visit-arrival\">Getting here</a>\n      <a id=\"visit-equipment-tab\" href=\"#visit-equipment\">What to bring when the weather changes during a long coastal visit</a>\n      <a id=\"visit-access-tab\" href=\"#visit-access\">Accessibility arrangements</a>\n    </ui-tablist>\n    <section id=\"visit-arrival\" aria-labelledby=\"arrival-title\"><h3 id=\"arrival-title\">Getting here</h3><p>Meet at the visitor centre at 09:30.</p><a href=\"../../docs/forms.html\">Read the preparation guide</a></section>\n    <section id=\"visit-equipment\" aria-labelledby=\"equipment-title\"><h3 id=\"equipment-title\">What to bring</h3><p id=\"visit-equipment-note\">Bring waterproof clothing, drinking water and your field notebook.</p></section>\n    <section id=\"visit-access\" aria-labelledby=\"access-title\"><h3 id=\"access-title\">Accessibility arrangements</h3><p>Contact the coordinator before the visit to discuss step-free routes and rest stops.</p></section>\n  </ui-tabs>\n</section>",
+      "script": ""
+    },
+    {
+      "title": "Vertical tabs with automatic activation",
+      "note": "Both panels are already available. Up/Down moves focus and selection together.",
+      "code": "<ui-tabs data-activation=\"automatic\" data-orientation=\"vertical\">\n  <ui-tablist aria-label=\"Route information\"><a id=\"coast-tab\" href=\"#coast\">Coast</a><a id=\"woodland-tab\" href=\"#woodland\">Woodland</a></ui-tablist>\n  <section id=\"coast\"><h2>Coastal route</h2><p>Allow three hours and check the tide before departure.</p></section>\n  <section id=\"woodland\"><h2>Woodland route</h2><p>Allow two hours. The path can be muddy.</p></section>\n</ui-tabs>",
+      "script": ""
+    },
+    {
+      "title": "Nested tabs, disclosures and form errors",
+      "note": "Error links reveal the field before focusing it. Reset preserves the selected view.",
+      "code": "<ui-form><form>\n  <h2>Visit notes</h2><p>Check this local draft to inspect errors. Nothing is saved.</p>\n  <ui-tabs>\n    <ui-tablist aria-label=\"Visit notes\"><a id=\"observation-tab\" href=\"#observation-panel\">Observation</a><a id=\"context-tab\" href=\"#context-panel\">Context</a></ui-tablist>\n    <section id=\"observation-panel\"><h3>Observation</h3><label for=\"observation\">Observation title</label><input id=\"observation\" name=\"observation\" value=\"Tide pools\" required></section>\n    <section id=\"context-panel\"><h3>Context</h3>\n      <ui-accordion data-ui=\"accordion\"><details><summary>Field context</summary><ui-field><label for=\"context\">Field context</label><input id=\"context\" name=\"context\" required><ui-error hidden>Error: Enter field context</ui-error></ui-field>\n        <ui-tabs><ui-tablist aria-label=\"Reference\"><a id=\"reference-tab\" href=\"#reference-panel\">Reference</a><a id=\"status-tab\" href=\"#status-panel\">Status</a></ui-tablist>\n          <section id=\"reference-panel\"><h4>Original reference</h4><label for=\"reference\">Reference (read-only)</label><input id=\"reference\" name=\"reference\" value=\"COAST-01\" readonly></section>\n          <section id=\"status-panel\"><h4>Draft status</h4><p role=\"status\">No files uploaded. Upload is unavailable in this local draft.</p><label for=\"upload\">Upload unavailable</label><input id=\"upload\" type=\"file\" disabled></section>\n        </ui-tabs>\n      </details></ui-accordion>\n    </section>\n  </ui-tabs>\n  <ui-cluster><button type=\"submit\">Check draft</button><button type=\"reset\">Reset draft</button></ui-cluster>\n</form></ui-form>",
+      "script": ""
+    }
+  ],
+  "tab": [
+    {
+      "title": "Visit information with manual activation",
+      "code": "<section aria-labelledby=\"visit-title\">\n  <h2 id=\"visit-title\">Plan your visit</h2>\n  <p>Use Left/Right or Home/End to move between tabs, then Enter or Space to show the panel. <a href=\"#visit-equipment-note\">Jump to equipment</a>.</p>\n  <ui-tabs id=\"visit\">\n    <ui-tablist aria-label=\"Visit information\">\n      <a id=\"visit-arrival-tab\" href=\"#visit-arrival\">Getting here</a>\n      <a id=\"visit-equipment-tab\" href=\"#visit-equipment\">What to bring when the weather changes during a long coastal visit</a>\n      <a id=\"visit-access-tab\" href=\"#visit-access\">Accessibility arrangements</a>\n    </ui-tablist>\n    <section id=\"visit-arrival\" aria-labelledby=\"arrival-title\"><h3 id=\"arrival-title\">Getting here</h3><p>Meet at the visitor centre at 09:30.</p><a href=\"../../docs/forms.html\">Read the preparation guide</a></section>\n    <section id=\"visit-equipment\" aria-labelledby=\"equipment-title\"><h3 id=\"equipment-title\">What to bring</h3><p id=\"visit-equipment-note\">Bring waterproof clothing, drinking water and your field notebook.</p></section>\n    <section id=\"visit-access\" aria-labelledby=\"access-title\"><h3 id=\"access-title\">Accessibility arrangements</h3><p>Contact the coordinator before the visit to discuss step-free routes and rest stops.</p></section>\n  </ui-tabs>\n</section>",
+      "script": ""
+    }
+  ],
+  "tab-panel": [
+    {
+      "title": "Visit information with manual activation",
+      "code": "<section aria-labelledby=\"visit-title\">\n  <h2 id=\"visit-title\">Plan your visit</h2>\n  <p>Use Left/Right or Home/End to move between tabs, then Enter or Space to show the panel. <a href=\"#visit-equipment-note\">Jump to equipment</a>.</p>\n  <ui-tabs id=\"visit\">\n    <ui-tablist aria-label=\"Visit information\">\n      <a id=\"visit-arrival-tab\" href=\"#visit-arrival\">Getting here</a>\n      <a id=\"visit-equipment-tab\" href=\"#visit-equipment\">What to bring when the weather changes during a long coastal visit</a>\n      <a id=\"visit-access-tab\" href=\"#visit-access\">Accessibility arrangements</a>\n    </ui-tablist>\n    <section id=\"visit-arrival\" aria-labelledby=\"arrival-title\"><h3 id=\"arrival-title\">Getting here</h3><p>Meet at the visitor centre at 09:30.</p><a href=\"../../docs/forms.html\">Read the preparation guide</a></section>\n    <section id=\"visit-equipment\" aria-labelledby=\"equipment-title\"><h3 id=\"equipment-title\">What to bring</h3><p id=\"visit-equipment-note\">Bring waterproof clothing, drinking water and your field notebook.</p></section>\n    <section id=\"visit-access\" aria-labelledby=\"access-title\"><h3 id=\"access-title\">Accessibility arrangements</h3><p>Contact the coordinator before the visit to discuss step-free routes and rest stops.</p></section>\n  </ui-tabs>\n</section>",
+      "script": ""
+    }
   ]
 }

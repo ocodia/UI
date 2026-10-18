@@ -3,7 +3,7 @@
   const key = Symbol.for('ui.enhancement.runtime');
   if (globalThis[key]) { globalThis.UI = globalThis[key]; return; }
   const doc = document, records = new Map(), stopped = new WeakSet();
-  let lifetime = null, accordionEvents = null, accordionScroll = null;
+  let lifetime = null, revealEvents = null, revealScroll = null, invalidTarget = null;
   function rootNode(root) {
     if (root !== doc && (!(root instanceof Element || root instanceof DocumentFragment) || root.ownerDocument !== doc)) throw new TypeError('UI needs a root from this document.');
     return root;
@@ -11,12 +11,175 @@
   function within(root, selector) {
     return [...(root.nodeType === 1 && root.matches(selector) ? [root] : []), ...root.querySelectorAll(selector)];
   }
+  function deepestRecords() {
+    const depth = node => { let value = 0; for (; node; node = node.parentElement) value++; return value; };
+    return [...records.values()].sort((a, b) => depth(b.surface) - depth(a.surface));
+  }
   function visible(node) {
     return node?.isConnected && !node.disabled && node.getClientRects().length && getComputedStyle(node).visibility === 'visible' && !node.closest('[hidden], [inert]');
   }
   function focus(node) { if (visible(node)) { node.focus(); return doc.activeElement === node; } return false; }
-  // Accordion composes content inside overlays; it does not own their close/focus actions.
-  const own = (node, surface) => node.closest('[data-ui]:not(ui-accordion[data-ui="accordion"])') === surface;
+  // Composition wrappers do not take over a containing overlay’s close/focus actions.
+  const own = (node, surface) => node.closest('[data-ui]:not(ui-accordion[data-ui="accordion"]):not(ui-tabs)') === surface;
+  const revealKey = Symbol.for('ui.reveal');
+  function write(record, node, name, value) {
+    let attributes = record.writes.get(node);
+    if (!attributes) { attributes = new Map(); record.writes.set(node, attributes); }
+    if (!attributes.has(name)) attributes.set(name, { before: node.getAttribute(name), last: value });
+    else attributes.get(name).last = value;
+    if (node.getAttribute(name) === value) return;
+    if (value === null) node.removeAttribute(name); else node.setAttribute(name, value);
+  }
+  function restore(record) {
+    for (const [node, attributes] of record.writes) for (const [name, state] of attributes) {
+      if (node.getAttribute(name) !== state.last) continue;
+      if (state.before === null) node.removeAttribute(name); else node.setAttribute(name, state.before);
+    }
+  }
+  function uniqueID(id) {
+    if (!id) return null;
+    const found = [...doc.querySelectorAll('[id]')].filter(node => node.id === id);
+    return found.length === 1 ? found[0] : null;
+  }
+  function fragmentTarget() {
+    if (!location.hash || location.hash.includes(':~:')) return null;
+    try { return uniqueID(decodeURIComponent(location.hash.slice(1))); } catch { return null; }
+  }
+  function ownedHidden(node) {
+    for (const record of records.values()) if (record.config.kind === 'tabs' && record.config.panels.includes(node) && record.writes.get(node)?.get('hidden')?.last === '' && node.getAttribute('hidden') === '') return true;
+    return false;
+  }
+  function unavailable(node) {
+    for (let parent = node; parent; parent = parent.parentElement) if (parent.hasAttribute('inert') || parent.hasAttribute('hidden') && !ownedHidden(parent)) return true;
+    return false;
+  }
+  function tabsStructure(surface, record = records.get(surface)) {
+    if (surface.localName !== 'ui-tabs' || !surface.isConnected || surface.ownerDocument !== doc || typeof MutationObserver !== 'function' || typeof AbortController !== 'function' || typeof requestAnimationFrame !== 'function' || typeof cancelAnimationFrame !== 'function' || typeof CustomEvent !== 'function') return null;
+    // Validate the authored baseline through our own writes, without removing live roles.
+    const attr = (node, name) => {
+      const state = record?.writes?.get(node)?.get(name);
+      return state && node.getAttribute(name) === state.last ? state.before : node.getAttribute(name);
+    };
+    if (record?.writes) for (const [node, attrs] of record.writes) for (const [name, state] of attrs) if (node.getAttribute(name) !== state.last) return null;
+    const [list, ...panels] = surface.children, tabs = list ? [...list.children] : [];
+    const text = node => [...node.childNodes].some(child => child.nodeType === 3 && child.textContent.trim());
+    if (!list?.matches('ui-tablist,div[data-ui-tablist]') || !panels.length || panels.length !== tabs.length || text(surface) || text(list) || panels.some(panel => panel.localName !== 'section')) return null;
+    const names = (list.getAttribute('aria-labelledby') || '').trim().split(/\s+/).filter(Boolean);
+    const name = list.getAttribute('aria-label')?.trim();
+    if (names.length ? names.some(id => { const label = uniqueID(id); return !label?.textContent.trim() || list.contains(label) || unavailable(label); }) : !name) return null;
+    const forbidden = ['role', 'tabindex', 'aria-selected', 'aria-controls', 'aria-expanded', 'aria-current', 'aria-disabled', 'aria-busy', 'disabled', 'hidden', 'inert', 'aria-hidden', 'data-ui-tabs-inactive'];
+    if ([surface, list, ...tabs, ...panels].some(node => forbidden.some(key => attr(node, key) !== null)) || unavailable(surface)) return null;
+    if ([list, ...tabs].some(node => attr(node, 'aria-orientation') !== null) || tabs.some(node => node.hasAttribute('aria-labelledby'))) return null;
+    for (let index = 0; index < tabs.length; index++) {
+      const tab = tabs[index], panel = panels[index], href = tab.getAttribute('href');
+      if (tab.localName !== 'a' || !tab.textContent.trim() || uniqueID(tab.id) !== tab || uniqueID(panel.id) !== panel || !href?.startsWith('#') || href.includes(':~:') || tab.hasAttribute('target') || tab.hasAttribute('download') || tab.isContentEditable || tab.querySelector('a,button,input,select,textarea,[tabindex],[contenteditable]')) return null;
+      try { if (decodeURIComponent(href.slice(1)) !== panel.id) return null; } catch { return null; }
+    }
+    return { kind: 'tabs', list, tabs, panels, activation: surface.getAttribute('data-activation') === 'automatic' ? 'automatic' : 'manual', orientation: surface.getAttribute('data-orientation') === 'vertical' ? 'vertical' : 'horizontal', signature: JSON.stringify([name, names, tabs.map(tab => [tab.id, tab.getAttribute('href')]), panels.map(panel => panel.id)]) };
+  }
+  function tabStop(record, tab) {
+    for (const candidate of record.config.tabs) write(record, candidate, 'tabindex', candidate === tab ? '0' : '-1');
+  }
+  function selectTab(record, index, source, { moveFocus = false, destinationFocus = false, silent = false } = {}) {
+    if (!record.alive || !same(record.config, tabsStructure(record.surface))) return false;
+    const { tabs, panels } = record.config, previous = record.selected;
+    if (index < 0 || index >= tabs.length) return false;
+    if (previous !== index && panels[previous]?.querySelector('dialog[open],:popover-open')) return false;
+    if (moveFocus || !destinationFocus && previous !== index && panels[previous]?.contains(doc.activeElement)) {
+      record.selecting = true;
+      const focused = focus(tabs[index]);
+      record.selecting = false;
+      if (!focused) { release(record, false); return false; }
+      if (!record.alive || !same(record.config, tabsStructure(record.surface))) { release(record, false); return false; }
+    }
+    record.selected = index;
+    tabs.forEach((tab, i) => {
+      write(record, tab, 'aria-selected', i === index ? 'true' : 'false');
+      write(record, panels[i], 'hidden', i === index ? null : '');
+      write(record, panels[i], 'data-ui-tabs-inactive', i === index ? null : '');
+    });
+    tabStop(record, record.config.list.contains(doc.activeElement) ? doc.activeElement.closest('a') : tabs[index]);
+    if (!silent && previous !== index) record.surface.dispatchEvent(new CustomEvent('ui-select', { bubbles: true, composed: true, detail: { tab: tabs[index], panel: panels[index], previousTab: tabs[previous], previousPanel: panels[previous], source } }));
+    return record.alive;
+  }
+  // One synchronous ancestor path for fragments, invalid controls and summary links.
+  function revealTarget(target, source = 'reveal', destinationFocus = false, installing = false) {
+    cancelRevealScroll();
+    if (!target?.isConnected || target.ownerDocument !== doc || unavailable(target)) return false;
+    const path = [];
+    for (let parent = target; parent; parent = parent.parentElement) path.push(parent);
+    const choices = [];
+    for (const parent of path.slice().reverse()) {
+      const record = records.get(parent);
+      if (record?.config.kind === 'tabs') {
+        const index = record.config.panels.findIndex(panel => panel === target || panel.contains(target));
+        if (index >= 0) {
+          if (installing && index !== record.selected && record.config.panels[record.selected].contains(doc.activeElement)) return false;
+          if (!same(record.config, tabsStructure(parent)) || record.selected !== index && record.config.panels[record.selected].querySelector('dialog[open],:popover-open')) return false;
+          choices.push([record, index]);
+        }
+      }
+    }
+    for (const parent of path.reverse()) {
+      if (parent.localName === 'details' && !parent.querySelector(':scope > summary')?.contains(target)) parent.open = true;
+      const choice = choices.find(([record]) => record.surface === parent);
+      if (choice && !selectTab(choice[0], choice[1], source, { destinationFocus })) return false;
+    }
+    return !!accordionVisible(target);
+  }
+  function installTabs(surface, config, resume = null) {
+    if (surface.hasAttribute('data-ui-ready')) return;
+    const target = fragmentTarget(), focused = config.panels.findIndex(panel => panel.contains(doc.activeElement));
+    const initial = resume ? resume.index : focused >= 0 ? focused : Math.max(0, config.panels.findIndex(panel => target && panel.contains(target)));
+    const record = { surface, config, events: new AbortController(), writes: new Map(), alive: true, selected: initial, selecting: false, focused: surface.contains(doc.activeElement) ? doc.activeElement : null };
+    const listen = (node, type, handler, capture = false) => node.addEventListener(type, handler, { capture, signal: record.events.signal });
+    const current = () => record.alive && same(config, tabsStructure(surface));
+    const getTab = event => { const tab = event.target.closest?.('a'); return config.tabs.includes(tab) ? tab : null; };
+    const ignored = event => event.defaultPrevented || event.isComposing || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey;
+    records.set(surface, record);
+    try {
+      if (config.panels.some((panel, index) => index !== initial && panel.querySelector('dialog[open],:popover-open'))) { release(record, false); return; }
+      listen(config.list, 'keydown', event => {
+        const tab = getTab(event);
+        if (!tab || !current() || ignored(event)) return;
+        let index = config.tabs.indexOf(tab), next = index;
+        const rtl = getComputedStyle(config.list).direction === 'rtl';
+        if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = config.tabs.length - 1;
+        else if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectTab(record, index, 'activation'); return; }
+        else if (config.orientation === 'vertical' && ['ArrowDown', 'ArrowUp'].includes(event.key)) next += event.key === 'ArrowDown' ? 1 : -1;
+        else if (config.orientation === 'horizontal' && ['ArrowRight', 'ArrowLeft'].includes(event.key)) next += (event.key === 'ArrowRight' ? 1 : -1) * (rtl ? -1 : 1);
+        else return;
+        next = (next + config.tabs.length) % config.tabs.length;
+        if (focus(config.tabs[next]) && current()) { tabStop(record, config.tabs[next]); event.preventDefault(); }
+      });
+      listen(config.list, 'click', event => {
+        const tab = getTab(event);
+        if (!tab || !current() || ignored(event) || event.button !== 0) return;
+        event.preventDefault();
+        selectTab(record, config.tabs.indexOf(tab), 'activation', { moveFocus: event.isTrusted });
+      });
+      listen(config.list, 'focusin', event => {
+        const tab = getTab(event);
+        if (!tab || !current()) return;
+        tabStop(record, tab);
+        if (!record.selecting && config.activation === 'automatic') selectTab(record, config.tabs.indexOf(tab), 'activation');
+      });
+      listen(config.list, 'focusout', event => { if (!config.list.contains(event.relatedTarget) && current()) tabStop(record, config.tabs[record.selected]); });
+      listen(doc, 'focusin', event => { record.focused = surface.contains(event.target) ? event.target : null; });
+      write(record, config.list, 'role', 'tablist');
+      write(record, config.list, 'aria-orientation', config.orientation);
+      config.tabs.forEach((tab, index) => {
+        write(record, tab, 'role', 'tab'); write(record, tab, 'aria-controls', config.panels[index].id);
+        write(record, config.panels[index], 'role', 'tabpanel'); write(record, config.panels[index], 'aria-labelledby', tab.id); write(record, config.panels[index], 'tabindex', '0');
+      });
+      selectTab(record, initial, 'reconcile', { silent: true });
+      write(record, surface, 'data-ui-ready', '');
+      monitor();
+      if (resume?.recover) focus(config.tabs[initial]);
+      if (!resume) revealFragment(true, surface);
+    } catch { release(record, false); }
+  }
   const accordionARIA = ['role', 'aria-expanded', 'aria-controls', 'aria-hidden', 'aria-disabled'];
   function accordionStructure(surface) {
     if (surface.localName !== 'ui-accordion' || surface.getAttribute('data-ui') !== 'accordion' || !surface.isConnected || surface.ownerDocument !== doc || typeof HTMLDetailsElement !== 'function' || typeof MutationObserver !== 'function' || typeof AbortController !== 'function' || typeof requestAnimationFrame !== 'function' || typeof cancelAnimationFrame !== 'function') return null;
@@ -34,46 +197,45 @@
     }
     return true;
   }
-  function cancelAccordionScroll() {
-    if (accordionScroll) cancelAnimationFrame(accordionScroll.frame);
-    accordionScroll = null;
+  function cancelRevealScroll() {
+    if (revealScroll) cancelAnimationFrame(revealScroll.frame);
+    revealScroll = null;
   }
-  function revealAccordionFragment() {
-    cancelAccordionScroll();
-    const hash = location.hash;
-    if (!hash || hash.includes(':~:')) return;
-    let id;
-    try { id = decodeURIComponent(hash.slice(1)); } catch { return; }
-    const targets = [...doc.querySelectorAll('[id]')].filter(node => node.id === id);
-    if (targets.length !== 1) return;
-    const target = targets[0];
-    if (target.closest('[hidden],[inert]')) return;
+  function revealFragment(installing = false, scope = null) {
+    const hash = location.hash, target = fragmentTarget();
+    if (scope && (!target || !scope.contains(target))) return;
+    cancelRevealScroll();
+    if (!target || unavailable(target)) return;
     let record = null;
     for (let parent = target; parent; parent = parent.parentElement) {
       const candidate = records.get(parent);
-      if (candidate?.config.kind === 'accordion' && candidate.config.items.some(item => item.contains(target))) { record = candidate; break; }
+      if (candidate && ['accordion', 'tabs'].includes(candidate.config.kind) && (candidate.config.items || candidate.config.panels).some(item => item === target || item.contains(target))) { record = candidate; break; }
     }
-    if (!record) return;
-    const ancestors = [];
-    for (let parent = target.parentElement; parent; parent = parent.parentElement) {
-      if (parent.localName === 'details' && !parent.querySelector(':scope > summary')?.contains(target)) ancestors.push(parent);
-    }
-    for (const item of ancestors.reverse()) item.open = true;
+    if (!record || !revealTarget(target, 'fragment', false, installing === true)) return;
     const pending = { record, frame: 0 };
-    accordionScroll = pending;
+    revealScroll = pending;
     pending.frame = requestAnimationFrame(() => {
-      if (accordionScroll !== pending) return;
-      accordionScroll = null;
-      if (record.alive && same(record.config, accordionStructure(record.surface)) && location.hash === hash && target.isConnected && target.ownerDocument === doc && record.surface.contains(target) && accordionVisible(target)) target.scrollIntoView({ behavior: 'instant', block: 'start' });
+      if (revealScroll !== pending) return;
+      revealScroll = null;
+      if (record.alive && same(record.config, structure(record.surface)) && location.hash === hash && target.isConnected && target.ownerDocument === doc && record.surface.contains(target) && accordionVisible(target)) target.scrollIntoView({ behavior: 'instant', block: 'start' });
     });
   }
-  function accordionMonitor() {
-    const active = [...records.values()].some(record => record.config.kind === 'accordion');
-    if (active && !accordionEvents) {
-      accordionEvents = new AbortController();
-      window.addEventListener('hashchange', revealAccordionFragment, { signal: accordionEvents.signal });
-      for (const type of ['pointerdown', 'keydown']) doc.addEventListener(type, cancelAccordionScroll, { capture: true, signal: accordionEvents.signal });
-    } else if (!active && accordionEvents) { accordionEvents.abort(); accordionEvents = null; cancelAccordionScroll(); }
+
+  function revealMonitor() {
+    const active = [...records.values()].some(record => ['accordion', 'tabs'].includes(record.config.kind));
+    if (active && !revealEvents) {
+      revealEvents = new AbortController();
+      window.addEventListener('hashchange', revealFragment, { signal: revealEvents.signal });
+      doc.addEventListener('invalid', event => {
+        if (![...records.values()].some(record => record.config.kind === 'tabs' && record.config.panels.some(panel => panel.contains(event.target)))) return;
+        if (event.target.closest('ui-form')?.form === event.target.form && event.target.form?.noValidate) return;
+        if (invalidTarget) return;
+        invalidTarget = event.target;
+        revealTarget(invalidTarget, 'reveal', true);
+        queueMicrotask(() => { invalidTarget = null; });
+      }, { capture: true, signal: revealEvents.signal });
+      for (const type of ['pointerdown', 'keydown']) doc.addEventListener(type, cancelRevealScroll, { capture: true, signal: revealEvents.signal });
+    } else if (!active && revealEvents) { revealEvents.abort(); revealEvents = null; cancelRevealScroll(); }
   }
   function installAccordion(surface, config) {
     if (surface.hasAttribute('data-ui-ready')) return;
@@ -99,10 +261,11 @@
       records.set(surface, record);
       surface.setAttribute('data-ui-ready', '');
       monitor();
-      revealAccordionFragment();
+      revealFragment(true, surface);
     } catch { release(record, false); }
   }
   function structure(surface) {
+    if (surface.localName === 'ui-tabs') return tabsStructure(surface);
     const kind = surface.getAttribute('data-ui'), id = surface.id;
     if (kind === 'accordion') return accordionStructure(surface);
     if (!['dialog', 'popover', 'popup'].includes(kind) || !id || !surface.isConnected || surface.ownerDocument !== doc || doc.getElementById(id) !== surface || [...doc.querySelectorAll('[id]')].filter(node => node.id === id).length !== 1) return null;
@@ -119,14 +282,19 @@
     return { kind, modal, openers, closers, initial, placement, returnId: surface.getAttribute('data-ui-return-focus') || '' };
   }
   function same(a, b) {
+    if (a?.kind === 'tabs' || b?.kind === 'tabs') return a?.kind === b?.kind && a?.list === b?.list && ['activation', 'orientation', 'signature'].every(key => a[key] === b[key]) && ['tabs', 'panels'].every(key => a[key].length === b[key].length && a[key].every((node, index) => node === b[key][index]));
     if (a?.kind === 'accordion' || b?.kind === 'accordion') return a?.kind === b?.kind && a?.name === b?.name && ['items', 'summaries'].every(key => a[key].length === b[key].length && a[key].every((node, index) => node === b[key][index]));
     return a && b && ['kind', 'initial', 'placement', 'returnId'].every(key => a[key] === b[key]) && ['openers', 'closers'].every(key => a[key].length === b[key].length && a[key].every((node, index) => node === b[key][index]));
   }
   function monitor() {
-    accordionMonitor();
+    revealMonitor();
     if (records.size && !lifetime) {
       lifetime = new MutationObserver(() => {
-        for (const record of [...records.values()].reverse()) {
+        for (const record of deepestRecords()) {
+          if (record.config.kind === 'tabs') {
+            if (!same(record.config, tabsStructure(record.surface))) reconcileTabs(record, false);
+            continue;
+          }
           if (record.config.kind === 'accordion') {
             if (!same(record.config, accordionStructure(record.surface))) release(record, false);
             continue;
@@ -135,16 +303,23 @@
           if (!record.surface.isConnected || record.surface.ownerDocument !== doc || record.config.kind === 'popup' && missing.length || !record.config.modal && missing.length === record.config.openers.length) release(record, false);
         }
       });
-      lifetime.observe(doc.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['name', 'data-ui', ...accordionARIA] });
+      lifetime.observe(doc.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['name', 'id', 'href', 'hidden', 'inert', 'tabindex', 'target', 'download', 'contenteditable', 'disabled', 'aria-busy', 'aria-label', 'aria-labelledby', 'aria-selected', 'aria-orientation', 'aria-current', 'data-ui-tabs-inactive', 'data-ui-ready', 'data-ui-tablist', 'data-activation', 'data-orientation', 'data-ui', ...accordionARIA] });
     } else if (!records.size && lifetime) { lifetime.disconnect(); lifetime = null; }
   }
   function release(record, recover = true) {
     if (!record.alive) return;
     record.alive = false;
     const { surface, config } = record;
+    if (config.kind === 'tabs') {
+      record.events.abort();
+      if (revealScroll?.record === record) cancelRevealScroll();
+      restore(record);
+      records.delete(surface); monitor();
+      return;
+    }
     if (config.kind === 'accordion') {
       record.events.abort();
-      if (accordionScroll?.record === record) cancelAccordionScroll();
+      if (revealScroll?.record === record) cancelRevealScroll();
       if (surface.getAttribute('data-ui-ready') === '') surface.removeAttribute('data-ui-ready');
       records.delete(surface); monitor();
       return;
@@ -162,7 +337,23 @@
     records.delete(surface); monitor();
     if (recover && heldFocus) focus(config.initial);
   }
+  function reconcileTabs(record, explicit) {
+    const { surface, config } = record, selectedTab = config.tabs[record.selected];
+    const recover = record.focused && !record.focused.isConnected && doc.activeElement === doc.body;
+    // Release first so validation sees the current authored baseline.
+    release(record, false);
+    const next = tabsStructure(surface);
+    if (!next) return;
+    const removedOnly = next.tabs.length < config.tabs.length && next.activation === config.activation && next.orientation === config.orientation && next.tabs.every((tab, i) => { const old = config.tabs.indexOf(tab); return old >= 0 && config.panels[old] === next.panels[i]; });
+    if (!explicit && !removedOnly) return;
+    const surviving = next.tabs.indexOf(selectedTab);
+    const index = surviving >= 0 ? surviving : Math.min(record.selected, next.tabs.length - 1);
+    installTabs(surface, next, { index, recover });
+    const installed = records.get(surface);
+    if (installed && surviving < 0) surface.dispatchEvent(new CustomEvent('ui-select', { bubbles: true, composed: true, detail: { tab: next.tabs[index], panel: next.panels[index], previousTab: selectedTab, previousPanel: config.panels[record.selected], source: 'reconcile' } }));
+  }
   function install(surface, config) {
+    if (config.kind === 'tabs') { installTabs(surface, config); return; }
     if (config.kind === 'accordion') { installAccordion(surface, config); return; }
     // Do not silently take over an already-open native task or an authored hidden fallback.
     if (surface.hidden || config.modal && (!surface.open || surface.matches(':modal')) || !config.modal && surface.hasAttribute('popover') || surface.hasAttribute('data-ui-ready')) return;
@@ -215,11 +406,12 @@
   function initialize(root, automatic = false) {
     rootNode(root);
     for (const node of within(root, 'ui-error-summary,ui-form')) if (node.isConnected && (!automatic || !node._uiSuspended)) node._uiResume?.();
-    for (const surface of within(root, '[data-ui]')) {
+    for (const surface of within(root, '[data-ui],ui-tabs')) {
       if (automatic && stopped.has(surface)) continue;
       stopped.delete(surface);
       const config = structure(surface), previous = records.get(surface);
-      if (previous && same(previous.config, config) && surface.hasAttribute('data-ui-ready') && (config.kind === 'accordion' || config.modal || surface.popover === 'auto')) continue;
+      if (previous && same(previous.config, config) && surface.hasAttribute('data-ui-ready') && (['accordion', 'tabs'].includes(config.kind) || config.modal || surface.popover === 'auto')) continue;
+      if (previous?.config.kind === 'tabs') { reconcileTabs(previous, true); continue; }
       if (previous) release(previous, false);
       if (config) install(surface, config);
     }
@@ -227,10 +419,11 @@
   function enhance(root = doc) { initialize(root); }
   function destroy(root = doc) {
     rootNode(root);
-    for (const surface of within(root, '[data-ui]')) stopped.add(surface);
-    for (const record of [...records.values()].reverse()) if (record.surface === root || root.contains(record.surface)) release(record);
+    for (const surface of within(root, '[data-ui],ui-tabs')) stopped.add(surface);
+    for (const record of deepestRecords()) if (record.surface === root || root.contains(record.surface)) release(record);
     for (const node of within(root, 'ui-form,ui-error-summary').reverse()) node._uiSuspend?.();
   }
+  globalThis[revealKey] = target => revealTarget(target, 'reveal', true);
   globalThis.UI = globalThis[key] = Object.freeze({ enhance, destroy, popup: globalThis.UIPopup });
   if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', () => initialize(doc, true), { once: true });
   else queueMicrotask(() => initialize(doc, true));

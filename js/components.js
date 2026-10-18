@@ -36,6 +36,8 @@
         const target = this.ownerDocument.getElementById(id);
         if (!target) return;
         event.preventDefault();
+        const reveal = globalThis[Symbol.for('ui.reveal')];
+        if (reveal && !reveal(target)) return;
         for (let parent = target.parentElement; parent; parent = parent.parentElement) {
           if (parent.localName === 'details') parent.open = true;
         }

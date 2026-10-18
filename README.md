@@ -36,7 +36,7 @@ The native form owns submission. UI adds linked errors and focus management. Bas
 | Control presentation | Native button variants and control sizes; [contract](docs/controls.md). Comfortable/compact composition; [density](docs/density.md) |
 | Composition | `ui-stack`, `ui-cluster`, `ui-grid`, `ui-sidebar`, `ui-panel` |
 | Form structure | `ui-field`, `ui-hint`, `ui-error`, `ui-skip-link` |
-| Optional behavior | Combined `js/ui.js`: forms/summaries and declarative dialog/popover/Popup setup; [shared API](docs/enhancement.md). Original smaller entries remain available. |
+| Optional behavior | Combined `js/ui.js`: forms/summaries, declarative dialog/popover/Popup setup and opt-in Accordion/Tabs; [shared API](docs/enhancement.md). Original smaller entries remain available. |
 | Themes | System/light/dark, spacing/type/radius scales, semantic state/focus tokens, an optional forest brand |
 | Examples | Element gallery, complete form, Fieldwork workspace, recipes, server error recovery, async form integration, native input values and theme workbench |
 
@@ -102,3 +102,5 @@ After changing guides, live recipe sources, site generators or `js/docs-preview.
 [MIT](LICENSE). Reference systems inform scope and interaction design; UI uses its own implementation, vocabulary, and documentation.
 
 The experimental [Accordion pattern](docs/accordion.md) composes native `details`/`summary` inside `ui-accordion data-ui="accordion"`. The combined entry adds summary navigation, fragment reveal and focus recovery; expansion and optional single-open name groups remain native.
+
+The experimental [Tabs pattern](docs/tabs.md) enhances real fragment links and readable sections inside `ui-tabs` with a named `ui-tablist`, with manual activation by default, optional automatic activation, nested error reveal and scoped cleanup.

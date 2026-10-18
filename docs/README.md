@@ -54,3 +54,5 @@ The JSON field values are `native`, `foundation`, and `planned`. [components.jso
 Start with [AGENTS.md](../AGENTS.md), then the current API and JSON catalogue. [llms.txt](../llms.txt) provides a compact entry point. Do not generate code from a roadmap proposal as if the component were registered.
 
 The experimental [Accordion guide](accordion.md) covers native disclosure groups, optional summary navigation, deep links, form-error reveal and scoped lifecycle.
+
+The experimental [Tabs guide](tabs.md) covers linked sections, keyboard activation, nested fragment/form-error reveal and scoped cleanup.

@@ -1,0 +1,21 @@
+<!doctype html>
+<!-- Generated from docs/recipes.json. Trusted repository examples only. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Nested tabs, disclosures and form errors — UI example</title>
+<link rel="stylesheet" href="../../css/ui.css?v=08d4a80855f8"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/ui.js?v=4a2afdb00cf9" defer></script><script src="../../js/docs-preview.js?v=ca0c3101df0e" defer></script>
+<style>body { padding: 1.5rem; padding-inline-end: 3rem; } body > main { max-inline-size: none; inline-size: auto; margin: 0; padding: 0; } h1 { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); } output { display: block; margin-block-start: 1rem; } .table-scroll table { min-inline-size: 38rem; } :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) { display: none; }</style></head>
+<body><main aria-label="Nested tabs, disclosures and form errors example"><h1>Nested tabs, disclosures and form errors</h1><ui-form><form>
+  <h2>Visit notes</h2><p>Check this local draft to inspect errors. Nothing is saved.</p>
+  <ui-tabs>
+    <ui-tablist aria-label="Visit notes"><a id="observation-tab" href="#observation-panel">Observation</a><a id="context-tab" href="#context-panel">Context</a></ui-tablist>
+    <section id="observation-panel"><h3>Observation</h3><label for="observation">Observation title</label><input id="observation" name="observation" value="Tide pools" required></section>
+    <section id="context-panel"><h3>Context</h3>
+      <ui-accordion data-ui="accordion"><details><summary>Field context</summary><ui-field><label for="context">Field context</label><input id="context" name="context" required><ui-error hidden>Error: Enter field context</ui-error></ui-field>
+        <ui-tabs><ui-tablist aria-label="Reference"><a id="reference-tab" href="#reference-panel">Reference</a><a id="status-tab" href="#status-panel">Status</a></ui-tablist>
+          <section id="reference-panel"><h4>Original reference</h4><label for="reference">Reference (read-only)</label><input id="reference" name="reference" value="COAST-01" readonly></section>
+          <section id="status-panel"><h4>Draft status</h4><p role="status">No files uploaded. Upload is unavailable in this local draft.</p><label for="upload">Upload unavailable</label><input id="upload" type="file" disabled></section>
+        </ui-tabs>
+      </details></ui-accordion>
+    </section>
+  </ui-tabs>
+  <ui-cluster><button type="submit">Check draft</button><button type="reset">Reset draft</button></ui-cluster>
+</form></ui-form><noscript><p>Enable JavaScript to inspect values locally. Inputs remain editable. A production form needs a real server action.</p></noscript></main></body></html>

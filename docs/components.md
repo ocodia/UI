@@ -698,31 +698,43 @@ Each step supplies a visible name and textual state; inactive destinations are n
 
 ### Tab Group
 
-**Planned · Phase 2.** UI route: `ui-tabs around links and sections (proposed)`.
+**Foundation · Phase 2.** UI route: `ui-tabs and ui-tablist around links and sections`.
 
-Enhance readable linked sections only when ready; manual activation is the default for slow panels.
+Experimental ui-tabs enhancement of linked sections with a named ui-tablist through js/ui.js, opted into by element name without a data-ui marker. Manual activation by default, optional eager automatic activation and horizontal/vertical navigation; see docs/tabs.md.
 
-**Acceptance work:** Arrows/Home/End, selected/tabindex state, panel relationships, deep links, and focus on removal.
+**Acceptance work:** Focused Tabs checks cover selection, keyboard ownership, fragments, nested form-error reveal, lifecycle and reflow. Real platform, assistive-technology, print and mobile/touch release evidence remains open; see ACCESSIBILITY.md.
+
+[Tabs guide](tabs.md) · [Specification](specs/tabs.md) · [Focused checks](../tests/tabs.html). Experimental; manual/platform release evidence remains open.
+
+[Component specification](specs/tabs.md)
 
 [Reference component](https://webawesome.com/docs/components/tab-group/) · [Specification template](component-template.md)
 
 ### Tab
 
-**Planned · Phase 2.** UI route: `native anchor enhanced within ui-tabs (proposed)`.
+**Foundation · Phase 2.** UI route: `native anchor enhanced within ui-tabs`.
 
-Keep a real fragment destination before enhancement; tab semantics and keyboard behavior arrive together.
+Native fragment anchor enhanced with tab semantics, roving focus, activation and orientation/RTL keyboard behavior. Modified links remain native; see docs/tabs.md.
 
-**Acceptance work:** Active-only Tab entry, focus versus selection, Enter/Space, and orientation/RTL.
+**Acceptance work:** Focused Tabs checks cover selection, keyboard ownership, fragments, nested form-error reveal, lifecycle and reflow. Real platform, assistive-technology, print and mobile/touch release evidence remains open; see ACCESSIBILITY.md.
+
+[Tabs guide](tabs.md) · [Specification](specs/tabs.md) · [Focused checks](../tests/tabs.html). Experimental; manual/platform release evidence remains open.
+
+[Component specification](specs/tabs.md)
 
 [Reference component](https://webawesome.com/docs/components/tab/) · [Specification template](component-template.md)
 
 ### Tab Panel
 
-**Planned · Phase 2.** UI route: `section inside ui-tabs (proposed)`.
+**Foundation · Phase 2.** UI route: `section inside ui-tabs`.
 
-Sections remain readable without scripts; enhanced inactive panels leave the focus order.
+Authored section remains readable without scripts. Enhanced inactive panels leave the focus order; fragment and form-error reveal preserve native control values. See docs/tabs.md.
 
-**Acceptance work:** Label/control IDs, lazy content readiness, no hidden focused controls, and hash navigation.
+**Acceptance work:** Focused Tabs checks cover selection, keyboard ownership, fragments, nested form-error reveal, lifecycle and reflow. Real platform, assistive-technology, print and mobile/touch release evidence remains open; see ACCESSIBILITY.md.
+
+[Tabs guide](tabs.md) · [Specification](specs/tabs.md) · [Focused checks](../tests/tabs.html). Experimental; manual/platform release evidence remains open.
+
+[Component specification](specs/tabs.md)
 
 [Reference component](https://webawesome.com/docs/components/tab-panel/) · [Specification template](component-template.md)
 

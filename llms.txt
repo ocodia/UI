@@ -15,6 +15,7 @@
 - [Density](docs/density.md): comfortable/compact composition, nested boundaries, exact consumers and precedence; independent of control size.
 - [Controls](docs/controls.md): native button variants, control sizes, supported targets and token names.
 - [Native dialog](docs/dialog.md): application recipe for modality, focus, dismissal and inline support-failure fallback.
+- [Tabs](docs/tabs.md): experimental ui-tabs/ui-tablist linked-section enhancement, manual/automatic activation, fragment/form-error reveal and scoped cleanup; no new registration.
 - [Conventions](docs/conventions.md): UI/keyboard/focus/form rules.
 - [Roadmap](ROADMAP.md): complete component scope and release gate.
 - [Accessibility evidence](ACCESSIBILITY.md): actual test results and outstanding manual work.
