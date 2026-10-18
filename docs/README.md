@@ -56,3 +56,5 @@ Start with [AGENTS.md](../AGENTS.md), then the current API and JSON catalogue. [
 The experimental [Accordion guide](accordion.md) covers native disclosure groups, optional summary navigation, deep links, form-error reveal and scoped lifecycle.
 
 The experimental [Tabs guide](tabs.md) covers linked sections, keyboard activation, nested fragment/form-error reveal and scoped cleanup.
+
+The [Pagination guide](pagination.md) covers CSS-only native page links, boundaries, real static-page examples and application focus/loading ownership.

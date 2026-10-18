@@ -22,6 +22,10 @@ Use `data-ui="dialog"` on an authored open native dialog, or `data-ui="popover|p
 
 `js/components.js` and `js/popup.js` remain smaller compatible entries. Mixed/repeated loading keeps one set of constructors and geometry ownership. Generate the combined file from its sources with `tools/build_ui.py` or the full documentation build; there is no runtime loader or module import.
 
+## Pagination
+
+The experimental CSS-only [Pagination pattern](pagination.md) uses `ui-pagination` around a named native nav and ul/ol of real links. Author one current-page link with `aria-current="page"`, omit unavailable previous/next links, and keep ellipses as text. No JavaScript, data-ui marker, registration, page-count API or initialization is required. Applications own URLs, totals, loading and focus after updates.
+
 ## HTML conventions
 
 Use elements for their meaning: links navigate, buttons perform actions, and labels identify controls. UI styles headings, text, lists, tables, code, media, forms, `details`, `dialog`, and `[popover]`.

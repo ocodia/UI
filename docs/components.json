@@ -460,11 +460,17 @@
       "name": "Pagination",
       "category": "Navigation",
       "reference": "https://webawesome.com/docs/components/pagination/",
-      "ui": "ui-pagination around nav links (proposed)",
-      "status": "planned",
+      "ui": "ui-pagination around a named native nav and list of links",
+      "status": "foundation",
       "phase": 2,
-      "contract": "Use real URLs as baseline; application owns data loading and total counts.",
-      "acceptance": "Current page, previous/next boundaries, ellipses as text, focus after update, and no-JS navigation."
+      "contract": "CSS-only composition of a named native navigation list and real page URLs. Native current-page state, boundary omissions and wrapping; applications own result counts, routing, loading and focus after updates. See docs/pagination.md.",
+      "acceptance": "Verify real destination navigation, current-page uniqueness, previous/next boundaries, plain-text ellipses, native focus/keyboard ownership and no-script navigation. Focused evidence and remaining platform checks are recorded in ACCESSIBILITY.md.",
+      "maturity": "experimental",
+      "specification": "docs/specs/pagination.md",
+      "elements": [
+        "ui-pagination"
+      ],
+      "exampleNote": "[Pagination guide](pagination.md) · [Specification](specs/pagination.md) · [Focused checks](../tests/pagination.html). Experimental; manual/platform release evidence remains open."
     },
     {
       "id": "stepper",

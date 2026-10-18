@@ -19,6 +19,7 @@ The combined file registers only the existing `ui-form` and `ui-error-summary` e
 | Anchored supplemental help | Same structure with data-ui="popup" | Standard popover setup plus experimental Popup geometry |
 | Accordion | ui-accordion data-ui="accordion" around direct native details/summary items | Optional summary navigation, fragment reveal and collapsed-content focus recovery; expansion stays native |
 | Tabs | ui-tabs with a named direct ui-tablist, fragment anchors and paired sections | Selection, keyboard navigation, coordinated fragment/form-error reveal and readable teardown; see [Tabs](tabs.md) |
+| Pagination | ui-pagination around named native nav/list/links | CSS/native navigation only; no initializer, teardown or library requests; see [Pagination](pagination.md) |
 | Native controls, unmarked details, progress and CSS-only layouts | Existing native/UI markup | Native/CSS behavior; no new initialization or roles |
 | Application tasks | Application scripts | Requests, storage, routing, permission checks, async ordering and business feedback |
 

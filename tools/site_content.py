@@ -11,7 +11,7 @@ LABELS = {'native': 'Native recipe', 'foundation': 'Foundation', 'planned': 'Pla
 def example_markup(key, index, recipe, page):
     identity = f'{key}-{index}'
     source = recipe['code'] + ('\n<script>\n'+recipe['script']+'\n</script>' if recipe.get('script') else '')
-    source = '<script src="js/ui.js" defer></script>\n' + ''.join(f'<script src="{path}"></script>\n' for path in recipe.get('dependencies', [])) + source
+    source = ('<link rel="stylesheet" href="css/ui.css">\n' if key == 'pagination' else '<script src="js/ui.js" defer></script>\n') + ''.join(f'<script src="{path}"></script>\n' for path in recipe.get('dependencies', [])) + source
     path = relative(f'docs/previews/{identity}.html', page)
     return f'''<section aria-labelledby="{identity}-title">
 <h3 id="{identity}-title">{escape(recipe['title'])}</h3>
@@ -110,6 +110,9 @@ def component_page(item, data, recipes):
         if key in ['tab-group', 'tab', 'tab-panel']:
             keyboard = 'Arrow keys and Home/End move within the list; Enter/Space activates in default manual mode. Automatic activation and vertical orientation are explicit alternatives. Tab leaves the list for the selected panel. RTL reverses horizontal arrows.'
             values = 'Readable fragment links and sections are the baseline. UI coordinates selection, fragment and form-error reveal without changing native values. Late pairs require explicit enhance; destroy restores all sections. Read the Tabs guide for validation and lifecycle limits.'
+        if key == 'pagination':
+            keyboard = 'Named native nav, list and real anchors. Tab/Shift+Tab and Enter remain native; no arrow-key handler, roving focus or custom role. aria-current=page marks one current link.'
+            values = 'CSS-only ui-pagination scopes wrapping and current-page presentation. Omit unavailable previous/next links; ellipses are text. Applications own URLs, totals, async loading and focus after updates. No script, registration or initializer is needed.'
         if key == 'details': keyboard = 'Enter/Space toggles the native summary. The browser owns open state and the toggle event. Required instructions belong outside a closed disclosure. Keep summary text meaningful.'
         if key == 'popover': keyboard = 'Native popovertarget supplies non-modal disclosure. Content keeps its own semantics; do not add a menu role. Check Escape, light dismissal, trigger focus and a useful inline fallback in the actual supported browser.'
         body += section('behavior', 'Keyboard, focus & native state', '<p>'+escape(keyboard)+'</p>')
@@ -120,7 +123,7 @@ def component_page(item, data, recipes):
             body += '<p>The <a href="../../examples/composition.html">survey briefing recipe</a> combines nested panels, native multiple selection and named scroll regions. Read its <a href="../reference.html#panels-scroll-regions-and-multiple-selection">composition and selection contract</a>.</p>'
         if key in PURPOSE:
             body += '<p>See the <a href="../native-states.html">native family state audit</a> for default, long-content, disabled/read-only, invalid, busy and fallback coverage, including states that do not apply.</p>'
-        guide = 'forms' if key in FORM_NOTES or key in ['ui-form','ui-error-summary','ui-field','ui-hint','ui-error'] else key if key in ['dialog', 'popover', 'popup', 'accordion'] else 'accordion' if key == 'accordion-item' else 'tabs' if key in ['tab-group', 'tab', 'tab-panel'] else 'controls' if key in ['button','button-group'] else 'reference'
+        guide = 'forms' if key in FORM_NOTES or key in ['ui-form','ui-error-summary','ui-field','ui-hint','ui-error'] else key if key in ['dialog', 'popover', 'popup', 'accordion', 'pagination'] else 'accordion' if key == 'accordion-item' else 'tabs' if key in ['tab-group', 'tab', 'tab-panel'] else 'controls' if key in ['button','button-group'] else 'reference'
         body += section('api', 'API & styling', api_table(key)+f'<p>Use the <a href="../{guide}.html">implemented {guide} contract</a> for the full integration rules and supported cases. Native attributes retain their standard meanings. Only <code>ui-form</code> and <code>ui-error-summary</code> register behavior.</p><p>Styles come from <code>css/ui.css</code> in the <code>ui</code> layer. Geometry and semantic colors use <a href="../theming.html">UI theme variables</a>. <a href="../density.html">Density</a> and <a href="../controls.html">control sizes</a> have separate scopes; they do not apply to every element.</p>')
         if item.get('example'):
             body += section('minimal-markup', 'Catalogue markup', '<p>This minimal structure describes the route. Live examples above add the context needed to try it.</p><details><summary>Minimal markup</summary><pre><code>'+escape(item['example'])+'</code></pre></details>')

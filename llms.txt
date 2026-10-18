@@ -30,3 +30,5 @@
 - [Fieldwork workspace](workspace.html)
 
 Only ui-form and ui-error-summary are registered behavior elements today. CSS-only wrappers need no registration. There is no published package/import path. Do not invent ui-button/ui-input replacements for native controls or implement roadmap syntax as if it already exists. Use AGENTS.md for validation commands.
+
+- [Pagination](docs/pagination.md): CSS-only ui-pagination around native navigation links; no script or registration. Applications own URLs, totals and updates.

@@ -668,11 +668,15 @@ Each item remains a real list item and destination or current-page text.
 
 ### Pagination
 
-**Planned · Phase 2.** UI route: `ui-pagination around nav links (proposed)`.
+**Foundation · Phase 2.** UI route: `ui-pagination around a named native nav and list of links`.
 
-Use real URLs as baseline; application owns data loading and total counts.
+CSS-only composition of a named native navigation list and real page URLs. Native current-page state, boundary omissions and wrapping; applications own result counts, routing, loading and focus after updates. See docs/pagination.md.
 
-**Acceptance work:** Current page, previous/next boundaries, ellipses as text, focus after update, and no-JS navigation.
+**Acceptance work:** Verify real destination navigation, current-page uniqueness, previous/next boundaries, plain-text ellipses, native focus/keyboard ownership and no-script navigation. Focused evidence and remaining platform checks are recorded in ACCESSIBILITY.md.
+
+[Pagination guide](pagination.md) · [Specification](specs/pagination.md) · [Focused checks](../tests/pagination.html). Experimental; manual/platform release evidence remains open.
+
+[Component specification](specs/pagination.md)
 
 [Reference component](https://webawesome.com/docs/components/pagination/) · [Specification template](component-template.md)
 

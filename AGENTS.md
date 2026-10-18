@@ -13,9 +13,9 @@ UI is an HTML-first UI system in development. This file applies to the entire re
 ## Current implementation
 
 - Library CSS: `css/ui.css`, named `ui` layer and low-specificity native styles.
-- Combined library entry: generated `js/ui.js` from `js/components.js`, `js/popup.js`, `js/enhance.js`. Registers **only `ui-form` and `ui-error-summary`**, plus `UI.enhance(root)` / `UI.destroy(root)` and `UI.popup.attach`. Standard native overlays and experimental Accordion opt in with `data-ui`; `ui-tabs` opts in by element name without a marker and owns its unregistered structural `ui-tablist` child; see `docs/enhancement.md`. The original form/geometry entries remain compatible.
+- Combined library entry: generated `js/ui.js` from `js/components.js`, `js/popup.js`, `js/enhance.js`. Registers **only `ui-form` and `ui-error-summary`**, plus `UI.enhance(root)` / `UI.destroy(root)` and `UI.popup.attach`. Standard native overlays and experimental Accordion opt in with `data-ui`; `ui-tabs` opts in by element name without a marker and owns its unregistered structural `ui-tablist` child; see `docs/enhancement.md`. CSS-only `ui-pagination` scopes a native named navigation list and requires no script. The original form/geometry entries remain compatible.
 - Optional experimental geometry: `js/popup.js`, exposes `UIPopup.attach` for native auto popovers; no registration; also included in `js/ui.js`. See `docs/popup.md`.
-- CSS-only elements: `ui-stack`, `ui-cluster`, `ui-grid`, `ui-sidebar`, `ui-panel`, `ui-field`, `ui-hint`, `ui-error`, `ui-skip-link`.
+- CSS-only elements: `ui-stack`, `ui-cluster`, `ui-grid`, `ui-sidebar`, `ui-panel`, `ui-field`, `ui-hint`, `ui-error`, `ui-skip-link`, `ui-pagination`.
 - Optional brand: `themes/forest.css`, root `data-brand="forest"`.
 - Application/demo code: `js/examples.js`, `js/workspace.js`, `css/workspace.css`, `examples/`. Do not include these as library entry points.
 - Documentation application: `css/site.css`, `js/docs.js`, `js/docs-preview.js`. Markdown guides, catalogue and `docs/recipes.json` generate static HTML through `tools/build_docs.py`; example frames are trusted repository content, not a user-code runner.
