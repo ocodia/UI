@@ -16,15 +16,19 @@ See the [roadmap](../ROADMAP.md) for planned custom elements and interface conve
 
 ## Shared JavaScript entry
 
-Load optional `js/ui.js` once for all currently shipped behavior. It registers the same two form elements and exposes `UI.enhance(root = document)` and `UI.destroy(root = document)`. Both are synchronous/idempotent and return undefined. Roots include their descendants and must belong to the current document. The bundle initializes static marked patterns after parsing; applications explicitly enhance newly inserted overlays and destroy before removal/replacement. Forms retain their native custom-element connection lifecycle.
+Load optional `js/ui.js` once for all currently shipped behavior. It registers the same two form elements and exposes `UI.enhance(root = document)` and `UI.destroy(root = document)`. Both are synchronous/idempotent and return undefined. Roots include their descendants and must belong to the current document. The bundle initializes static marked native overlays and ui-accordion/ui-tabs elements after parsing; applications explicitly enhance newly inserted overlays and destroy before removal/replacement. Forms retain their native custom-element connection lifecycle.
 
-Use `data-ui="dialog"` on an authored open native dialog, or `data-ui="popover|popup"` on one readable inline help container. Hidden native buttons provide the opening/closing relationships. UI installs standard focus/fallback/cleanup before hiding baseline content or revealing actions. `UI.popup.attach` aliases the existing lower-level `UIPopup.attach` geometry API. See [shared UI JavaScript](enhancement.md) for exact markup, lifecycle, limits and no-script fallback. The experimental [Accordion pattern](accordion.md) uses `ui-accordion data-ui="accordion"` around native disclosures for summary navigation, fragment reveal and focus recovery. The experimental [Tabs pattern](tabs.md) uses `ui-tabs` with a named `ui-tablist` around fragment anchors and paired sections, with manual/automatic activation, keyboard navigation, deep links and form-error reveal. No additional custom elements are registered. Other planned widgets gain no placeholder behavior.
+Use `data-ui="dialog"` on an authored open native dialog, or `data-ui="popover|popup"` on one readable inline help container. Hidden native buttons provide the opening/closing relationships. UI installs standard focus/fallback/cleanup before hiding baseline content or revealing actions. `UI.popup.attach` aliases the existing lower-level `UIPopup.attach` geometry API. See [shared UI JavaScript](enhancement.md) for exact markup, lifecycle, limits and no-script fallback. The experimental [Accordion pattern](accordion.md) uses `ui-accordion` around native disclosures for summary navigation, fragment reveal and focus recovery. The experimental [Tabs pattern](tabs.md) uses `ui-tabs` with a named native `nav` around fragment anchors and paired sections, with manual/automatic activation, keyboard navigation, deep links and form-error reveal. No additional custom elements are registered. Other planned widgets gain no placeholder behavior.
 
 `js/components.js` and `js/popup.js` remain smaller compatible entries. Mixed/repeated loading keeps one set of constructors and geometry ownership. Generate the combined file from its sources with `tools/build_ui.py` or the full documentation build; there is no runtime loader or module import.
 
 ## Pagination
 
 The experimental CSS-only [Pagination pattern](pagination.md) uses `ui-pagination` around a named native nav and ul/ol of real links. Author one current-page link with `aria-current="page"`, omit unavailable previous/next links, and keep ellipses as text. No JavaScript, data-ui marker, registration, page-count API or initialization is required. Applications own URLs, totals, loading and focus after updates.
+
+## Stepper / Step
+
+The experimental CSS-only [Stepper pattern](stepper.md) uses `ui-steps` around a native ol; each Step is a li. Author aria-current="step" on the current item, visible completed/error/future status, and real links only for reachable stages. There is no ui-step registration, data marker or initializer. Applications own validation, persistence, progression and task focus.
 
 ## HTML conventions
 

@@ -1,0 +1,16 @@
+<!doctype html>
+<!-- Generated from docs/recipes.json. Trusted repository examples only. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Review stage — UI example</title>
+<link rel="stylesheet" href="../../css/ui.css?v=7bf65cb9afac"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/ui.js?v=7d2504452fc5" defer></script><script src="../../js/docs-preview.js?v=ca0c3101df0e" defer></script>
+<style>body { padding: 1.5rem; padding-inline-end: 3rem; } body > main { max-inline-size: none; inline-size: auto; margin: 0; padding: 0; } h1 { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); } output { display: block; margin-block-start: 1rem; } .table-scroll table { min-inline-size: 38rem; } :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) { display: none; }</style></head>
+<body><main aria-label="Review stage example"><h1>Review stage</h1><p>Static state example: no answers are saved and no workflow is submitted.</p>
+<nav aria-label="Project application progress">
+  <ui-steps>
+    <ol role="list">
+      <li><a href="stepper-0.html#task">Project details</a><small>Completed</small></li>
+      <li aria-current="step"><strong>Review</strong><small>Current step</small></li>
+      <li><span>Confirmation</span><small>Available after the previous stage</small></li>
+    </ol>
+  </ui-steps>
+</nav>
+<section aria-labelledby="task"><h2 id="task" tabindex="-1">Review your project</h2><p>The details stage is reachable for review. Confirmation remains unavailable.</p></section></main></body></html>

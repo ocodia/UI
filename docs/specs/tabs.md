@@ -6,7 +6,7 @@
 
 Use tabs to switch between related views of one topic when readers need one view at a time. Prefer headings and visible sections for comparison, essential instructions or sequential forms. Use ordinary named navigation and real page URLs for site navigation. Tabs are neither a menu nor a stepper.
 
-The `ui-tabs` is a light-DOM ownership boundary around native fragment links and sections. It requires no custom-element registration, `ui-tab` or `ui-tab-panel`. Its structural `ui-tablist` child is also unregistered; the parent owns its enhancement. A wrapper is useful for validating the complete family, coordinating one selected panel and isolating nested instances. Selection and keyboard behavior arrive together through shared-entry enhancement of the wrapper. Manual activation is the default; automatic activation is an explicit alternative for already available content. Routing, persistence, remote loading, closable/reorderable tabs and animation are outside the first slice.
+The `ui-tabs` is a light-DOM ownership boundary around native fragment links and sections. It requires no custom-element registration, `ui-tab` or `ui-tab-panel`. Its native `nav` child provides section navigation before enhancement; the parent installs tab-list behavior only when ready. A wrapper is useful for validating the complete family, coordinating one selected panel and isolating nested instances. Selection and keyboard behavior arrive together through shared-entry enhancement of the wrapper. Manual activation is the default; automatic activation is an explicit alternative for already available content. Routing, persistence, remote loading, closable/reorderable tabs and animation are outside the first slice.
 
 ## Minimal markup
 
@@ -19,10 +19,10 @@ Paths are relative to the repository root. Use `css/ui.css` and `js/ui.js` for e
 <section aria-labelledby="visit-title">
   <h2 id="visit-title">Plan your visit</h2>
   <ui-tabs>
-    <ui-tablist aria-label="Visit information">
+    <nav aria-label="Visit information">
       <a id="visit-arrival-tab" href="#visit-arrival">Getting here</a>
       <a id="visit-equipment-tab" href="#visit-equipment">What to bring</a>
-    </ui-tablist>
+    </nav>
     <section id="visit-arrival" aria-labelledby="visit-arrival-title">
       <h3 id="visit-arrival-title">Getting here</h3>
       <p>Meet at the visitor centre at 09:30.</p>
@@ -36,7 +36,7 @@ Paths are relative to the repository root. Use `css/ui.css` and `js/ui.js` for e
 </section>
 ```
 
-The wrapper has exactly one direct `ui-tablist`, followed by one or more direct `section` panels, with whitespace/comments allowed. The list contains only direct anchors plus whitespace/comments. Each anchor has meaningful visible text, a unique authored ID and a literal nonempty `#fragment` href resolving to exactly one direct panel in this group. Each panel has a unique authored ID and exactly one corresponding anchor; anchor order matches panel order. Resolve decoded IDs without constructing selectors. Duplicate IDs anywhere in the document, malformed encoding, text directives, extra/unpaired panels and cross-group destinations invalidate enhancement. Do not generate IDs in the first slice: authored links must already work without scripts.
+The wrapper has exactly one direct native `nav`, followed by one or more direct `section` panels, with whitespace/comments allowed. The list contains only direct anchors plus whitespace/comments. Each anchor has meaningful visible text, a unique authored ID and a literal nonempty `#fragment` href resolving to exactly one direct panel in this group. Each panel has a unique authored ID and exactly one corresponding anchor; anchor order matches panel order. Resolve decoded IDs without constructing selectors. Duplicate IDs anywhere in the document, malformed encoding, text directives, extra/unpaired panels and cross-group destinations invalidate enhancement. Do not generate IDs in the first slice: authored links must already work without scripts.
 
 The list needs either a nonempty `aria-label` or valid `aria-labelledby` resolving to visible authored text outside the tab anchors. Panels retain their baseline heading associations for cleanup. Nested tabs belong inside a panel, never inside a tab label or the tab list. No interactive descendants, editable content, download attribute or target attribute are allowed on a tab anchor. Rich panel content, including native controls, remains in place.
 
@@ -48,7 +48,7 @@ This experimental contract is implemented in the shared entry.
 | --- | --- |
 | ui-tabs | Block composition and ownership boundary; no implicit role, focus stop, registration or form value. |
 | Enhancement opt-in | The ui-tabs element itself opts in through the shared entry; no data-ui marker is required. Existing data-ui="tabs" remains compatible. Other data-ui values on this wrapper do not configure or disable Tabs. Ordinary linked sections without the wrapper remain native. |
-| ui-tablist | Required direct structural child containing native tab anchors. CSS block layout, no registration or standalone behavior; its ui-tabs parent owns roles and navigation. Legacy div[data-ui-tablist] remains compatible, with its marker value ignored. No separate panel/item markers. |
+| nav | Required direct native child containing fragment anchors. Native named navigation before enhancement and after teardown; UI temporarily applies role=tablist when ready. Legacy ui-tablist and div[data-ui-tablist] remain compatible, with the old marker value ignored. No separate panel/item markers. |
 | data-activation | Wrapper string, manual by default; accepts manual or automatic. Missing, empty or unknown values use manual. No property reflection. Automatic is appropriate only when every panel is available without noticeable latency. |
 | data-orientation | Wrapper string, horizontal by default; accepts horizontal or vertical. Missing, empty or unknown values use horizontal. No property reflection. Layout and key map must agree; no automatic orientation switch at a breakpoint. |
 | href / id | Authored native fragment relationships. UI never rewrites them, navigates to another document or removes these IDs. |

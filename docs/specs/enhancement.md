@@ -2,7 +2,7 @@
 
 ## Identity and purpose
 
-Status: experimental implementation of the shared UI entry point. UI behavior owns initialization and teardown for its existing forms/error summaries and explicitly marked native dialog, popover positioned-help patterns and the experimental native-disclosure [Accordion pattern](../accordion.md). CSS-only layouts and native buttons/fields/unmarked details/progress retain their native behavior. Other planned compound widgets are not registered or initialized.
+Status: experimental implementation of the shared UI entry point. UI behavior owns initialization and teardown for its existing forms/error summaries and explicitly marked native dialog/popover/positioned-help patterns, plus [Accordion](../accordion.md) and [Tabs](../tabs.md) opted into by element name. CSS-only layouts and native buttons/fields/plain unwrapped details/progress retain their native behavior. Other planned compound widgets are not registered or initialized.
 
 The combined classic script is generated as `js/ui.js` from `js/components.js`, `js/popup.js` and `js/enhance.js`. Existing entry points remain usable. Repeated or mixed loading shares the same registered constructors, geometry ownership and high-level runtime. No runtime fetching, modules, package or arbitrary plugin registry is introduced.
 
@@ -40,7 +40,7 @@ Dialogs use a native `dialog open data-ui="dialog"` baseline with an explicit ac
 | data-ui-ready | Library-owned empty readiness marker on enhanced overlays and Accordion groups. It is not open state or a signal for business success. |
 | Events | Keep native toggle/beforetoggle/close/cancel/submit/reset. No new custom event or synthetic input/change. Application close listeners own result display or persistence. |
 
-The bundle initializes once after parsing, or in a microtask when loaded after parsing. Newly inserted marked overlays and Accordion groups require explicit enhance(root); there is no automatic global discovery loop. Existing custom elements keep their native connection lifecycle. destroy suspends them until enhance is explicitly called, including across subsequent detach/reinsert.
+The bundle initializes once after parsing, or in a microtask when loaded after parsing. Newly inserted marked native overlays and ui-accordion/ui-tabs elements require explicit enhance(root); there is no automatic global discovery loop. Existing custom elements keep their native connection lifecycle. destroy suspends them until enhance is explicitly called, including across subsequent detach/reinsert.
 
 ## Interaction and accessibility
 

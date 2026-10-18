@@ -20,7 +20,7 @@
   }
   function focus(node) { if (visible(node)) { node.focus(); return doc.activeElement === node; } return false; }
   // Composition wrappers do not take over a containing overlay’s close/focus actions.
-  const own = (node, surface) => node.closest('[data-ui]:not(ui-accordion[data-ui="accordion"]):not(ui-tabs)') === surface;
+  const own = (node, surface) => node.closest('[data-ui]:not(ui-accordion):not(ui-tabs)') === surface;
   const revealKey = Symbol.for('ui.reveal');
   function write(record, node, name, value) {
     let attributes = record.writes.get(node);
@@ -63,7 +63,7 @@
     if (record?.writes) for (const [node, attrs] of record.writes) for (const [name, state] of attrs) if (node.getAttribute(name) !== state.last) return null;
     const [list, ...panels] = surface.children, tabs = list ? [...list.children] : [];
     const text = node => [...node.childNodes].some(child => child.nodeType === 3 && child.textContent.trim());
-    if (!list?.matches('ui-tablist,div[data-ui-tablist]') || !panels.length || panels.length !== tabs.length || text(surface) || text(list) || panels.some(panel => panel.localName !== 'section')) return null;
+    if (!list?.matches('nav,ui-tablist,div[data-ui-tablist]') || !panels.length || panels.length !== tabs.length || text(surface) || text(list) || panels.some(panel => panel.localName !== 'section')) return null;
     const names = (list.getAttribute('aria-labelledby') || '').trim().split(/\s+/).filter(Boolean);
     const name = list.getAttribute('aria-label')?.trim();
     if (names.length ? names.some(id => { const label = uniqueID(id); return !label?.textContent.trim() || list.contains(label) || unavailable(label); }) : !name) return null;
@@ -182,7 +182,7 @@
   }
   const accordionARIA = ['role', 'aria-expanded', 'aria-controls', 'aria-hidden', 'aria-disabled'];
   function accordionStructure(surface) {
-    if (surface.localName !== 'ui-accordion' || surface.getAttribute('data-ui') !== 'accordion' || !surface.isConnected || surface.ownerDocument !== doc || typeof HTMLDetailsElement !== 'function' || typeof MutationObserver !== 'function' || typeof AbortController !== 'function' || typeof requestAnimationFrame !== 'function' || typeof cancelAnimationFrame !== 'function') return null;
+    if (surface.localName !== 'ui-accordion' || !surface.isConnected || surface.ownerDocument !== doc || typeof HTMLDetailsElement !== 'function' || typeof MutationObserver !== 'function' || typeof AbortController !== 'function' || typeof requestAnimationFrame !== 'function' || typeof cancelAnimationFrame !== 'function') return null;
     const items = [...surface.children], summaries = items.map(item => item.firstElementChild);
     if (!items.length || [...surface.childNodes].some(node => node.nodeType === 3 && node.textContent.trim()) || items.some((item, index) => item.localName !== 'details' || summaries[index]?.localName !== 'summary' || [...item.children].filter(node => node.localName === 'summary').length !== 1 || !summaries[index].textContent.trim() || summaries[index].querySelector('a[href],button,input,select,textarea,[tabindex],[contenteditable]'))) return null;
     if ([surface, ...items, ...summaries].some(node => accordionARIA.some(name => node.hasAttribute(name)))) return null;
@@ -266,8 +266,8 @@
   }
   function structure(surface) {
     if (surface.localName === 'ui-tabs') return tabsStructure(surface);
+    if (surface.localName === 'ui-accordion') return accordionStructure(surface);
     const kind = surface.getAttribute('data-ui'), id = surface.id;
-    if (kind === 'accordion') return accordionStructure(surface);
     if (!['dialog', 'popover', 'popup'].includes(kind) || !id || !surface.isConnected || surface.ownerDocument !== doc || doc.getElementById(id) !== surface || [...doc.querySelectorAll('[id]')].filter(node => node.id === id).length !== 1) return null;
     const modal = kind === 'dialog';
     if (modal && (surface.localName !== 'dialog' || typeof surface.showModal !== 'function' || typeof surface.close !== 'function')) return null;
@@ -406,7 +406,7 @@
   function initialize(root, automatic = false) {
     rootNode(root);
     for (const node of within(root, 'ui-error-summary,ui-form')) if (node.isConnected && (!automatic || !node._uiSuspended)) node._uiResume?.();
-    for (const surface of within(root, '[data-ui],ui-tabs')) {
+    for (const surface of within(root, '[data-ui],ui-tabs,ui-accordion')) {
       if (automatic && stopped.has(surface)) continue;
       stopped.delete(surface);
       const config = structure(surface), previous = records.get(surface);
@@ -419,7 +419,7 @@
   function enhance(root = doc) { initialize(root); }
   function destroy(root = doc) {
     rootNode(root);
-    for (const surface of within(root, '[data-ui],ui-tabs')) stopped.add(surface);
+    for (const surface of within(root, '[data-ui],ui-tabs,ui-accordion')) stopped.add(surface);
     for (const record of deepestRecords()) if (record.surface === root || root.contains(record.surface)) release(record);
     for (const node of within(root, 'ui-form,ui-error-summary').reverse()) node._uiSuspend?.();
   }

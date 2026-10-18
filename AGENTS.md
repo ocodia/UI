@@ -13,9 +13,9 @@ UI is an HTML-first UI system in development. This file applies to the entire re
 ## Current implementation
 
 - Library CSS: `css/ui.css`, named `ui` layer and low-specificity native styles.
-- Combined library entry: generated `js/ui.js` from `js/components.js`, `js/popup.js`, `js/enhance.js`. Registers **only `ui-form` and `ui-error-summary`**, plus `UI.enhance(root)` / `UI.destroy(root)` and `UI.popup.attach`. Standard native overlays and experimental Accordion opt in with `data-ui`; `ui-tabs` opts in by element name without a marker and owns its unregistered structural `ui-tablist` child; see `docs/enhancement.md`. CSS-only `ui-pagination` scopes a native named navigation list and requires no script. The original form/geometry entries remain compatible.
+- Combined library entry: generated `js/ui.js` from `js/components.js`, `js/popup.js`, `js/enhance.js`. Registers **only `ui-form` and `ui-error-summary`**, plus `UI.enhance(root)` / `UI.destroy(root)` and `UI.popup.attach`. Standard native overlays opt in with `data-ui`; `ui-accordion` and `ui-tabs` opt in by element name without redundant markers. Tabs enhance a direct native `nav` followed by sibling `section` panels (legacy `ui-tablist` remains compatible); see `docs/enhancement.md`. CSS-only `ui-pagination` scopes a native named navigation list and requires no script. The original form/geometry entries remain compatible.
 - Optional experimental geometry: `js/popup.js`, exposes `UIPopup.attach` for native auto popovers; no registration; also included in `js/ui.js`. See `docs/popup.md`.
-- CSS-only elements: `ui-stack`, `ui-cluster`, `ui-grid`, `ui-sidebar`, `ui-panel`, `ui-field`, `ui-hint`, `ui-error`, `ui-skip-link`, `ui-pagination`.
+- CSS-only elements: `ui-stack`, `ui-cluster`, `ui-grid`, `ui-sidebar`, `ui-panel`, `ui-field`, `ui-hint`, `ui-error`, `ui-skip-link`, `ui-pagination`, `ui-steps`.
 - Optional brand: `themes/forest.css`, root `data-brand="forest"`.
 - Application/demo code: `js/examples.js`, `js/workspace.js`, `css/workspace.css`, `examples/`. Do not include these as library entry points.
 - Documentation application: `css/site.css`, `js/docs.js`, `js/docs-preview.js`. Markdown guides, catalogue and `docs/recipes.json` generate static HTML through `tools/build_docs.py`; example frames are trusted repository content, not a user-code runner.
@@ -26,6 +26,8 @@ UI is an HTML-first UI system in development. This file applies to the entire re
 Use native buttons, links, inputs, selects, options, details and dialogs wherever their semantics fit. Keep all components in **light DOM**. Do not use Shadow DOM. Preserve native form value ownership, labels, names, validation eligibility, submitters and reset. No placeholder custom-element registrations, pretend APIs or roles without their complete keyboard/focus behavior.
 
 Native/foundation catalogue status describes available building blocks, not full Web Awesome parity or an accessibility certification. For planned names, write a specification before implementation. Follow `docs/component-template.md` and link the specification from the catalogue.
+
+Behavioral ui- wrappers opt in by element name; do not require a redundant data-ui type marker. Native patterns use explicit data-ui markers where UI ownership is optional. CSS-only wrappers need no initializer.
 
 Keep ordinary markup class-free where practical. Prefer `ui-` wrappers for composition and CSS variables for geometry/themes. Use meaningful defaults; no JSON configuration for ordinary content. Existing class alternatives remain compatible. Reference spacing/type/radius scales and semantic state/focus tokens exist; use `docs/theming.md` for their names and alias rules. Native button `data-variant` and supported native control `data-size` are implemented; see `docs/controls.md` for scope, defaults and tokens. CSS-only `data-density="comfortable|compact"` scopes are implemented; use `docs/density.md` for exact consumers, nesting and override rules. Shared feedback components remain proposals.
 

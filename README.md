@@ -101,8 +101,10 @@ After changing guides, live recipe sources, site generators or `js/docs-preview.
 
 [MIT](LICENSE). Reference systems inform scope and interaction design; UI uses its own implementation, vocabulary, and documentation.
 
-The experimental [Accordion pattern](docs/accordion.md) composes native `details`/`summary` inside `ui-accordion data-ui="accordion"`. The combined entry adds summary navigation, fragment reveal and focus recovery; expansion and optional single-open name groups remain native.
+The experimental [Accordion pattern](docs/accordion.md) composes native `details`/`summary` inside `ui-accordion`. The combined entry adds summary navigation, fragment reveal and focus recovery; expansion and optional single-open name groups remain native.
 
-The experimental [Tabs pattern](docs/tabs.md) enhances real fragment links and readable sections inside `ui-tabs` with a named `ui-tablist`, with manual activation by default, optional automatic activation, nested error reveal and scoped cleanup.
+The experimental [Tabs pattern](docs/tabs.md) enhances real fragment links and readable sections inside `ui-tabs` with a named native `nav`, with manual activation by default, optional automatic activation, nested error reveal and scoped cleanup.
 
 The experimental [Pagination pattern](docs/pagination.md) styles a native named navigation list inside `ui-pagination`. Real URLs work without JavaScript; applications own loading and page counts.
+
+The experimental [Stepper / Step pattern](docs/stepper.md) composes native ordered task stages inside `ui-steps`, with current-step state and visible outcome text. Applications own progression and validation.

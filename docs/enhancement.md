@@ -7,7 +7,7 @@ Load `js/ui.js` once for the behaviors UI currently ships. It includes forms/err
 <script src="js/ui.js" defer></script>
 ```
 
-The combined file registers only the existing `ui-form` and `ui-error-summary` elements. Native overlays and Accordion use explicit `data-ui` markers. The `ui-tabs` element itself opts into Tabs without a marker; menus, tooltips and other planned widgets remain unavailable. The shared API and overlay convenience patterns are experimental; existing component APIs retain their contracts.
+The combined file registers only the existing `ui-form` and `ui-error-summary` elements. Native overlays use explicit `data-ui` markers. The `ui-accordion` and `ui-tabs` elements opt in by element name without a marker; menus, tooltips and other planned widgets remain unavailable. CSS-only ui- wrappers need no initializer. Keep data attributes for actual configuration, relationships and runtime state rather than repeating a custom element name. The shared API and overlay convenience patterns are experimental; existing component APIs retain their contracts.
 
 ## What UI initializes
 
@@ -17,13 +17,14 @@ The combined file registers only the existing `ui-form` and `ui-error-summary` e
 | Modal information/task | dialog open data-ui="dialog", named title, initial focus and matching hidden opener | Standard setup, native modal opening/close, inline recovery and cleanup |
 | Supplemental help | One inline container with data-ui="popover"; native popovertarget buttons | Capability checks, native auto-popover setup, opener focus and inline recovery |
 | Anchored supplemental help | Same structure with data-ui="popup" | Standard popover setup plus experimental Popup geometry |
-| Accordion | ui-accordion data-ui="accordion" around direct native details/summary items | Optional summary navigation, fragment reveal and collapsed-content focus recovery; expansion stays native |
-| Tabs | ui-tabs with a named direct ui-tablist, fragment anchors and paired sections | Selection, keyboard navigation, coordinated fragment/form-error reveal and readable teardown; see [Tabs](tabs.md) |
+| Accordion | ui-accordion around direct native details/summary items | Optional summary navigation, fragment reveal and collapsed-content focus recovery; expansion stays native |
+| Tabs | ui-tabs with a named direct native nav, fragment anchors and paired sections | Selection, keyboard navigation, coordinated fragment/form-error reveal and readable teardown; see [Tabs](tabs.md) |
 | Pagination | ui-pagination around named native nav/list/links | CSS/native navigation only; no initializer, teardown or library requests; see [Pagination](pagination.md) |
-| Native controls, unmarked details, progress and CSS-only layouts | Existing native/UI markup | Native/CSS behavior; no new initialization or roles |
+| Stepper / Step | ui-steps around a native ol of li stages | CSS/native text and reachable links only; application owns progression and validation; see [Stepper](stepper.md) |
+| Native controls, plain details outside ui-accordion, progress and CSS-only layouts | Existing native/UI markup | Native/CSS behavior; no new initialization or roles |
 | Application tasks | Application scripts | Requests, storage, routing, permission checks, async ordering and business feedback |
 
-Unknown data-ui values on native patterns stay unenhanced. The ui-tabs element is discovered by name and ignores data-ui; the earlier data-ui="tabs" marker remains compatible. Unmarked dialogs/popovers are left to their existing owner. The original manual recipes remain available for advanced integration and compatibility checks; use the declarative examples below for ordinary authoring.
+Unknown data-ui values on native patterns stay unenhanced. The ui-accordion and ui-tabs elements are discovered by name and ignore data-ui; earlier data-ui="accordion" and data-ui="tabs" markers remain compatible. Unmarked dialogs/popovers are left to their existing owner. The original manual recipes remain available for advanced integration and compatibility checks; use the declarative examples below for ordinary authoring.
 
 ## Single-copy help
 
@@ -64,7 +65,7 @@ Escape and background inertness stay native; no duplicate focus trap or document
 
 ## Dynamic applications
 
-The bundle initializes once after parsing. Newly connected ui-form/ui-error-summary elements continue using their native custom-element lifecycle. Newly inserted marked overlays/Accordion groups and ui-tabs elements require an explicit scoped call after insertion:
+The bundle initializes once after parsing. Newly connected ui-form/ui-error-summary elements continue using their native custom-element lifecycle. Newly inserted marked native overlays and ui-accordion/ui-tabs elements require an explicit scoped call after insertion:
 
 ```js
 container.append(newSection);
@@ -77,7 +78,7 @@ newSection.remove();
 
 | API | Contract |
 | --- | --- |
-| UI.enhance(root = document) | Synchronous, idempotent; returns undefined. Includes the root and descendants. Resumes/refreshes forms and summaries and installs/reconciles supported marked surfaces and ui-tabs elements. Unchanged active patterns remain open. |
+| UI.enhance(root = document) | Synchronous, idempotent; returns undefined. Includes the root and descendants. Resumes/refreshes forms and summaries and installs/reconciles supported marked native surfaces and ui-accordion/ui-tabs elements. Unchanged active patterns remain open. |
 | UI.destroy(root = document) | Synchronous, idempotent; returns undefined. Releases owned overlays and Accordion/Tabs groups deepest first, restores readable presentation and suspends contained form/summary automatic behavior. Answers remain on their native controls. |
 | UI.popup.attach(options) | The same lower-level geometry adapter as UIPopup.attach; see the complete Popup contract. |
 

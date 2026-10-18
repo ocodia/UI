@@ -8,6 +8,15 @@ async function runAccordionChecks(load, frame) {
   let group=doc.querySelector('ui-accordion'), items=[...group.children], summaries=items.map(item=>item.firstElementChild);
   check(group.hasAttribute('data-ui-ready') && win.getComputedStyle(group).display==='block' && items[0].open && !items[1].open,'Automatic setup preserves native expansion and block composition.');
   check(!win.customElements.get('ui-accordion') && !win.customElements.get('ui-accordion-item') && !group.querySelector('[aria-expanded],[aria-controls],[role],[tabindex]'),'No registration, duplicate ARIA or roving tabindex.');
+  check(!group.hasAttribute('data-ui'),'Element name alone opts into Accordion.');
+  for(const marker of ['accordion','unknown']) {
+    group.setAttribute('data-ui',marker);await settle();win.UI.enhance(group);
+    check(group.hasAttribute('data-ui-ready'),'Legacy or unknown markers do not override element opt-in: '+marker);
+  }
+  group.removeAttribute('data-ui');await settle();
+  check(group.hasAttribute('data-ui-ready'),'Removing a redundant marker preserves ownership.');
+  const plain=doc.createElement('details');plain.innerHTML='<summary>Plain disclosure</summary><p>Native content</p>';group.after(plain);win.UI.enhance(plain);
+  check(!plain.hasAttribute('data-ui-ready') && !key(plain.firstElementChild,'ArrowDown'),'Plain details remain outside Accordion ownership.');plain.remove();
   summaries[0].focus();
   for(const [value,index] of [['ArrowDown',1],['End',2],['ArrowDown',0],['ArrowUp',2],['Home',0]]) check(key(doc.activeElement,value) && doc.activeElement===summaries[index],value+': DOM-order navigation and wrap.');
   check(items[0].open && !items[1].open && !items[2].open,'Navigation leaves expansion unchanged.');
@@ -30,7 +39,7 @@ async function runAccordionChecks(load, frame) {
   const foreign=doc.implementation.createHTMLDocument('Other');foreign.body.append(foreign.adoptNode(group));await settle();check(!group.hasAttribute('data-ui-ready'),'Adoption releases ownership.');doc.querySelector('main').append(doc.adoptNode(group));win.UI.enhance(group);
   const invalid=doc.createElement('div');doc.querySelector('main').append(invalid);
   for(const markup of ['', '<details><p>No summary</p></details>', '<details><summary>One</summary><summary>Two</summary></details>', '<details name=""><summary>Empty name</summary></details>', '<details name="mixed"><summary>One</summary></details><details><summary>Two</summary></details>', '<details role="tab"><summary>Conflict</summary></details>', '<details><summary><button type="button">Action</button></summary></details>']) {
-    invalid.innerHTML='<ui-accordion data-ui="accordion">'+markup+'</ui-accordion>';win.UI.enhance(invalid);check(!invalid.firstElementChild.hasAttribute('data-ui-ready'),'Invalid/incomplete markup retains baseline.');
+    invalid.innerHTML='<ui-accordion>'+markup+'</ui-accordion>';win.UI.enhance(invalid);check(!invalid.firstElementChild.hasAttribute('data-ui-ready'),'Invalid/incomplete markup retains baseline.');
   }invalid.remove();
   win=await load('../docs/previews/accordion-1.html');doc=win.document;group=doc.querySelector('ui-accordion');items=[...group.children];check(group.hasAttribute('data-ui-ready') && items.every(item=>!item.open),'Exclusive group may start all closed.');
   items[0].open=true;items[1].open=true;await settle();check('name' in win.HTMLDetailsElement.prototype ? !items[0].open && items[1].open : items.every(item=>item.open),'Native grouping or multiple-open fallback owns expansion.');
@@ -58,10 +67,13 @@ async function runAccordionChecks(load, frame) {
   target.scrollIntoView=nativeScroll;
   // A disclosure wrapper inside a modal must not steal its parent's native close ownership.
   win=await load('../docs/previews/enhancement-1.html');doc=win.document;
-  const dialog=doc.querySelector('dialog'), close=dialog.querySelector('button'), wrapper=doc.createElement('ui-accordion');wrapper.dataset.ui='accordion';wrapper.innerHTML='<details open><summary>Task actions</summary></details>';close.before(wrapper);wrapper.firstElementChild.append(close);win.UI.enhance(dialog);
+  const dialog=doc.querySelector('dialog'), close=dialog.querySelector('button'), wrapper=doc.createElement('ui-accordion');wrapper.innerHTML='<details open><summary>Task actions</summary></details>';close.before(wrapper);wrapper.firstElementChild.append(close);win.UI.enhance(dialog);
   doc.querySelector('#enhance-open').click();await settle();close.click();await settle();check(!dialog.open && wrapper.hasAttribute('data-ui-ready'),'Accordion content keeps parent dialog close ownership.');
   win=await load('../docs/previews/accordion-0.html#equipment');doc=win.document;await settle();check(doc.querySelectorAll('details')[1].open,'Initial URL fragment is revealed during bootstrap.');
   for(const setup of ['window.MutationObserver=undefined;','window.AbortController=undefined;','window.requestAnimationFrame=undefined;']) {win=await load('../docs/previews/accordion-0.html',false,setup);doc=win.document;check(!doc.querySelector('ui-accordion').hasAttribute('data-ui-ready') && doc.querySelector('details').open,'Missing enhancement capability preserves native baseline.');}
+  win=await load('../docs/previews/accordion-0.html',false,`document.addEventListener('DOMContentLoaded',()=>UI.destroy(document),{once:true});`);doc=win.document;group=doc.querySelector('ui-accordion');
+  check(!group.hasAttribute('data-ui-ready'),'Destroy before automatic setup stops a marker-free group.');win.UI.enhance(group);
+  check(group.hasAttribute('data-ui-ready'),'Explicit enhance resumes a stopped marker-free group.');
   frame.style.inlineSize='320px';
   for(const nojs of [false,true]) {
     win=await load('../docs/previews/accordion-0.html',nojs);doc=win.document;
@@ -74,9 +86,9 @@ async function runAccordionChecks(load, frame) {
 document.addEventListener('DOMContentLoaded',()=>{
   const button=document.querySelector('#run'),frame=document.querySelector('#accordion-frame');if(!button||!frame)return;
   const load=async(route,nojs=false,setup='')=>{
-    frame.removeAttribute('srcdoc');if(nojs)frame.setAttribute('sandbox','allow-same-origin');else frame.removeAttribute('sandbox');
+    if(nojs)frame.setAttribute('sandbox','allow-same-origin');else frame.removeAttribute('sandbox');
     if(setup){const html=await(await fetch(route)).text();await new Promise(resolve=>{frame.onload=resolve;frame.srcdoc=html.replace('<head>',`<head><base href="${new URL(route,location.href).href}"><script>${setup}<\/script>`);});}
-    else await new Promise(resolve=>{frame.onload=resolve;frame.src=route;});return frame.contentWindow;
+    else await new Promise(resolve=>{frame.onload=resolve;const url=new URL(route,location.href);url.searchParams.set('ui-test',Date.now());frame.src=url.href;frame.removeAttribute('srcdoc');});return frame.contentWindow;
   };
   button.addEventListener('click',async()=>{button.disabled=true;document.querySelector('#assertions').replaceChildren();try{const passed=await runAccordionChecks(load,frame);document.querySelector('#results').textContent='PASS: '+passed.length+' Accordion checks. '+frame.contentWindow.navigator.userAgent;for(const message of passed){const item=document.createElement('li');item.textContent=message;document.querySelector('#assertions').append(item);}}catch(error){document.querySelector('#results').textContent='FAIL: '+error.message;}finally{button.disabled=false;frame.style.inlineSize='100%';document.querySelector('#results-title').focus();}});
 });

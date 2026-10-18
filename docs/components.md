@@ -481,7 +481,7 @@ Use native normalized form values; locale formatting stays with the browser init
 
 **Foundation · Phase 2.** UI route: `ui-accordion with native details`.
 
-Native disclosures own expansion and optional name-group exclusivity. Opt-in shared enhancement adds summary navigation, fragment reveal and collapsed-content focus recovery.
+Native disclosures own expansion and optional name-group exclusivity. Shared enhancement opts in by the ui-accordion element name without a data-ui marker and adds summary navigation, fragment reveal and collapsed-content focus recovery.
 
 **Acceptance work:** Native summary activation; optional summary navigation; native name-group boundaries; deep-link and form-error reveal; collapsed-content focus; nested and dynamic teardown. See the proposal's evidence matrix.
 
@@ -682,29 +682,37 @@ CSS-only composition of a named native navigation list and real page URLs. Nativ
 
 ### Stepper
 
-**Planned · Phase 2.** UI route: `ui-steps around ordered list (proposed)`.
+**Foundation · Phase 2.** UI route: `ui-steps around a native ordered list`.
 
-Show process progress; link only to reachable steps. This is not a tablist.
+CSS-only ordered task stages. Author current location with aria-current=step and completed/error/future status as visible text. Real links only for reachable stages; applications own validation, persistence, progression and focus. See docs/stepper.md.
 
-**Acceptance work:** Current step via aria-current=step, completed/error text, linear workflow, and narrow-screen reading order.
+**Acceptance work:** Verify native order/numbering, current/completed/error text, reachable real URLs, no-script task-heading navigation, native form ownership, nested lists and narrow RTL/zoomed-text layouts. Dated evidence and open platform release work are in ACCESSIBILITY.md.
+
+[Stepper guide](stepper.md) · [Specification](specs/stepper.md) · [Focused checks](../tests/stepper.html). Experimental; manual/platform evidence remains open.
+
+[Component specification](specs/stepper.md)
 
 [Reference component](https://webawesome.com/docs/components/stepper/) · [Specification template](component-template.md)
 
 ### Step
 
-**Planned · Phase 2.** UI route: `li inside ui-steps (proposed)`.
+**Foundation · Phase 2.** UI route: `native li inside ui-steps > ol`.
 
-Each step supplies a visible name and textual state; inactive destinations are not fake disabled links.
+CSS-only ordered task stages. Author current location with aria-current=step and completed/error/future status as visible text. Real links only for reachable stages; applications own validation, persistence, progression and focus. See docs/stepper.md.
 
-**Acceptance work:** Meaningful state announcement, allowed navigation, and validation errors on return.
+**Acceptance work:** Verify native order/numbering, current/completed/error text, reachable real URLs, no-script task-heading navigation, native form ownership, nested lists and narrow RTL/zoomed-text layouts. Dated evidence and open platform release work are in ACCESSIBILITY.md.
+
+[Stepper guide](stepper.md) · [Specification](specs/stepper.md) · [Focused checks](../tests/stepper.html). Experimental; manual/platform evidence remains open.
+
+[Component specification](specs/stepper.md)
 
 [Reference component](https://webawesome.com/docs/components/step/) · [Specification template](component-template.md)
 
 ### Tab Group
 
-**Foundation · Phase 2.** UI route: `ui-tabs and ui-tablist around links and sections`.
+**Foundation · Phase 2.** UI route: `ui-tabs around native nav and section panels`.
 
-Experimental ui-tabs enhancement of linked sections with a named ui-tablist through js/ui.js, opted into by element name without a data-ui marker. Manual activation by default, optional eager automatic activation and horizontal/vertical navigation; see docs/tabs.md.
+Experimental ui-tabs enhancement of linked sections with a named native nav and sibling section panels through js/ui.js, opted into by element name without a data-ui marker. Manual activation by default, optional eager automatic activation and horizontal/vertical navigation; see docs/tabs.md.
 
 **Acceptance work:** Focused Tabs checks cover selection, keyboard ownership, fragments, nested form-error reveal, lifecycle and reflow. Real platform, assistive-technology, print and mobile/touch release evidence remains open; see ACCESSIBILITY.md.
 

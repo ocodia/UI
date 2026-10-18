@@ -58,3 +58,5 @@ The experimental [Accordion guide](accordion.md) covers native disclosure groups
 The experimental [Tabs guide](tabs.md) covers linked sections, keyboard activation, nested fragment/form-error reveal and scoped cleanup.
 
 The [Pagination guide](pagination.md) covers CSS-only native page links, boundaries, real static-page examples and application focus/loading ownership.
+
+The [Stepper guide](stepper.md) covers CSS-only ordered task stages, current/completed/error text, reachable links and application progression ownership.

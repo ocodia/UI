@@ -28,6 +28,20 @@ class DocumentationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls): cls.pages = generate()
 
+    def test_custom_element_recipes_do_not_repeat_type_markers(self):
+        recipes = json.loads((ROOT/'docs/recipes.json').read_text())
+        def visit(value):
+            if isinstance(value, dict):
+                for key, child in value.items():
+                    if key == 'code' and isinstance(child, str):
+                        for tag, attrs in Content(child).tags:
+                            if tag.startswith('ui-'):
+                                self.assertNotIn('data-ui', attrs, tag)
+                    else: visit(child)
+            elif isinstance(value, list):
+                for child in value: visit(child)
+        visit(recipes)
+
     def test_every_catalogue_entry_has_a_page_and_no_planned_demo(self):
         data = json.loads((ROOT/'docs/components.json').read_text())
         for item in data['components']+data['uiComponents']:

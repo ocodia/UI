@@ -58,12 +58,17 @@ async function runDocumentationChecks(load, frame) {
   win = await load('../docs/components/popup.html'); doc=win.document;
   check(doc.querySelector('a[href="../specs/popup.html"]') && doc.querySelector('a[href="../specs/popup.md"]') && doc.querySelector('[data-example]'), 'Experimental Popup links its specification, source and actual anchored-help example.');
   win = await load('../docs/components/accordion.html'); doc=win.document;
+  check([...doc.querySelectorAll('pre code')].every(code=>!code.textContent.includes('data-ui="accordion"')), 'Accordion source examples opt in by element name without redundant markers.');
   check(doc.querySelectorAll('[data-example]').length === 3 && doc.querySelector('a[href="../specs/accordion.html"]') && doc.querySelector('a[href="../accordion.html"]') && doc.querySelector('.component-meta').textContent.includes('Foundation'), 'Experimental Accordion exposes three runnable recipes, specification and implemented guide.');
   win = await load('../docs/components/tab-group.html'); doc=win.document;
   check(doc.querySelectorAll('[data-example]').length === 3 && doc.querySelector('a[href="../specs/tabs.html"]') && doc.querySelector('a[href="../tabs.html"]') && doc.querySelector('.component-meta').textContent.includes('Foundation'), 'Experimental Tabs links three runnable recipes, specification and implemented guide.');
-  check([...doc.querySelectorAll('[data-example] details code')].every(code => code.textContent.includes('<ui-tablist') && !code.textContent.includes('data-ui-tablist')), 'Tabs source drawers use the named structural element without the legacy list marker.');
+  check([...doc.querySelectorAll('[data-example] details code')].every(code => code.textContent.includes('<nav ') && !code.textContent.includes('<ui-tablist') && !code.textContent.includes('data-ui-tablist')), 'Tabs source drawers use native nav/section markup without a custom tab-list element or marker.');
   win = await load('../docs/components/pagination.html'); doc=win.document;
   check(doc.querySelectorAll('[data-example]').length === 7 && doc.querySelector('a[href="../pagination.html"]') && doc.querySelector('a[href="../specs/pagination.html"]') && [...doc.querySelectorAll('[data-example] details code')].every(code => code.textContent.includes('ui-pagination') && code.textContent.includes('css/ui.css') && !code.textContent.includes('js/ui.js')), 'Pagination links seven real-page/state recipes, its guide and specification; copyable sources need CSS only.');
+  win = await load('../docs/components/stepper.html'); doc=win.document;
+  check(doc.querySelectorAll('[data-example]').length === 6 && doc.querySelector('a[href="../stepper.html"]') && doc.querySelector('a[href="../specs/stepper.html"]') && [...doc.querySelectorAll('[data-example] details code')].every(code => code.textContent.includes('ui-steps') && code.textContent.includes('css/ui.css') && !code.textContent.includes('js/ui.js')), 'Stepper exposes six CSS-only state snapshots, the guide and specification.');
+  win = await load('../docs/components/step.html'); doc=win.document;
+  check(doc.querySelectorAll('[data-example]').length === 2 && doc.querySelector('a[href="../stepper.html"]'), 'Native Step companion shares the implemented family guide and state examples.');
   win = await load('../docs/specs/popup.html'); doc=win.document;
   check(doc.querySelector('link[href="../../css/site.css"]') && doc.querySelector('a[href="../lifecycle.html"]') && doc.querySelector('.doc-source a[href="popup.md"]') && !doc.querySelector('.docs-sidebar a[href="../components/popup.html"][aria-current]'), 'Nested specifications retain site assets, shared contracts and source links without marking a different page current.');
   win = await load('../docs/enhancement.html'); doc=win.document;
@@ -83,7 +88,7 @@ async function runDocumentationChecks(load, frame) {
   const range=doc.querySelector('input'); range.stepUp(); range.form.requestSubmit();
   check(range.value==='55' && doc.querySelector('#preview-result').textContent.includes('volume=55'), 'Range preview retains native stepping and numeric serialization.');
   frame.style.inlineSize='320px';
-  for (const route of ['../index.html','../docs/index.html','../docs/controls.html','../docs/forms.html','../docs/native-states.html','../docs/components/checkbox.html','../docs/components/combobox.html','../docs/lifecycle.html','../docs/specs/popup.html','../docs/popup.html','../docs/enhancement.html','../docs/accordion.html','../docs/components/accordion.html','../docs/specs/accordion.html','../docs/tabs.html','../docs/components/tab-group.html','../docs/specs/tabs.html','../docs/pagination.html','../docs/components/pagination.html','../docs/specs/pagination.html']) {
+  for (const route of ['../index.html','../docs/index.html','../docs/controls.html','../docs/forms.html','../docs/native-states.html','../docs/components/checkbox.html','../docs/components/combobox.html','../docs/lifecycle.html','../docs/specs/popup.html','../docs/popup.html','../docs/enhancement.html','../docs/accordion.html','../docs/components/accordion.html','../docs/specs/accordion.html','../docs/tabs.html','../docs/components/tab-group.html','../docs/specs/tabs.html','../docs/pagination.html','../docs/components/pagination.html','../docs/specs/pagination.html','../docs/stepper.html','../docs/components/stepper.html','../docs/components/step.html','../docs/specs/stepper.html']) {
     win=await load(route,true); doc=win.document;
     for (const dir of ['ltr','rtl']) {
       doc.documentElement.dir=dir;

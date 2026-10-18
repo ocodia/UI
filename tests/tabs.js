@@ -15,7 +15,7 @@ async function runTabsChecks(load, frame) {
   check(group.hasAttribute('data-ui-ready') && selected(0), 'Legacy data-ui="tabs" markup remains compatible.');
   group.removeAttribute('data-ui'); await settle();
   check(group.hasAttribute('data-ui-ready') && selected(0), 'Removing the redundant marker leaves enhancement intact.');
-  check(list.localName === 'ui-tablist' && !list.hasAttribute('data-ui-tablist'), 'The named structural list needs no marker.');
+  check(list.localName === 'nav' && !list.hasAttribute('data-ui-tablist'), 'Tabs enhance native navigation without a structural marker.');
   check(!win.customElements.get('ui-tabs') && !win.customElements.get('ui-tablist') && !win.customElements.get('ui-tab') && !win.customElements.get('ui-tab-panel'), 'No new custom-element registration.');
   win.UI.destroy(group);
   const legacyList = doc.createElement('div'); legacyList.setAttribute('data-ui-tablist', ''); legacyList.setAttribute('aria-label', list.getAttribute('aria-label')); legacyList.append(...list.childNodes); list.replaceWith(legacyList); list = legacyList; win.UI.enhance(group);
@@ -25,6 +25,11 @@ async function runTabsChecks(load, frame) {
   check(group.hasAttribute('data-ui-ready') && list.getAttribute('role') === 'tablist' && selected(0), 'Replacing the legacy list with ui-tablist preserves native anchors and supports explicit enhancement.');
   const standalone = doc.createElement('ui-tablist'); standalone.innerHTML = '<a href="#visit-arrival">Getting here</a>'; doc.querySelector('main').append(standalone); win.UI.enhance(standalone);
   check(!standalone.hasAttribute('role') && !standalone.hasAttribute('data-ui-ready') && !standalone.firstElementChild.hasAttribute('role') && win.getComputedStyle(standalone).display === 'block', 'Standalone ui-tablist is readable block composition without invented widget behavior.'); standalone.remove();
+  win.UI.destroy(group);
+  const nativeNav = doc.createElement('nav'); nativeNav.setAttribute('aria-label', list.getAttribute('aria-label')); nativeNav.append(...list.childNodes); list.replaceWith(nativeNav); list = nativeNav; win.UI.enhance(group);
+  check(group.hasAttribute('data-ui-ready') && list.getAttribute('role') === 'tablist' && selected(0), 'Native nav replaces the legacy structures without changing anchor ownership.');
+  win.UI.destroy(group);
+  check(list.localName === 'nav' && !list.hasAttribute('role') && list.getAttribute('aria-label') === 'Visit information' && panels.every(panel => !panel.hidden), 'Teardown restores the named native navigation landmark and readable sections.'); win.UI.enhance(group);
   check(list.getAttribute('role') === 'tablist' && tabs.every((tab, i) => tab.getAttribute('role') === 'tab' && tab.getAttribute('aria-controls') === panels[i].id && panels[i].getAttribute('aria-labelledby') === tab.id && panels[i].tabIndex === 0), 'Complete tab/panel relationships and panel focus stops.');
   let events = []; group.addEventListener('ui-select', event => events.push(event));
   tabs[0].focus();
@@ -108,7 +113,7 @@ async function runTabsChecks(load, frame) {
   // A wrapper without a data-ui marker still preserves its containing dialog's actions.
   win = await load('../docs/previews/enhancement-1.html'); doc = win.document;
   const modal = doc.querySelector('dialog'), close = modal.querySelector('button'), wrapper = doc.createElement('ui-tabs');
-  wrapper.innerHTML = '<ui-tablist aria-label="Task views"><a id="task-actions-tab" href="#task-actions">Actions</a><a id="task-info-tab" href="#task-info">Information</a></ui-tablist><section id="task-actions"><h3>Actions</h3></section><section id="task-info"><h3>Information</h3><p>More task information.</p></section>';
+  wrapper.innerHTML = '<nav aria-label="Task views"><a id="task-actions-tab" href="#task-actions">Actions</a><a id="task-info-tab" href="#task-info">Information</a></nav><section id="task-actions"><h3>Actions</h3></section><section id="task-info"><h3>Information</h3><p>More task information.</p></section>';
   close.before(wrapper); wrapper.children[1].append(close); win.UI.enhance(modal); doc.querySelector('#enhance-open').click(); close.click();
   check(wrapper.hasAttribute('data-ui-ready') && !modal.open, 'A marker-free Tabs wrapper preserves containing dialog close ownership.');
   await open('../docs/previews/tabs-0.html', false, 'document.addEventListener("DOMContentLoaded",()=>UI.destroy(document.querySelector("ui-tabs")),{once:true});');
@@ -119,6 +124,10 @@ async function runTabsChecks(load, frame) {
   frame.style.inlineSize = '320px';
   for (const nojs of [false, true]) {
     await open('../docs/previews/tabs-0.html', nojs);
+    if (nojs) {
+      check(list.localName === 'nav' && !list.hasAttribute('role') && list.getAttribute('aria-label') === 'Visit information', 'Script-blocked baseline retains named native navigation.');
+      tabs[1].click(); await settle(); check(win.location.hash === '#visit-equipment' && panels.every(panel => !panel.hidden), 'Baseline fragment links navigate to readable sections without JavaScript.');
+    }
     for (const brand of ['', 'forest']) for (const theme of ['light', 'dark']) for (const dir of ['ltr', 'rtl']) {
       doc.documentElement.dataset.brand = brand; doc.documentElement.dataset.theme = theme; doc.documentElement.dir = dir; doc.documentElement.style.fontSize = '200%'; doc.body.style.cssText = 'line-height:1.5;letter-spacing:.12em;word-spacing:.16em'; await settle();
       check(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth + 1 && (nojs ? panels.every(panel => !panel.hidden) : selected(0)), (nojs ? 'No script' : 'Enhanced') + '/' + (brand || 'default') + '/' + theme + '/' + dir + ': 320px enlarged-text reflow.');

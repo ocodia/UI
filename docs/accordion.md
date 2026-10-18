@@ -5,7 +5,7 @@ Accordion is experimental native-disclosure composition. Each item stays a `deta
 Load `css/ui.css` and the optional combined `js/ui.js` entry. Opt in with this light-DOM markup:
 
 ```html
-<ui-accordion data-ui="accordion">
+<ui-accordion>
   <details open>
     <summary>Getting here</summary>
     <p>Meet at the visitor centre at 09:30.</p>
@@ -37,10 +37,10 @@ Closing content preserves labels, names, values, FormData, validation, submitter
 
 ## Lifecycle and compatibility
 
-Static marked groups initialize after parsing. Use `UI.enhance(group)` after inserting a group or changing direct items, summaries, names or the marker. The shared document observer invalidates stale ownership after structural/role/name changes and detects outside name collisions; it does not initialize new items. Ordinary open/content changes preserve ownership. Nested groups only own their direct items.
+Static ui-accordion groups initialize after parsing. Use `UI.enhance(group)` after inserting a group or changing direct items, summaries or names. The shared document observer invalidates stale ownership after structural/role/name changes and detects outside name collisions; it does not initialize new items. Ordinary open/content changes preserve ownership. Nested groups only own their direct items.
 
 `UI.destroy(group)` releases keyboard/toggle listeners, fragment subscriptions and pending scrolling for contained groups, deepest first. It removes owned readiness conditionally and preserves current expansion, focus, answers and later application writes. Removal/adoption releases ownership; reinsertion needs explicit enhance in the supported document. Shared fragment listeners exist only while needed. No IDs, content, controls, names or tabindex are generated.
 
-Unmarked disclosures, original form-only entry points and both existing registrations remain compatible. No migration is required. Use the combined entry for this experimental opt-in enhancement. Print retains native disclosure behavior; provide complete printed instructions outside disclosures when required. Expand-all, find-in-page overrides, animation, persistence and routing are outside this slice.
+Plain disclosures outside ui-accordion, original form-only entry points and both existing registrations remain compatible. The element name opts in; the earlier data-ui="accordion" attribute remains compatible but is unnecessary and ignored. Use the combined entry for this experimental opt-in enhancement. Print retains native disclosure behavior; provide complete printed instructions outside disclosures when required. Expand-all, find-in-page overrides, animation, persistence and routing are outside this slice.
 
 The [specification](specs/accordion.md) gives the complete acceptance contract. Run the [focused checks](../tests/accordion.html) and read [dated evidence and remaining checks](../ACCESSIBILITY.md). Experimental status does not establish accessibility conformance.
