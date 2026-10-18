@@ -229,7 +229,7 @@
       color: var(--ui-heading);
       font-weight: var(--ui-font-weight-bold);
       line-height: var(--ui-line-height-heading);
-      margin-block: 1.5em .6em;
+      margin-block: 0em .6em;
       text-wrap: balance;
     }
     :where(h1) { font-size: var(--ui-font-size-heading-1); }
@@ -424,6 +424,11 @@
     :where(fieldset) { min-inline-size: 0; padding: var(--_ui-density-fieldset-padding, 1rem); border: 1px solid var(--ui-border); border-radius: var(--ui-radius); }
     :where(legend) { padding-inline: .4rem; font-weight: var(--ui-font-weight-bold); }
     /* Menu items follow control defaults so native buttons and anchors share one treatment. */
+    :where(ui-menu[data-ui-ready] > button > ui-icon[name="chevron-down"]) { transition: transform 120ms ease; }
+    :where(ui-menu[data-ui-ready] > button[aria-expanded="true"] > ui-icon[name="chevron-down"]) { transform: rotate(180deg); }
+    @media (prefers-reduced-motion: reduce) {
+      :where(ui-menu[data-ui-ready] > button > ui-icon[name="chevron-down"]) { transition: none; }
+    }
     :where(ui-menu[data-ui-ready] > [role="menu"]) { inline-size: max-content; max-inline-size: 24rem; padding: var(--ui-space-2); list-style: none; background: var(--ui-surface); }
     :where(ui-menu[data-ui-ready] > [role="menu"] > li) { margin: 0; padding: 0; }
     :where(ui-menu[data-ui-ready] > [role="menu"] > li > :is(button, a)) { display: block; inline-size: 100%; max-inline-size: 100%; min-inline-size: 2.75rem; min-block-size: 2.75rem; padding: var(--ui-space-2) var(--ui-space-3); border: 1px solid transparent; border-radius: var(--ui-radius-sm); font: inherit; font-weight: var(--ui-font-weight-normal); white-space: normal; overflow-wrap: anywhere; text-align: start; text-decoration: none; color: var(--ui-text); background: transparent; cursor: pointer; }

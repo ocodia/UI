@@ -9,7 +9,6 @@
 [data-site-nav] a[aria-current] { color: var(--ui-link); text-decoration: underline; text-decoration-thickness: .15em; text-underline-offset: .5em; }
 .site-header a:focus-visible, .site-header .site-wordmark:focus-visible { color: var(--ui-focus-edge); background: var(--ui-focus); }
 .site-wordmark:focus-visible span { color: inherit; }
-body > main { padding-block: 2.5rem; }
 .site-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--ui-space); padding-block: 1.5rem; margin-block-start: 3rem; border-block-start: 1px solid var(--ui-border); color: var(--ui-muted); font-size: .9rem; }
 .site-footer p { margin: 0; }
 .docs-layout { --ui-sidebar-width: 15rem; --ui-sidebar-content-min: 42rem; --ui-sidebar-gap: 3rem; align-items: start; }

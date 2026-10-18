@@ -11,7 +11,7 @@ Load `css/ui.css` and `js/ui.js`. The wrapper opts in by element name. UI instal
 <p>Draft · Awaiting review</p>
 <a href="examples/menu-report.html">Open report</a>
 <ui-menu>
-  <button id="report-actions" type="button" hidden>Report actions</button>
+  <button id="report-actions" type="button" hidden>Report actions <ui-icon name="chevron-down" aria-hidden="true"></ui-icon></button>
   <ul id="report-commands" aria-labelledby="report-actions">
     <li><a href="examples/commands.html#report-title">Edit report</a></li>
     <li><a href="examples/menu-report.csv" download>Download survey data</a></li>

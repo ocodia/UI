@@ -19,7 +19,7 @@ This source markup uses `css/ui.css` and the optional combined `js/ui.js`. The i
 <form action="/projects/42/actions" method="post">
   <input type="hidden" name="csrf" value="server-issued-token">
   <ui-menu>
-    <button id="project-actions" type="button" hidden>Project actions</button>
+    <button id="project-actions" type="button" hidden>Project actions <ui-icon name="chevron-down" aria-hidden="true"></ui-icon></button>
     <ul id="project-commands" aria-labelledby="project-actions">
       <li><button type="submit" name="action" value="duplicate">Duplicate project</button></li>
       <li><a href="/projects/42/report.csv" download>Download report</a></li>

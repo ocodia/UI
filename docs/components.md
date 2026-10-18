@@ -187,7 +187,7 @@ Experimental single-level command menu over a readable native list; native auto 
     <ui-cluster>
       <a href="../../examples/menu-report.html">Open report</a>
       <ui-menu>
-        <button id="report-actions" type="button" data-variant="secondary" hidden>Report actions</button>
+        <button id="report-actions" type="button" data-variant="secondary" hidden>Report actions <ui-icon name="chevron-down" aria-hidden="true"></ui-icon></button>
         <ul id="report-commands" aria-labelledby="report-actions">
           <li><a href="../../examples/commands.html#report-title">Edit report</a></li>
           <li><a href="../../examples/menu-report.csv" download>Download survey data</a></li>
@@ -229,7 +229,7 @@ Native button or anchor in ui-menu; retain native disabled buttons, submitters/r
     <ui-cluster>
       <a href="../../examples/menu-report.html">Open report</a>
       <ui-menu>
-        <button id="report-actions" type="button" data-variant="secondary" hidden>Report actions</button>
+        <button id="report-actions" type="button" data-variant="secondary" hidden>Report actions <ui-icon name="chevron-down" aria-hidden="true"></ui-icon></button>
         <ul id="report-commands" aria-labelledby="report-actions">
           <li><a href="../../examples/commands.html#report-title">Edit report</a></li>
           <li><a href="../../examples/menu-report.csv" download>Download survey data</a></li>

@@ -10,6 +10,8 @@ async function runDropdownChecks(load, frame) {
   const show = async () => { trigger.click(); await settle(); };
   await open();
   check(menu.hasAttribute('data-ui-ready') && !menu.hasAttribute('data-ui') && !trigger.hidden && list.popover === 'auto', 'Element-name bootstrap installs one ready native popover.');
+  const chevron = trigger.querySelector(':scope > ui-icon[name="chevron-down"]'); await settle();
+  check(chevron?.dataset.uiIconState === 'ready' && chevron.getAttribute('aria-hidden') === 'true' && !chevron.hasAttribute('tabindex'), 'The root-library chevron loads as a decorative non-focusable icon.');
   check(list.getAttribute('role') === 'menu' && trigger.getAttribute('aria-haspopup') === 'menu' && trigger.popoverTargetElement === list && trigger.getAttribute('aria-controls') === list.id, 'Named native trigger and list have complete menu relationships.');
   check(items.every(item => item.getAttribute('role') === 'menuitem' && item.tabIndex === -1) && [...list.children].every(row => row.getAttribute('role') === 'none'), 'Complete ready-only item roles, no positive or sequential item tabindex.');
   const divider = list.querySelector('hr');
@@ -19,6 +21,7 @@ async function runDropdownChecks(load, frame) {
   const undo = doc.querySelector('#undo-archive'); undo.focus(); undo.click(); check(undo.hidden && !items[3].disabled && doc.querySelector('#report-state').textContent.includes('Draft') && doc.activeElement === trigger, 'Undo restores the report and moves focus before hiding its action.');
   await show();
   check(list.matches(':popover-open') && trigger.getAttribute('aria-expanded') === 'true' && doc.activeElement === items[0], 'Native trigger opening focuses first enabled item and mirrors expanded.');
+  check(win.getComputedStyle(chevron).transform !== 'none', 'The decorative chevron rotates when the menu opens.');
   for (const [value, index] of [['ArrowDown', 1], ['ArrowDown', 3], ['ArrowDown', 0], ['ArrowUp', 3], ['Home', 0], ['End', 3]]) check(key(doc.activeElement, value) && doc.activeElement === items[index], value + ' moves/wraps and skips native disabled buttons.');
   divider.click(); check(list.matches(':popover-open') && !key(divider, 'Home'), 'Separators neither activate commands nor own navigation keys.');
   check(items[2].disabled && items[2].getAttribute('aria-disabled') === null, 'Native disabled state is retained without an ARIA simulation.');
