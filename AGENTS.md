@@ -13,11 +13,11 @@ UI is an HTML-first UI system in development. This file applies to the entire re
 ## Current implementation
 
 - Library CSS: `css/ui.css`, named `ui` layer and low-specificity native styles.
-- Combined library entry: generated `js/ui.js` from `js/components.js`, `js/popup.js`, `js/enhance.js`. Registers **only `ui-form` and `ui-error-summary`**, plus `UI.enhance(root)` / `UI.destroy(root)` and `UI.popup.attach`. Standard native overlays opt in with `data-ui`; `ui-accordion` and `ui-tabs` opt in by element name. Tabs enhance a direct native `nav` followed by sibling `section` panels; see `docs/enhancement.md`. CSS-only `ui-pagination` scopes a native named navigation list and requires no script. The original form/geometry entries remain compatible.
+- Combined library entry: generated `js/ui.js` from `js/components.js`, `js/popup.js`, `js/enhance.js`. Registers **only `ui-form` and `ui-error-summary`**, plus `UI.enhance(root)` / `UI.destroy(root)` and `UI.popup.attach`. Standard native overlays opt in with `data-ui`; `ui-accordion`, `ui-tabs` and `ui-menu` opt in by element name. Menus enhance a hidden native button followed by a named native ul of button/link commands with optional li/hr dividers between groups; see `docs/dropdown.md`. Tabs enhance a direct native `nav` followed by sibling `section` panels; see `docs/enhancement.md`. CSS-only `ui-pagination` scopes a native named navigation list and requires no script. The original form/geometry entries remain compatible.
 - Optional experimental geometry: `js/popup.js`, exposes `UIPopup.attach` for native auto popovers; no registration; also included in `js/ui.js`. See `docs/popup.md`.
 - CSS-only elements: `ui-stack`, `ui-cluster`, `ui-grid`, `ui-sidebar`, `ui-panel`, `ui-field`, `ui-hint`, `ui-error`, `ui-skip-link`, `ui-pagination`, `ui-steps`.
 - Optional brand: `themes/forest.css`, root `data-brand="forest"`.
-- Application/demo code: `js/examples.js`, `js/workspace.js`, `css/workspace.css`, `examples/`. Do not include these as library entry points.
+- Application/demo code: `js/examples.js`, `js/workspace.js`, `js/menu-*.js`, `css/workspace.css`, `examples/`. Do not include these as library entry points.
 - Documentation application: `css/site.css`, `js/docs.js`, `js/docs-preview.js`. Markdown guides, catalogue and `docs/recipes.json` generate static HTML through `tools/build_docs.py`; example frames are trusted repository content, not a user-code runner.
 - No package.json, published npm package, module imports or per-component loader exists yet.
 

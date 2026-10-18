@@ -65,6 +65,15 @@ async function runDocumentationChecks(load, frame) {
   check([...doc.querySelectorAll('[data-example] details code')].every(code => code.textContent.includes('<nav ') && code.textContent.includes('<section ')), 'Tabs source drawers use native nav/section markup.');
   win = await load('../docs/components/pagination.html'); doc=win.document;
   check(doc.querySelectorAll('[data-example]').length === 7 && doc.querySelector('a[href="../pagination.html"]') && doc.querySelector('a[href="../specs/pagination.html"]') && [...doc.querySelectorAll('[data-example] details code')].every(code => code.textContent.includes('ui-pagination') && code.textContent.includes('css/ui.css') && !code.textContent.includes('js/ui.js')), 'Pagination links seven real-page/state recipes, its guide and specification; copyable sources need CSS only.');
+  win = await load('../docs/components/dropdown.html'); doc=win.document;
+  check(doc.querySelectorAll('[data-example]').length === 3 && doc.querySelector('a[href="../dropdown.html"]') && doc.querySelector('a[href="../specs/dropdown.html"]'), 'Dropdown exposes three runnable recipes, the guide and specification.');
+  check([...doc.querySelectorAll('[data-example] details code')].every(code => code.textContent.includes('<li><hr></li>')), 'Every Dropdown source example demonstrates valid native list dividers.');
+  win = await load('../docs/components/dropdown-item.html'); doc=win.document;
+  check(doc.querySelector('[data-example]') && doc.querySelector('a[href="../dropdown.html"]'), 'Dropdown Item shares the native-command family guide.');
+  for (const [route, title] of [['dropdown-0','October shoreline survey'],['dropdown-1','The October edition'],['dropdown-2','INV-1042 · Larch Studio']]) {
+    win = await load('../docs/previews/'+route+'.html'); doc=win.document;
+    check([...doc.querySelectorAll('ui-panel h2')].some(node => node.textContent === title) && doc.querySelector('ui-menu hr'), route + ': a named task card supplies context and separates related actions.');
+  }
   win = await load('../docs/components/stepper.html'); doc=win.document;
   check(doc.querySelectorAll('[data-example]').length === 6 && doc.querySelector('a[href="../stepper.html"]') && doc.querySelector('a[href="../specs/stepper.html"]') && [...doc.querySelectorAll('[data-example] details code')].every(code => code.textContent.includes('ui-steps') && code.textContent.includes('css/ui.css') && !code.textContent.includes('js/ui.js')), 'Stepper exposes six CSS-only state snapshots, the guide and specification.');
   win = await load('../docs/components/step.html'); doc=win.document;
@@ -88,7 +97,7 @@ async function runDocumentationChecks(load, frame) {
   const range=doc.querySelector('input'); range.stepUp(); range.form.requestSubmit();
   check(range.value==='55' && doc.querySelector('#preview-result').textContent.includes('volume=55'), 'Range preview retains native stepping and numeric serialization.');
   frame.style.inlineSize='320px';
-  for (const route of ['../index.html','../docs/index.html','../docs/controls.html','../docs/forms.html','../docs/native-states.html','../docs/components/checkbox.html','../docs/components/combobox.html','../docs/lifecycle.html','../docs/specs/popup.html','../docs/popup.html','../docs/enhancement.html','../docs/accordion.html','../docs/components/accordion.html','../docs/specs/accordion.html','../docs/tabs.html','../docs/components/tab-group.html','../docs/specs/tabs.html','../docs/pagination.html','../docs/components/pagination.html','../docs/specs/pagination.html','../docs/stepper.html','../docs/components/stepper.html','../docs/components/step.html','../docs/specs/stepper.html']) {
+  for (const route of ['../index.html','../docs/index.html','../docs/controls.html','../docs/forms.html','../docs/native-states.html','../docs/components/checkbox.html','../docs/components/combobox.html','../docs/lifecycle.html','../docs/specs/popup.html','../docs/popup.html','../docs/enhancement.html','../docs/accordion.html','../docs/components/accordion.html','../docs/specs/accordion.html','../docs/tabs.html','../docs/components/tab-group.html','../docs/specs/tabs.html','../docs/pagination.html','../docs/components/pagination.html','../docs/specs/pagination.html','../docs/dropdown.html','../docs/components/dropdown.html','../docs/specs/dropdown.html','../docs/stepper.html','../docs/components/stepper.html','../docs/components/step.html','../docs/specs/stepper.html']) {
     win=await load(route,true); doc=win.document;
     for (const dir of ['ltr','rtl']) {
       doc.documentElement.dir=dir;

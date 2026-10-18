@@ -44,22 +44,33 @@
       "name": "Dropdown",
       "category": "Actions",
       "reference": "https://webawesome.com/docs/components/dropdown/",
-      "ui": "ui-menu with native button trigger (proposed)",
-      "status": "planned",
+      "ui": "ui-menu with native button and ul",
+      "status": "foundation",
       "phase": 2,
-      "contract": "Separate navigation disclosures from command menus. Only enhanced command lists receive menu roles.",
-      "acceptance": "Arrows, Home/End, typeahead, Escape, focus return, outside dismissal, and nested ownership."
+      "contract": "Experimental single-level command menu over a readable native list; native auto popover owns visibility/dismissal and Popup owns geometry. Apply menu roles only after complete enhancement; ordinary site navigation stays native. Native hr inside a dedicated li separates command groups without a focus stop.",
+      "acceptance": "First/last opening, arrows/Home/End, localized typeahead, native Tab exit/Escape/light dismissal, guarded focus return, form/anchor activation, inline fallback and lifecycle cleanup. Submenus and checkable items are deferred.",
+      "specification": "docs/specs/dropdown.md",
+      "maturity": "experimental",
+      "example": "<ui-panel>\n  <article aria-labelledby=\"survey-title\">\n    <p><small>Fieldwork / Monthly reports</small></p>\n    <h2 id=\"survey-title\">October shoreline survey</h2>\n    <p>20 observations across two locations. Updated 18 October 2026.</p>\n    <p id=\"report-state\">Draft · Awaiting review</p>\n    <p id=\"export-reason\">Publishing becomes available after a reviewer signs off.</p>\n    <ui-cluster>\n      <a href=\"../../examples/menu-report.html\">Open report</a>\n      <ui-menu>\n        <button id=\"report-actions\" type=\"button\" data-variant=\"secondary\" hidden>Report actions</button>\n        <ul id=\"report-commands\" aria-labelledby=\"report-actions\">\n          <li><a href=\"../../examples/commands.html#report-title\">Edit report</a></li>\n          <li><a href=\"../../examples/menu-report.csv\" download>Download survey data</a></li>\n          <li><button type=\"button\" disabled aria-describedby=\"export-reason\">Publish report (awaiting review)</button></li>\n          <li><hr></li>\n          <li><button id=\"archive-report\" type=\"button\" hidden>Archive report</button></li>\n        </ul>\n      </ui-menu>\n    </ui-cluster>\n    <p id=\"report-feedback\" role=\"status\"></p>\n    <button id=\"undo-archive\" type=\"button\" data-variant=\"secondary\" hidden>Undo archive</button>\n    <p><a id=\"after-menu\" href=\"../../examples/menu-report.html#methods\">Read survey methods</a></p>\n  </article>\n</ui-panel>",
+      "exampleNote": "[Command menu guide](dropdown.md) · [Standalone native form recipe](../examples/commands.html) · [Focused checks](../tests/dropdown.html).",
+      "elements": [
+        "ui-menu"
+      ]
     },
     {
       "id": "dropdown-item",
       "name": "Dropdown Item",
       "category": "Actions",
       "reference": "https://webawesome.com/docs/components/dropdown-item/",
-      "ui": "button or a inside ui-menu (proposed)",
-      "status": "planned",
+      "ui": "native button or a in ui-menu",
+      "status": "foundation",
       "phase": 2,
-      "contract": "Keep native actions and destinations; define checkable items and submenu ownership before adding them.",
-      "acceptance": "Disabled items, checked state, activation, and focus after item removal."
+      "contract": "Native button or anchor in ui-menu; retain native disabled buttons, submitters/reset and real destinations. No item custom element, checked state or submenu mode in the first slice. Native hr inside a dedicated li separates command groups without a focus stop.",
+      "acceptance": "One native activation, modified/download/target links, preserved form values/validation/reset, disabled-button skipping, localized labels and focus recovery after removal. Checkable items require a separate specification.",
+      "specification": "docs/specs/dropdown.md",
+      "maturity": "experimental",
+      "example": "<ui-panel>\n  <article aria-labelledby=\"survey-title\">\n    <p><small>Fieldwork / Monthly reports</small></p>\n    <h2 id=\"survey-title\">October shoreline survey</h2>\n    <p>20 observations across two locations. Updated 18 October 2026.</p>\n    <p id=\"report-state\">Draft · Awaiting review</p>\n    <p id=\"export-reason\">Publishing becomes available after a reviewer signs off.</p>\n    <ui-cluster>\n      <a href=\"../../examples/menu-report.html\">Open report</a>\n      <ui-menu>\n        <button id=\"report-actions\" type=\"button\" data-variant=\"secondary\" hidden>Report actions</button>\n        <ul id=\"report-commands\" aria-labelledby=\"report-actions\">\n          <li><a href=\"../../examples/commands.html#report-title\">Edit report</a></li>\n          <li><a href=\"../../examples/menu-report.csv\" download>Download survey data</a></li>\n          <li><button type=\"button\" disabled aria-describedby=\"export-reason\">Publish report (awaiting review)</button></li>\n          <li><hr></li>\n          <li><button id=\"archive-report\" type=\"button\" hidden>Archive report</button></li>\n        </ul>\n      </ui-menu>\n    </ui-cluster>\n    <p id=\"report-feedback\" role=\"status\"></p>\n    <button id=\"undo-archive\" type=\"button\" data-variant=\"secondary\" hidden>Undo archive</button>\n    <p><a id=\"after-menu\" href=\"../../examples/menu-report.html#methods\">Read survey methods</a></p>\n  </article>\n</ui-panel>",
+      "exampleNote": "[Command menu guide](dropdown.md) · [Standalone native form recipe](../examples/commands.html) · [Focused checks](../tests/dropdown.html)."
     },
     {
       "id": "checkbox",

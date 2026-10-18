@@ -12,7 +12,7 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 GUIDES = [
     ('Start here', [('index', 'Documentation'), ('getting-started', 'Getting started'), ('enhancement', 'Shared UI JavaScript'), ('reference', 'Current API')]),
-    ('Build interfaces', [('controls', 'Buttons & control sizes'), ('forms', 'Form integration'), ('native-states', 'Native family states'), ('dialog', 'Native dialog'), ('popover', 'Native popover'), ('popup', 'Anchored Popup help'), ('accordion', 'Accordion'), ('tabs', 'Tabs'), ('pagination', 'Pagination'), ('stepper', 'Stepper'), ('density', 'Density'), ('conventions', 'Interaction conventions')]),
+    ('Build interfaces', [('controls', 'Buttons & control sizes'), ('forms', 'Form integration'), ('native-states', 'Native family states'), ('dialog', 'Native dialog'), ('popover', 'Native popover'), ('popup', 'Anchored Popup help'), ('accordion', 'Accordion'), ('tabs', 'Tabs'), ('pagination', 'Pagination'), ('stepper', 'Stepper'), ('dropdown', 'Dropdown menus'), ('density', 'Density'), ('conventions', 'Interaction conventions')]),
     ('Customize', [('theming', 'Theming & tokens')]),
     ('Project', [('architecture', 'Architecture'), ('lifecycle', 'Lifecycle & ownership'), ('accessibility', 'Accessibility & evidence'), ('roadmap', 'Roadmap'), ('contributing', 'Contributing'), ('component-template', 'Specification template'), ('site', 'Documentation authoring')]),
 ]

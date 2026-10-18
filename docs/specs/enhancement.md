@@ -2,7 +2,7 @@
 
 ## Identity and purpose
 
-Status: experimental implementation of the shared UI entry point. UI behavior owns initialization and teardown for its existing forms/error summaries and explicitly marked native dialog/popover/positioned-help patterns, plus [Accordion](../accordion.md) and [Tabs](../tabs.md) opted into by element name. CSS-only layouts and native buttons/fields/plain unwrapped details/progress retain their native behavior. Other planned compound widgets are not registered or initialized.
+Status: experimental implementation of the shared UI entry point. UI behavior owns initialization and teardown for its existing forms/error summaries and explicitly marked native dialog/popover/positioned-help patterns, plus [Accordion](../accordion.md), [Tabs](../tabs.md) and [Dropdown menus](../dropdown.md) opted into by element name. CSS-only layouts and native buttons/fields/plain unwrapped details/progress retain their native behavior. Other planned compound widgets are not registered or initialized.
 
 The combined classic script is generated as `js/ui.js` from `js/components.js`, `js/popup.js` and `js/enhance.js`. Existing entry points remain usable. Repeated or mixed loading shares the same registered constructors, geometry ownership and high-level runtime. No runtime fetching, modules, package or arbitrary plugin registry is introduced.
 
@@ -31,16 +31,16 @@ Dialogs use a native `dialog open data-ui="dialog"` baseline with an explicit ac
 | UI.destroy(root = document) | Synchronous, idempotent, returns undefined. Release owned patterns within the root, deepest first, and suspend form/summary automatic behavior without removing nodes. Restore baseline presentation, preserve answers, and do not cancel application requests. |
 | Roots | Document, Element or DocumentFragment from this runtime's document. Disconnected fragments are not enhanced; destroy can clean a detached subtree. Foreign-document roots require that document's runtime. |
 | UI.popup.attach | Alias of existing UIPopup.attach, retaining the lower-level geometry contract and compatibility alias. |
-| data-ui | Exact values dialog, popover or popup on the actual surface; accordion on a ui-accordion wrapper (see its separate specification). No implicit enhancement of unmarked native overlays. |
+| data-ui | Exact values dialog, popover or popup on native surfaces. ui-accordion/ui-tabs/ui-menu opt in by element name without a type marker. No implicit enhancement of unmarked native overlays. |
 | data-ui-open | Native button target ID for dialogs; popover/popup use native popovertarget instead. Multiple distinct invokers are supported for unpositioned help/dialogs. Positioned help requires one unambiguous invoker. |
 | data-ui-focus | At most one focus destination owned by this surface. For dialogs, a focusable target is required; content needs an explicit accessible title. For popovers it is optional and supplies inline recovery only. |
 | data-ui-return-focus | Optional surviving focus destination ID for a dialog whose invoker becomes unavailable. Destination must be visible/focusable and outside nested unrelated tasks. |
 | data-ui-close | Native dialog close button; value defaults to close. Native method=dialog forms retain their own default action. Popover close buttons use native target/hide attributes. |
 | data-ui-placement | Popup only: block-end-start (default) or block-start-start. No JSON configuration or implicit semantic role. |
-| data-ui-ready | Library-owned empty readiness marker on enhanced overlays and Accordion groups. It is not open state or a signal for business success. |
-| Events | Keep native toggle/beforetoggle/close/cancel/submit/reset. No new custom event or synthetic input/change. Application close listeners own result display or persistence. |
+| data-ui-ready | Library-owned empty readiness marker on enhanced overlays and Accordion/Tabs/Menu groups. It is not open state or a signal for business success. |
+| Events | Overlays and menus keep native toggle/beforetoggle/close/cancel/submit/reset with no new custom command event or synthetic input/change. Tabs owns its separately documented ui-select event. Application close listeners own result display or persistence. |
 
-The bundle initializes once after parsing, or in a microtask when loaded after parsing. Newly inserted marked native overlays and ui-accordion/ui-tabs elements require explicit enhance(root); there is no automatic global discovery loop. Existing custom elements keep their native connection lifecycle. destroy suspends them until enhance is explicitly called, including across subsequent detach/reinsert.
+The bundle initializes once after parsing, or in a microtask when loaded after parsing. Newly inserted marked native overlays and ui-accordion/ui-tabs/ui-menu elements require explicit enhance(root); there is no automatic global discovery loop. Existing custom elements keep their native connection lifecycle. destroy suspends them until enhance is explicitly called, including across subsequent detach/reinsert.
 
 ## Interaction and accessibility
 

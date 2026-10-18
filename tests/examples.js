@@ -84,6 +84,7 @@ exampleButton.addEventListener('click', async () => {
     passed.push(...await runPopoverChecks(load, frame));
     passed.push(...await runPopupChecks(load, frame));
     passed.push(...await runEnhancementChecks(load, frame));
+    passed.push(...await runDropdownChecks(load, frame));
     win = await load('../examples/server-errors.html');
     doc = win.document;
     const serverForm = doc.querySelector('#server-form');

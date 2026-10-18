@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Edit shoreline survey — UI example</title><link rel="stylesheet" href="../css/ui.css"><script src="../js/ui.js" defer></script></head>
+<body><header><a href="menu-report.html">October shoreline survey</a></header><main><p><small>Fieldwork / Report editor</small></p><h1>Edit report title</h1><p>Give the monthly survey a clear name. Preview the title before returning to the report.</p>
+<ui-form><ui-error-summary hidden><h2>There is a problem</h2><ul></ul></ui-error-summary>
+<form id="report-form" action="menu-report.html#report" method="get">
+<ui-field><label for="report-title">Report title</label><input id="report-title" name="title" value="October shoreline survey" required></ui-field>
+<ui-cluster><button type="submit" name="action" value="preview">Preview report</button>
+<ui-menu><button id="form-actions" type="button" data-variant="secondary" hidden>More report actions</button><ul id="form-commands" aria-labelledby="form-actions"><li><button type="reset">Revert unsaved title</button></li><li><a href="menu-report.csv" download>Download survey data</a></li><li><hr></li><li><a href="menu-report.html#methods">Read survey methods</a></li></ul></ui-menu></ui-cluster>
+</form></ui-form><p>This local example saves no edits. Without scripting, Preview opens the original survey and keeps the requested title in its URL.</p><p><a href="../docs/dropdown.html">Back to Dropdown examples</a></p></main></body></html>

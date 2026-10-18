@@ -2,7 +2,7 @@
 
 This is the design contract for UI behavior and component specifications. The optional experimental [Popup adapter](popup.md) applies it to geometry; existing component APIs retain their documented contracts. The current library registers only `ui-form` and `ui-error-summary`; the [form contract](forms.md), [dialog recipe](dialog.md) and [popover recipe](popover.md) remain authoritative for their implemented behavior and limits.
 
-The [shared entry](enhancement.md) now applies these rules to existing forms/summaries and declarative native dialog/popover/Popup setup. The experimental [Accordion pattern](accordion.md) also uses that shared entry, opting in by element name, with native expansion and explicit structural refresh. Experimental [Tabs](tabs.md) uses the same entry for selection and coordinated fragment/form-error reveal. Explicit scoped enhance/destroy calls manage dynamic applications; manual recipes remain available for application-owned setup.
+The [shared entry](enhancement.md) now applies these rules to existing forms/summaries and declarative native dialog/popover/Popup setup. The experimental [Accordion pattern](accordion.md) also uses that shared entry, opting in by element name, with native expansion and explicit structural refresh. Experimental [Tabs](tabs.md) uses the same entry for selection and coordinated fragment/form-error reveal. Experimental [Dropdown menus](dropdown.md) use native popover dismissal and Popup geometry with menu keyboard/focus ownership. Explicit scoped enhance/destroy calls manage dynamic applications; manual recipes remain available for application-owned setup.
 
 ## One owner for each responsibility
 

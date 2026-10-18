@@ -1,0 +1,45 @@
+<!doctype html>
+<!-- Generated from docs/recipes.json. Trusted repository examples only. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>A newsletter draft with preview and revert — UI example</title>
+<link rel="stylesheet" href="../../css/ui.css?v=6175ea798353"><link rel="stylesheet" href="../../themes/forest.css"><script src="../../js/ui.js?v=166baa3d23f1" defer></script><script src="../../js/docs-preview.js?v=910f4f17837f" defer></script>
+<style>body { padding: 1.5rem; padding-inline-end: 3rem; } body > main { max-inline-size: none; inline-size: auto; margin: 0; padding: 0; } h1 { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); } output { display: block; margin-block-start: 1rem; } .table-scroll table { min-inline-size: 38rem; } :root:not([data-preview-ready]) form:not([method="dialog"]) :is(button:not([type]), button[type="submit"], input[type="submit"]) { display: none; }</style></head>
+<body><main aria-label="A newsletter draft with preview and revert example"><h1>A newsletter draft with preview and revert</h1><ui-panel>
+  <section aria-labelledby="newsletter-title">
+    <p><small>Field notes / Newsletter draft</small></p>
+    <h2 id="newsletter-title">The October edition</h2>
+    <p>A monthly update for the coastal volunteer team.</p>
+    <ui-form>
+      <ui-error-summary hidden><h2>There is a problem</h2><ul></ul></ui-error-summary>
+      <form id="newsletter-form" action="../../examples/menu-newsletter.html" method="get">
+        <ui-field>
+          <label for="newsletter-subject">Email subject</label>
+          <input id="newsletter-subject" name="subject" value="October field notes" required>
+        </ui-field>
+        <p>Low-tide visits, new wildlife records and next month's survey dates.</p>
+        <ui-cluster>
+          <a href="../../examples/menu-newsletter.html">Read the current edition</a>
+          <ui-menu>
+            <button id="form-actions" type="button" data-variant="secondary" hidden>Draft actions</button>
+            <ul id="form-commands" aria-labelledby="form-actions">
+              <li><button type="submit" name="action" value="preview">Preview newsletter</button></li>
+              <li><button type="reset">Revert subject changes</button></li>
+              <li><hr></li>
+              <li><a href="../../examples/menu-newsletter.html#schedule">View publication schedule</a></li>
+            </ul>
+          </ui-menu>
+        </ui-cluster>
+      </form>
+    </ui-form>
+    <p><small>Preview only: no draft is saved and no email is sent.</small></p>
+    <p id="newsletter-status" role="status"></p>
+    <section id="newsletter-preview" aria-labelledby="preview-title" hidden>
+      <h3 id="preview-title" tabindex="-1">Newsletter preview</h3>
+      <p><strong>Subject:</strong> <span id="preview-subject"></span></p>
+      <p>Hello coastal volunteers,</p>
+      <p>We recorded 20 observations this month, including new sightings at the estuary. Thank you to everyone who joined the shoreline survey.</p>
+      <p>Our next survey is 31 October, meeting at North Beach at 09:00. Bring waterproofs and a flask.</p>
+    </section>
+  </section>
+</ui-panel><noscript><p>Enable JavaScript to inspect values locally. Inputs remain editable. A production form needs a real server action.</p></noscript></main><script src="../../js/menu-newsletter-example.js?v=5b306e75d064"></script><script>
+// This application renders a local preview after native form validation.
+</script></body></html>

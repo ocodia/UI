@@ -264,7 +264,231 @@
       revealFragment(true, surface);
     } catch { release(record, false); }
   }
+  const menuDisabled = node => node.matches(':disabled');
+  function menuStructure(surface, record = records.get(surface)) {
+    if (surface.localName !== 'ui-menu' || !surface.isConnected || surface.ownerDocument !== doc || !globalThis.UIPopup?.attach || typeof MutationObserver !== 'function' || typeof AbortController !== 'function' || !('popoverTargetElement' in HTMLButtonElement.prototype)) return null;
+    const attr = (node, name) => {
+      const state = record?.writes.get(node)?.get(name);
+      return state && node.getAttribute(name) === state.last ? state.before : node.getAttribute(name);
+    };
+    if (record) for (const [node, attrs] of record.writes) for (const [name, state] of attrs) if (node.getAttribute(name) !== state.last) return null;
+    const [trigger, list] = surface.children;
+    const strayText = node => [...node.childNodes].some(child => child.nodeType === 3 && child.textContent.trim());
+    if (surface.children.length !== 2 || trigger?.localName !== 'button' || trigger.getAttribute('type') !== 'button' || attr(trigger, 'hidden') === null || menuDisabled(trigger) || list?.localName !== 'ul' || typeof list.showPopover !== 'function' || typeof list.hidePopover !== 'function' || strayText(surface) || strayText(list)) return null;
+    if (uniqueID(trigger.id) !== trigger || uniqueID(list.id) !== list || list.getAttribute('aria-labelledby') !== trigger.id || !trigger.textContent.trim() || trigger.querySelector('a,button,input,select,textarea,[tabindex],[contenteditable]')) return null;
+    const rows = [...list.children], entries = rows.map(row => row.firstElementChild), items = entries.filter(node => node?.localName !== 'hr'), dividers = entries.filter(node => node?.localName === 'hr');
+    if (!items.length || rows.some((row, i) => row.localName !== 'li' || row.children.length !== 1 || strayText(row) || !entries[i]?.matches('button[type="button"],button[type="submit"],button[type="reset"],a[href],hr'))) return null;
+    if (entries[0]?.localName === 'hr' || entries.at(-1)?.localName === 'hr' || entries.some((entry, i) => entry.localName === 'hr' && entries[i - 1]?.localName === 'hr')) return null;
+    const forbidden = ['role', 'tabindex', 'inert', 'aria-hidden', 'aria-disabled', 'aria-checked', 'aria-selected', 'aria-haspopup', 'aria-expanded', 'aria-controls', 'popover', 'popovertarget', 'popovertargetaction', 'data-ui'];
+    if ([surface, trigger, list, ...rows, ...entries].some(node => forbidden.some(name => attr(node, name) !== null) || node !== trigger && attr(node, 'hidden') !== null || node.isContentEditable)) return null;
+    if (unavailable(surface) || surface.closest('ui-menu ui-menu') || getComputedStyle(trigger).writingMode !== 'horizontal-tb' || getComputedStyle(list).writingMode !== 'horizontal-tb') return null;
+    if (items.some(item => !menuLabel(item) || item.localName === 'a' && !item.getAttribute('href')?.trim() || item.querySelector('ui-menu,a,button,input,select,textarea,[tabindex],[contenteditable],[hidden],[inert]'))) return null;
+    if (!items.some(item => !menuDisabled(item))) return null;
+    return { kind: 'menu', trigger, list, rows, items, dividers, signature: JSON.stringify([trigger.id, list.id]) };
+  }
+  function menuLabel(item) {
+    const ids = item.getAttribute('aria-labelledby')?.trim().split(/\s+/).filter(Boolean);
+    if (ids?.length) {
+      const labels = ids.map(uniqueID);
+      if (labels.some(node => !node || unavailable(node))) return '';
+      return labels.map(node => node.textContent.trim()).join(' ');
+    }
+    if (item.hasAttribute('aria-label')) return item.getAttribute('aria-label').trim();
+    const text = node => node.nodeType === 3 ? node.textContent : node.nodeType === 1 && !node.matches('[hidden],[aria-hidden="true"],svg') ? [...node.childNodes].map(text).join('') : '';
+    return text(item).trim();
+  }
+  function clearMenuInput(record) {
+    clearTimeout(record.typeTimer); record.typeTimer = null; record.buffer = ''; record.space = null;
+  }
+  function menuFocus(record, item) {
+    if (!record.alive || !record.config.list.matches(':popover-open') || !focus(item) || !record.alive) return false;
+    // Scroll only the local menu; scrollIntoView can also jump the document.
+    const list = record.config.list, box = item.getBoundingClientRect(), bounds = list.getBoundingClientRect();
+    if (box.top < bounds.top + list.clientTop) list.scrollTop -= bounds.top + list.clientTop - box.top;
+    else if (box.bottom > bounds.top + list.clientTop + list.clientHeight) list.scrollTop += box.bottom - (bounds.top + list.clientTop + list.clientHeight);
+    return true;
+  }
+  function menuState(record, opening = false) {
+    if (!record.alive || record.deferred) return;
+    const { list, trigger, items } = record.config, open = list.matches(':popover-open');
+    write(record, trigger, 'aria-expanded', String(open));
+    if (!open) { clearMenuInput(record); record.intent = null; return; }
+    if (opening) {
+      if (!record.positioner.update() || !record.alive) return;
+      const enabled = items.filter(item => !menuDisabled(item));
+      const item = record.intent === 'last' ? enabled.at(-1) : enabled[0];
+      record.intent = null;
+      if (!menuFocus(record, item)) release(record);
+    }
+  }
+  function menuRoles(record) {
+    const { surface, config } = record;
+    write(record, config.list, 'role', 'menu');
+    config.rows.forEach(row => write(record, row, 'role', 'none'));
+    config.items.forEach(item => { write(record, item, 'role', 'menuitem'); write(record, item, 'tabindex', '-1'); });
+    write(record, surface, 'data-ui-ready', '');
+  }
+  function reconcileMenu(record, explicit = false) {
+    const next = menuStructure(record.surface), previous = record.config;
+    if (!next || next.trigger !== previous.trigger || next.list !== previous.list || next.signature !== previous.signature || !explicit && (next.items.some(item => !previous.items.includes(item)) || next.rows.some(row => !previous.rows.includes(row)))) { release(record); return; }
+    const active = record.focused, recover = active && (menuDisabled(active) || !active.isConnected) && (doc.activeElement === active || doc.activeElement === doc.body);
+    if (explicit || !same(previous, next)) clearMenuInput(record);
+    for (const node of [...previous.rows, ...previous.items]) if (!next.rows.includes(node) && !next.items.includes(node)) {
+      const writes = record.writes.get(node);
+      if (writes) { restore({ writes: new Map([[node, writes]]) }); record.writes.delete(node); }
+    }
+    record.config = next;
+    if (!record.deferred) {
+      menuRoles(record);
+      if (recover && next.list.matches(':popover-open')) {
+        const index = previous.items.indexOf(active), enabled = next.items.filter(item => !menuDisabled(item));
+        menuFocus(record, next.items.slice(Math.max(0, index)).find(item => !menuDisabled(item)) || enabled.at(-1));
+      }
+    }
+  }
+  function installMenu(surface, config) {
+    if (surface.hasAttribute('data-ui-ready')) return;
+    const record = { surface, config, events: new AbortController(), writes: new Map(), alive: true, generation: 0, buffer: '', typeTimer: null, space: null, intent: null, focused: null, positioner: null, deferred: config.list.contains(doc.activeElement) };
+    const listen = (node, type, handler, capture = false) => node.addEventListener(type, handler, { capture, signal: record.events.signal });
+    const current = () => {
+      if (!record.alive || record.deferred) return false;
+      if (!same(record.config, menuStructure(surface))) { release(record); return false; }
+      return true;
+    };
+    const close = () => {
+      if (!record.alive) return;
+      const { list, trigger } = record.config;
+      const held = list.contains(doc.activeElement);
+      try { if (list.matches(':popover-open')) list.hidePopover(); } catch { release(record); return; }
+      menuState(record);
+      if (held && list.contains(doc.activeElement)) focus(trigger);
+    };
+    records.set(surface, record);
+    try {
+      if (record.deferred) {
+        listen(config.list, 'focusout', () => queueMicrotask(() => {
+          if (!record.alive || config.list.contains(doc.activeElement)) return;
+          release(record, false);
+          const next = menuStructure(surface);
+          if (next) installMenu(surface, next);
+        }));
+        monitor(); return;
+      }
+      listen(config.list, 'beforetoggle', event => {
+        if (event.target !== config.list || !record.alive) return;
+        const generation = ++record.generation;
+        clearMenuInput(record);
+        const opening = event.newState === 'open';
+        record.pendingFocus = opening ? generation : null;
+        queueMicrotask(() => {
+          if (!record.alive || record.generation !== generation) return;
+          // Real input can run a microtask checkpoint before the native open completes.
+          // Only the native toggle notification confirms that opening has finished.
+          if (opening && event.defaultPrevented) { record.intent = null; record.pendingFocus = null; }
+        });
+      });
+      listen(config.list, 'toggle', () => {
+        const opening = record.pendingFocus === record.generation && config.list.matches(':popover-open');
+        record.pendingFocus = null;
+        menuState(record, opening);
+        if (record.alive && !config.list.matches(':popover-open') && config.list.contains(doc.activeElement)) focus(config.trigger);
+      });
+      listen(config.trigger, 'click', event => {
+        if (event.defaultPrevented || !current() || menuDisabled(config.trigger)) return;
+        // Native restoration records the active invoker, including pointer/programmatic opening.
+        focus(config.trigger);
+        const generation = record.generation;
+        queueMicrotask(() => {
+          if (record.alive && generation === record.generation) menuState(record);
+        });
+      });
+      listen(surface, 'keydown', event => {
+        if (event.defaultPrevented || event.isComposing || event.altKey || event.ctrlKey || event.metaKey || !current()) return;
+        const { trigger, list, items } = record.config, item = event.target.closest?.('button,a');
+        if (item === trigger && !event.shiftKey && ['ArrowDown', 'ArrowUp'].includes(event.key)) {
+          event.preventDefault(); record.intent = event.key === 'ArrowUp' ? 'last' : 'first';
+          if (list.matches(':popover-open')) { menuState(record, true); return; }
+          try { trigger.click(); } catch { release(record); }
+          return;
+        }
+        if (!items.includes(item) || !list.matches(':popover-open')) return;
+        if (event.key === 'Tab') { clearMenuInput(record); return; }
+        if (event.shiftKey && ['ArrowDown', 'ArrowUp', 'Home', 'End', ' '].includes(event.key)) return;
+        const enabled = items.filter(node => !menuDisabled(node)), index = enabled.indexOf(item);
+        if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
+          clearMenuInput(record); event.preventDefault();
+          const next = event.key === 'Home' ? 0 : event.key === 'End' ? enabled.length - 1 : (index + (event.key === 'ArrowDown' ? 1 : -1) + enabled.length) % enabled.length;
+          menuFocus(record, enabled[next]); return;
+        }
+        if (event.key === ' ' && item.localName === 'a') { event.preventDefault(); if (!event.repeat) record.space = item; return; }
+        if (event.key.length !== 1 || event.key === ' ') { clearMenuInput(record); return; }
+        let locale = item.closest('[lang]')?.lang || doc.documentElement.lang || undefined;
+        try { new Intl.Collator(locale); } catch { locale = undefined; }
+        const normalize = text => text.normalize('NFC').toLocaleLowerCase(locale);
+        const character = normalize(event.key);
+        record.buffer += character;
+        const repeated = [...record.buffer].every(char => char === character), query = repeated ? character : record.buffer;
+        const candidates = repeated || query.length === character.length ? [...enabled.slice(index + 1), ...enabled.slice(0, index + 1)] : [item, ...enabled.slice(index + 1), ...enabled.slice(0, index)];
+        const match = candidates.find(node => normalize(menuLabel(node)).startsWith(query));
+        if (match) menuFocus(record, match);
+        event.preventDefault(); clearTimeout(record.typeTimer);
+        record.typeTimer = setTimeout(() => { record.buffer = ''; record.typeTimer = null; }, 500);
+      });
+      listen(config.list, 'keyup', event => {
+        const item = record.space;
+        if (event.key !== ' ' || !item) return;
+        record.space = null;
+        if (!event.defaultPrevented && !event.isComposing && !event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey && event.target === item && doc.activeElement === item && current()) { event.preventDefault(); item.click(); }
+      });
+      const activations = new WeakSet();
+      listen(config.list, 'click', event => {
+        const item = event.target.closest?.('a,button');
+        if (record.config.items.includes(item) && !menuDisabled(item)) activations.add(event);
+      }, true);
+      listen(config.list, 'click', event => {
+        const item = event.target.closest?.('a,button');
+        if (!record.config.items.includes(item) || !activations.has(event) || !current()) return;
+        const generation = record.generation;
+        // A task allows native activation/default validation and every click listener to finish.
+        const timer = setTimeout(() => {
+          record.tasks.delete(timer);
+          if (record.alive && record.generation === generation) close();
+        }, 0);
+        record.tasks.add(timer);
+      });
+      listen(doc, 'focusin', event => {
+        if (record.config.items.includes(event.target)) record.focused = event.target;
+        else if (!record.config.list.contains(event.target)) {
+          record.focused = null;
+          if (event.target !== config.trigger) record.pendingFocus = null;
+        }
+      });
+      listen(config.list, 'focusout', event => {
+        record.space = null;
+        if (config.list.contains(event.relatedTarget)) return;
+        const generation = record.generation;
+        const timer = setTimeout(() => {
+          record.tasks.delete(timer);
+          if (record.alive && record.generation === generation && !config.list.contains(doc.activeElement)) { clearMenuInput(record); close(); }
+        }, 0);
+        record.tasks.add(timer);
+      });
+      // A native top-layer box cannot participate in printed document flow.
+      listen(window, 'beforeprint', () => { if (record.alive) close(); });
+      record.tasks = new Set();
+      write(record, config.trigger, 'popovertarget', config.list.id);
+      write(record, config.trigger, 'aria-haspopup', 'menu');
+      write(record, config.trigger, 'aria-controls', config.list.id);
+      write(record, config.trigger, 'aria-expanded', 'false');
+      write(record, config.list, 'popover', 'auto');
+      record.positioner = UIPopup.attach({ anchor: config.trigger, surface: config.list, onUnavailable: () => release(record) });
+      menuRoles(record);
+      write(record, config.trigger, 'hidden', null);
+      monitor();
+    } catch { release(record, false); }
+  }
   function structure(surface) {
+    if (surface.localName === 'ui-menu') return menuStructure(surface);
     if (surface.localName === 'ui-tabs') return tabsStructure(surface);
     if (surface.localName === 'ui-accordion') return accordionStructure(surface);
     const kind = surface.getAttribute('data-ui'), id = surface.id;
@@ -282,6 +506,7 @@
     return { kind, modal, openers, closers, initial, placement, returnId: surface.getAttribute('data-ui-return-focus') || '' };
   }
   function same(a, b) {
+    if (a?.kind === 'menu' || b?.kind === 'menu') return a?.kind === b?.kind && a?.trigger === b?.trigger && a?.list === b?.list && a?.signature === b?.signature && ['items', 'rows', 'dividers'].every(key => a[key].length === b[key].length && a[key].every((node, i) => node === b[key][i]));
     if (a?.kind === 'tabs' || b?.kind === 'tabs') return a?.kind === b?.kind && a?.list === b?.list && ['activation', 'orientation', 'signature'].every(key => a[key] === b[key]) && ['tabs', 'panels'].every(key => a[key].length === b[key].length && a[key].every((node, index) => node === b[key][index]));
     if (a?.kind === 'accordion' || b?.kind === 'accordion') return a?.kind === b?.kind && a?.name === b?.name && ['items', 'summaries'].every(key => a[key].length === b[key].length && a[key].every((node, index) => node === b[key][index]));
     return a && b && ['kind', 'initial', 'placement', 'returnId'].every(key => a[key] === b[key]) && ['openers', 'closers'].every(key => a[key].length === b[key].length && a[key].every((node, index) => node === b[key][index]));
@@ -291,6 +516,7 @@
     if (records.size && !lifetime) {
       lifetime = new MutationObserver(() => {
         for (const record of deepestRecords()) {
+          if (record.config.kind === 'menu') { reconcileMenu(record); continue; }
           if (record.config.kind === 'tabs') {
             if (!same(record.config, tabsStructure(record.surface))) reconcileTabs(record, false);
             continue;
@@ -303,13 +529,26 @@
           if (!record.surface.isConnected || record.surface.ownerDocument !== doc || record.config.kind === 'popup' && missing.length || !record.config.modal && missing.length === record.config.openers.length) release(record, false);
         }
       });
-      lifetime.observe(doc.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['name', 'id', 'href', 'hidden', 'inert', 'tabindex', 'target', 'download', 'contenteditable', 'disabled', 'aria-busy', 'aria-label', 'aria-labelledby', 'aria-selected', 'aria-orientation', 'aria-current', 'data-ui-tabs-inactive', 'data-ui-ready', 'data-activation', 'data-orientation', 'data-ui', ...accordionARIA] });
+      lifetime.observe(doc.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['type', 'popover', 'popovertarget', 'popovertargetaction', 'aria-checked', 'aria-haspopup', 'lang', 'dir', 'name', 'id', 'href', 'hidden', 'inert', 'tabindex', 'target', 'download', 'contenteditable', 'disabled', 'aria-busy', 'aria-label', 'aria-labelledby', 'aria-selected', 'aria-orientation', 'aria-current', 'data-ui-tabs-inactive', 'data-ui-ready', 'data-activation', 'data-orientation', 'data-ui', ...accordionARIA] });
     } else if (!records.size && lifetime) { lifetime.disconnect(); lifetime = null; }
   }
   function release(record, recover = true) {
     if (!record.alive) return;
     record.alive = false;
     const { surface, config } = record;
+    if (config.kind === 'menu') {
+      record.events.abort(); clearMenuInput(record);
+      record.tasks?.forEach(clearTimeout);
+      const held = config.list.contains(doc.activeElement) || doc.activeElement === config.trigger;
+      try { if (config.list.matches(':popover-open')) config.list.hidePopover(); } catch { /* Detached native state is already unavailable. */ }
+      record.positioner?.destroy();
+      // Reveal inline content before a focused enhancement-only trigger disappears.
+      const hidden = record.writes.get(config.trigger)?.get('hidden');
+      if (hidden && config.trigger.getAttribute('hidden') === hidden.last) config.trigger.setAttribute('hidden', hidden.before);
+      restore(record); records.delete(surface); monitor();
+      if (recover && held && !config.list.contains(doc.activeElement)) focus(config.items.find(item => !menuDisabled(item)));
+      return;
+    }
     if (config.kind === 'tabs') {
       record.events.abort();
       if (revealScroll?.record === record) cancelRevealScroll();
@@ -353,6 +592,7 @@
     if (installed && surviving < 0) surface.dispatchEvent(new CustomEvent('ui-select', { bubbles: true, composed: true, detail: { tab: next.tabs[index], panel: next.panels[index], previousTab: selectedTab, previousPanel: config.panels[record.selected], source: 'reconcile' } }));
   }
   function install(surface, config) {
+    if (config.kind === 'menu') { installMenu(surface, config); return; }
     if (config.kind === 'tabs') { installTabs(surface, config); return; }
     if (config.kind === 'accordion') { installAccordion(surface, config); return; }
     // Do not silently take over an already-open native task or an authored hidden fallback.
@@ -406,10 +646,11 @@
   function initialize(root, automatic = false) {
     rootNode(root);
     for (const node of within(root, 'ui-error-summary,ui-form')) if (node.isConnected && (!automatic || !node._uiSuspended)) node._uiResume?.();
-    for (const surface of within(root, '[data-ui],ui-tabs,ui-accordion')) {
+    for (const surface of within(root, '[data-ui],ui-tabs,ui-accordion,ui-menu')) {
       if (automatic && stopped.has(surface)) continue;
       stopped.delete(surface);
       const config = structure(surface), previous = records.get(surface);
+      if (previous?.config.kind === 'menu') { reconcileMenu(previous, true); continue; }
       if (previous && same(previous.config, config) && surface.hasAttribute('data-ui-ready') && (['accordion', 'tabs'].includes(config.kind) || config.modal || surface.popover === 'auto')) continue;
       if (previous?.config.kind === 'tabs') { reconcileTabs(previous, true); continue; }
       if (previous) release(previous, false);
@@ -419,7 +660,7 @@
   function enhance(root = doc) { initialize(root); }
   function destroy(root = doc) {
     rootNode(root);
-    for (const surface of within(root, '[data-ui],ui-tabs,ui-accordion')) stopped.add(surface);
+    for (const surface of within(root, '[data-ui],ui-tabs,ui-accordion,ui-menu')) stopped.add(surface);
     for (const record of deepestRecords()) if (record.surface === root || root.contains(record.surface)) release(record);
     for (const node of within(root, 'ui-form,ui-error-summary').reverse()) node._uiSuspend?.();
   }

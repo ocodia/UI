@@ -108,3 +108,5 @@ The experimental [Tabs pattern](docs/tabs.md) enhances real fragment links and r
 The experimental [Pagination pattern](docs/pagination.md) styles a native named navigation list inside `ui-pagination`. Real URLs work without JavaScript; applications own loading and page counts.
 
 The experimental [Stepper / Step pattern](docs/stepper.md) composes native ordered task stages inside `ui-steps`, with current-step state and visible outcome text. Applications own progression and validation.
+
+The experimental [Dropdown command menu guide](docs/dropdown.md) covers native command lists, popover dismissal, keyboard/typeahead, form/link activation and inline fallback.

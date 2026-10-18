@@ -693,5 +693,45 @@
       "code": "<p>Static state example: no answers are saved and no workflow is submitted.</p>\n<nav aria-label=\"Project application progress\">\n  <ui-steps>\n    <ol role=\"list\">\n      <li><a href=\"stepper-0.html#task\">Project details</a><small>Needs attention: add a project title</small></li>\n      <li aria-current=\"step\"><strong>Review</strong><small>Current step</small></li>\n      <li><span>Confirmation</span><small>Available after the previous stage</small></li>\n    </ol>\n  </ui-steps>\n</nav>\n<section aria-labelledby=\"task\"><h2 id=\"task\" tabindex=\"-1\">Review: project details need attention</h2><p>Return to project details to add the missing title before continuing.</p></section>",
       "script": ""
     }
+  ],
+  "dropdown": [
+    {
+      "title": "Secondary actions on a survey report",
+      "note": "Open the report directly; use the menu for editing, downloading or archiving. Archive and Undo change this card for the current visit only. Publishing is unavailable until review.",
+      "code": "<ui-panel>\n  <article aria-labelledby=\"survey-title\">\n    <p><small>Fieldwork / Monthly reports</small></p>\n    <h2 id=\"survey-title\">October shoreline survey</h2>\n    <p>20 observations across two locations. Updated 18 October 2026.</p>\n    <p id=\"report-state\">Draft · Awaiting review</p>\n    <p id=\"export-reason\">Publishing becomes available after a reviewer signs off.</p>\n    <ui-cluster>\n      <a href=\"../../examples/menu-report.html\">Open report</a>\n      <ui-menu>\n        <button id=\"report-actions\" type=\"button\" data-variant=\"secondary\" hidden>Report actions</button>\n        <ul id=\"report-commands\" aria-labelledby=\"report-actions\">\n          <li><a href=\"../../examples/commands.html#report-title\">Edit report</a></li>\n          <li><a href=\"../../examples/menu-report.csv\" download>Download survey data</a></li>\n          <li><button type=\"button\" disabled aria-describedby=\"export-reason\">Publish report (awaiting review)</button></li>\n          <li><hr></li>\n          <li><button id=\"archive-report\" type=\"button\" hidden>Archive report</button></li>\n        </ul>\n      </ui-menu>\n    </ui-cluster>\n    <p id=\"report-feedback\" role=\"status\"></p>\n    <button id=\"undo-archive\" type=\"button\" data-variant=\"secondary\" hidden>Undo archive</button>\n    <p><a id=\"after-menu\" href=\"../../examples/menu-report.html#methods\">Read survey methods</a></p>\n  </article>\n</ui-panel>",
+      "script": "// This page owns local archive and undo actions; UI owns only the menu.",
+      "dependencies": [
+        "js/menu-report-example.js"
+      ]
+    },
+    {
+      "title": "A newsletter draft with preview and revert",
+      "note": "The current edition stays one click away. Draft actions validate the subject before previewing and can revert unsaved edits. Preview opens a local email preview with your edited subject; no draft is saved and no email is sent.",
+      "code": "<ui-panel>\n  <section aria-labelledby=\"newsletter-title\">\n    <p><small>Field notes / Newsletter draft</small></p>\n    <h2 id=\"newsletter-title\">The October edition</h2>\n    <p>A monthly update for the coastal volunteer team.</p>\n    <ui-form>\n      <ui-error-summary hidden><h2>There is a problem</h2><ul></ul></ui-error-summary>\n      <form id=\"newsletter-form\" action=\"../../examples/menu-newsletter.html\" method=\"get\">\n        <ui-field>\n          <label for=\"newsletter-subject\">Email subject</label>\n          <input id=\"newsletter-subject\" name=\"subject\" value=\"October field notes\" required>\n        </ui-field>\n        <p>Low-tide visits, new wildlife records and next month's survey dates.</p>\n        <ui-cluster>\n          <a href=\"../../examples/menu-newsletter.html\">Read the current edition</a>\n          <ui-menu>\n            <button id=\"form-actions\" type=\"button\" data-variant=\"secondary\" hidden>Draft actions</button>\n            <ul id=\"form-commands\" aria-labelledby=\"form-actions\">\n              <li><button type=\"submit\" name=\"action\" value=\"preview\">Preview newsletter</button></li>\n              <li><button type=\"reset\">Revert subject changes</button></li>\n              <li><hr></li>\n              <li><a href=\"../../examples/menu-newsletter.html#schedule\">View publication schedule</a></li>\n            </ul>\n          </ui-menu>\n        </ui-cluster>\n      </form>\n    </ui-form>\n    <p><small>Preview only: no draft is saved and no email is sent.</small></p>\n    <p id=\"newsletter-status\" role=\"status\"></p>\n    <section id=\"newsletter-preview\" aria-labelledby=\"preview-title\" hidden>\n      <h3 id=\"preview-title\" tabindex=\"-1\">Newsletter preview</h3>\n      <p><strong>Subject:</strong> <span id=\"preview-subject\"></span></p>\n      <p>Hello coastal volunteers,</p>\n      <p>We recorded 20 observations this month, including new sightings at the estuary. Thank you to everyone who joined the shoreline survey.</p>\n      <p>Our next survey is 31 October, meeting at North Beach at 09:00. Bring waterproofs and a flask.</p>\n    </section>\n  </section>\n</ui-panel>",
+      "script": "// This application renders a local preview after native form validation.",
+      "dependencies": [
+        "js/menu-newsletter-example.js"
+      ]
+    },
+    {
+      "title": "Following up on an overdue invoice",
+      "note": "View the invoice directly or use its menu to send a reminder and export the invoice. The demo fails the first reminder attempt and completes the retry locally; no email is sent. Feedback and retry remain visible after the menu closes.",
+      "code": "<ui-panel>\n  <article aria-labelledby=\"invoice-title\">\n    <p><small>Accounts / Outstanding invoices</small></p>\n    <h2 id=\"invoice-title\">INV-1042 · Larch Studio</h2>\n    <p><strong>£1,280.00</strong> · Due 10 October 2026</p>\n    <p>Overdue · No reminder sent yet</p>\n    <ui-cluster>\n      <a id=\"invoice-link\" href=\"../../examples/menu-invoice.html\">View invoice</a>\n      <ui-menu>\n        <button id=\"request-actions\" type=\"button\" data-variant=\"secondary\" hidden>Invoice actions</button>\n        <ul id=\"request-commands\" aria-labelledby=\"request-actions\">\n          <li><button id=\"send-reminder\" type=\"button\" hidden>Send payment reminder</button></li>\n          <li><hr></li>\n          <li><a href=\"../../examples/menu-invoice.csv\" download>Download invoice CSV</a></li>\n        </ul>\n      </ui-menu>\n    </ui-cluster>\n    <p><small>Local demo: the first delivery attempt fails; retry completes without sending email.</small></p>\n    <p id=\"reminder-status\" role=\"status\">The invoice stays available while a reminder is prepared.</p>\n    <button id=\"reminder-retry\" type=\"button\" data-variant=\"secondary\" hidden>Retry payment reminder</button>\n  </article>\n</ui-panel>",
+      "script": "// The application dependency owns reminder progress, cancellation and retry feedback.",
+      "dependencies": [
+        "js/menu-example.js"
+      ]
+    }
+  ],
+  "dropdown-item": [
+    {
+      "title": "Secondary actions on a survey report",
+      "note": "Open the report directly; use the menu for editing, downloading or archiving. Archive and Undo change this card for the current visit only. Publishing is unavailable until review.",
+      "code": "<ui-panel>\n  <article aria-labelledby=\"survey-title\">\n    <p><small>Fieldwork / Monthly reports</small></p>\n    <h2 id=\"survey-title\">October shoreline survey</h2>\n    <p>20 observations across two locations. Updated 18 October 2026.</p>\n    <p id=\"report-state\">Draft · Awaiting review</p>\n    <p id=\"export-reason\">Publishing becomes available after a reviewer signs off.</p>\n    <ui-cluster>\n      <a href=\"../../examples/menu-report.html\">Open report</a>\n      <ui-menu>\n        <button id=\"report-actions\" type=\"button\" data-variant=\"secondary\" hidden>Report actions</button>\n        <ul id=\"report-commands\" aria-labelledby=\"report-actions\">\n          <li><a href=\"../../examples/commands.html#report-title\">Edit report</a></li>\n          <li><a href=\"../../examples/menu-report.csv\" download>Download survey data</a></li>\n          <li><button type=\"button\" disabled aria-describedby=\"export-reason\">Publish report (awaiting review)</button></li>\n          <li><hr></li>\n          <li><button id=\"archive-report\" type=\"button\" hidden>Archive report</button></li>\n        </ul>\n      </ui-menu>\n    </ui-cluster>\n    <p id=\"report-feedback\" role=\"status\"></p>\n    <button id=\"undo-archive\" type=\"button\" data-variant=\"secondary\" hidden>Undo archive</button>\n    <p><a id=\"after-menu\" href=\"../../examples/menu-report.html#methods\">Read survey methods</a></p>\n  </article>\n</ui-panel>",
+      "script": "// This page owns local archive and undo actions; UI owns only the menu.",
+      "dependencies": [
+        "js/menu-report-example.js"
+      ]
+    }
   ]
 }

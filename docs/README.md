@@ -60,3 +60,5 @@ The experimental [Tabs guide](tabs.md) covers linked sections, keyboard activati
 The [Pagination guide](pagination.md) covers CSS-only native page links, boundaries, real static-page examples and application focus/loading ownership.
 
 The [Stepper guide](stepper.md) covers CSS-only ordered task stages, current/completed/error text, reachable links and application progression ownership.
+
+The experimental [Dropdown command menu guide](dropdown.md) covers native command lists, popover dismissal, keyboard/typeahead, form/link activation and inline fallback.

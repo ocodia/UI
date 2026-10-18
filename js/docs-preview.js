@@ -4,6 +4,7 @@
   // Other embeddings (including the test harness) retain this document's h1.
   if (self !== top && frameElement?.closest('[data-example]')) document.querySelector('body > main > h1').hidden = true;
   document.addEventListener('submit', (event) => {
+    if (event.defaultPrevented) return;
     if (event.target.method === 'dialog' || event.submitter?.formMethod === 'dialog') return;
     event.preventDefault();
     let result = document.querySelector('#preview-result');

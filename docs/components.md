@@ -170,21 +170,85 @@ Copy an explicit source on user activation; retain selectable source text and vi
 
 ### Dropdown
 
-**Planned · Phase 2.** UI route: `ui-menu with native button trigger (proposed)`.
+**Foundation · Phase 2.** UI route: `ui-menu with native button and ul`.
 
-Separate navigation disclosures from command menus. Only enhanced command lists receive menu roles.
+Experimental single-level command menu over a readable native list; native auto popover owns visibility/dismissal and Popup owns geometry. Apply menu roles only after complete enhancement; ordinary site navigation stays native. Native hr inside a dedicated li separates command groups without a focus stop.
 
-**Acceptance work:** Arrows, Home/End, typeahead, Escape, focus return, outside dismissal, and nested ownership.
+**Acceptance work:** First/last opening, arrows/Home/End, localized typeahead, native Tab exit/Escape/light dismissal, guarded focus return, form/anchor activation, inline fallback and lifecycle cleanup. Submenus and checkable items are deferred.
+
+```html
+<ui-panel>
+  <article aria-labelledby="survey-title">
+    <p><small>Fieldwork / Monthly reports</small></p>
+    <h2 id="survey-title">October shoreline survey</h2>
+    <p>20 observations across two locations. Updated 18 October 2026.</p>
+    <p id="report-state">Draft · Awaiting review</p>
+    <p id="export-reason">Publishing becomes available after a reviewer signs off.</p>
+    <ui-cluster>
+      <a href="../../examples/menu-report.html">Open report</a>
+      <ui-menu>
+        <button id="report-actions" type="button" data-variant="secondary" hidden>Report actions</button>
+        <ul id="report-commands" aria-labelledby="report-actions">
+          <li><a href="../../examples/commands.html#report-title">Edit report</a></li>
+          <li><a href="../../examples/menu-report.csv" download>Download survey data</a></li>
+          <li><button type="button" disabled aria-describedby="export-reason">Publish report (awaiting review)</button></li>
+          <li><hr></li>
+          <li><button id="archive-report" type="button" hidden>Archive report</button></li>
+        </ul>
+      </ui-menu>
+    </ui-cluster>
+    <p id="report-feedback" role="status"></p>
+    <button id="undo-archive" type="button" data-variant="secondary" hidden>Undo archive</button>
+    <p><a id="after-menu" href="../../examples/menu-report.html#methods">Read survey methods</a></p>
+  </article>
+</ui-panel>
+```
+
+[Command menu guide](dropdown.md) · [Standalone native form recipe](../examples/commands.html) · [Focused checks](../tests/dropdown.html).
+
+[Component specification](specs/dropdown.md)
 
 [Reference component](https://webawesome.com/docs/components/dropdown/) · [Specification template](component-template.md)
 
 ### Dropdown Item
 
-**Planned · Phase 2.** UI route: `button or a inside ui-menu (proposed)`.
+**Foundation · Phase 2.** UI route: `native button or a in ui-menu`.
 
-Keep native actions and destinations; define checkable items and submenu ownership before adding them.
+Native button or anchor in ui-menu; retain native disabled buttons, submitters/reset and real destinations. No item custom element, checked state or submenu mode in the first slice. Native hr inside a dedicated li separates command groups without a focus stop.
 
-**Acceptance work:** Disabled items, checked state, activation, and focus after item removal.
+**Acceptance work:** One native activation, modified/download/target links, preserved form values/validation/reset, disabled-button skipping, localized labels and focus recovery after removal. Checkable items require a separate specification.
+
+```html
+<ui-panel>
+  <article aria-labelledby="survey-title">
+    <p><small>Fieldwork / Monthly reports</small></p>
+    <h2 id="survey-title">October shoreline survey</h2>
+    <p>20 observations across two locations. Updated 18 October 2026.</p>
+    <p id="report-state">Draft · Awaiting review</p>
+    <p id="export-reason">Publishing becomes available after a reviewer signs off.</p>
+    <ui-cluster>
+      <a href="../../examples/menu-report.html">Open report</a>
+      <ui-menu>
+        <button id="report-actions" type="button" data-variant="secondary" hidden>Report actions</button>
+        <ul id="report-commands" aria-labelledby="report-actions">
+          <li><a href="../../examples/commands.html#report-title">Edit report</a></li>
+          <li><a href="../../examples/menu-report.csv" download>Download survey data</a></li>
+          <li><button type="button" disabled aria-describedby="export-reason">Publish report (awaiting review)</button></li>
+          <li><hr></li>
+          <li><button id="archive-report" type="button" hidden>Archive report</button></li>
+        </ul>
+      </ui-menu>
+    </ui-cluster>
+    <p id="report-feedback" role="status"></p>
+    <button id="undo-archive" type="button" data-variant="secondary" hidden>Undo archive</button>
+    <p><a id="after-menu" href="../../examples/menu-report.html#methods">Read survey methods</a></p>
+  </article>
+</ui-panel>
+```
+
+[Command menu guide](dropdown.md) · [Standalone native form recipe](../examples/commands.html) · [Focused checks](../tests/dropdown.html).
+
+[Component specification](specs/dropdown.md)
 
 [Reference component](https://webawesome.com/docs/components/dropdown-item/) · [Specification template](component-template.md)
 
