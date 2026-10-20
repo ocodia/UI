@@ -36,7 +36,7 @@ The native form owns submission. UI adds linked errors and focus management. Bas
 | Control presentation | Native button variants and control sizes; [contract](docs/controls.md). Comfortable/compact composition; [density](docs/density.md) |
 | Composition | `ui-stack`, `ui-cluster`, `ui-grid`, `ui-sidebar`, `ui-panel` |
 | Form structure | `ui-field`, `ui-hint`, `ui-error`, `ui-skip-link` |
-| Optional behavior | Combined `js/ui.js`: forms/summaries, declarative dialog/popover/Popup setup and opt-in Accordion/Tabs/Dropdown/Icon; [shared API](docs/enhancement.md). Original smaller entries remain available. |
+| Optional behavior | Combined `js/ui.js`: forms/summaries, declarative dialog/popover/Popup setup and opt-in Accordion/Tabs/Dropdown/Icon/Drawer; [shared API](docs/enhancement.md). Original smaller entries remain available. |
 | Icons | Local SVG libraries through `ui-icon`, including Fluent; [guide](docs/icon.md) and [searchable browser](examples/icons.html) |
 | Themes | System/light/dark, spacing/type/radius scales, semantic state/focus tokens, an optional forest brand |
 | Examples | Element gallery, complete form, Fieldwork workspace, recipes, server error recovery, async form integration, native input values and theme workbench |
@@ -111,3 +111,5 @@ The experimental [Pagination pattern](docs/pagination.md) styles a native named 
 The experimental [Stepper / Step pattern](docs/stepper.md) composes native ordered task stages inside `ui-steps`, with current-step state and visible outcome text. Applications own progression and validation.
 
 The experimental [Dropdown command menu guide](docs/dropdown.md) covers native command lists, popover dismissal, keyboard/typeahead, form/link activation and inline fallback.
+
+The experimental [Drawer](docs/drawer.md) wraps a native modal dialog at a logical viewport edge, with readable inline fallback. Try the [visit note](examples/drawer.html) and [focused checks](tests/drawer.html).

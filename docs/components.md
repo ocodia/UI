@@ -643,11 +643,15 @@ Use hr for a thematic break and CSS for presentation-only boundaries.
 
 ### Drawer
 
-**Planned · Phase 2.** UI route: `ui-drawer with dialog (proposed)`.
+**Foundation · Phase 2.** UI route: `ui-drawer around native dialog`.
 
-Define modal and non-modal modes separately; modal drawer builds on native dialog.
+Modal viewport-edge task with native dialog ownership, single-copy inline fallback and four logical placements. Non-modal panels are outside this implementation.
 
-**Acceptance work:** Escape, focus trapping only in modal mode, return focus, edge placement in RTL, and reduced motion.
+**Acceptance work:** Native modality/Escape, initial and return focus, four logical edges/RTL, long-content scrolling, native forms, nested help, lifecycle/failure recovery, reduced motion and platform evidence.
+
+[Drawer guide](drawer.md) · [Visit-note task](../examples/drawer.html) · [Focused checks](../tests/drawer.html). Experimental; manual/platform release evidence remains open.
+
+[Component specification](specs/drawer.md)
 
 [Reference component](https://webawesome.com/docs/components/drawer/) · [Specification template](component-template.md)
 

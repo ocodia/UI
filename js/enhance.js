@@ -2,7 +2,7 @@
 (() => {
   const key = Symbol.for('ui.enhancement.runtime');
   if (globalThis[key]) { globalThis.UI = globalThis[key]; return; }
-  const doc = document, records = new Map(), stopped = new WeakSet();
+  const doc = document, records = new Map(), stopped = new WeakSet(), printedDrawers = new Set();
   let lifetime = null, revealEvents = null, revealScroll = null, invalidTarget = null;
   function rootNode(root) {
     if (root !== doc && (!(root instanceof Element || root instanceof DocumentFragment) || root.ownerDocument !== doc)) throw new TypeError('UI needs a root from this document.');
@@ -20,7 +20,7 @@
   }
   function focus(node) { if (visible(node)) { node.focus(); return doc.activeElement === node; } return false; }
   // Composition wrappers do not take over a containing overlay’s close/focus actions.
-  const own = (node, surface) => node.closest('[data-ui]:not(ui-accordion):not(ui-tabs)') === surface;
+  const own = (node, surface) => node.closest('[data-ui]:not(ui-accordion):not(ui-tabs),ui-drawer,ui-menu') === surface;
   const revealKey = Symbol.for('ui.reveal');
   function write(record, node, name, value) {
     let attributes = record.writes.get(node);
@@ -487,11 +487,126 @@
       monitor();
     } catch { release(record, false); }
   }
+  function drawerStructure(host, refreshing = false) {
+    const dialogs = [...host.children].filter(node => node.localName === 'dialog'), dialog = dialogs[0];
+    const placement = host.getAttribute('data-placement') ?? 'inline-end';
+    if (!host.isConnected || host.ownerDocument !== doc || unavailable(host) || host.closest('dialog') || host.parentElement?.closest('ui-drawer') || host.querySelector('ui-drawer') || dialogs.length !== 1) return null;
+    if (dialog.querySelector('dialog') || dialog.hasAttribute('data-ui') || dialog.hasAttribute('popover') || dialog.hidden || dialog.inert || uniqueID(dialog.id) !== dialog) return null;
+    if (typeof dialog.showModal !== 'function' || typeof dialog.close !== 'function' || !('onbeforetoggle' in dialog) || !globalThis.MutationObserver || !globalThis.AbortController) return null;
+    if (!['inline-start', 'inline-end', 'block-start', 'block-end'].includes(placement) || getComputedStyle(host).writingMode !== 'horizontal-tb') return null;
+    const named = dialog.getAttribute('aria-label')?.trim() || dialog.getAttribute('aria-labelledby')?.trim().split(/\s+/).every(id => { const node = uniqueID(id); return node && dialog.contains(node) && !unavailable(node) && node.textContent.trim(); });
+    const targets = [...dialog.querySelectorAll('[data-ui-focus]')].filter(node => own(node, host));
+    const initial = targets[0];
+    const openers = [...host.children].filter(node => node.matches('button[data-ui-open]'));
+    const closers = [...dialog.querySelectorAll('button[data-ui-close],form[method="dialog"] button')].filter(node => own(node, host));
+    const usable = node => !node.matches(':disabled') && !node.closest('[inert]') && getComputedStyle(node).visibility === 'visible';
+    const focusable = initial && (initial.matches('h1,h2,h3,h4,h5,h6') && initial.hasAttribute('tabindex') && initial.tabIndex === -1 || initial.matches('button,input:not([type="hidden"]),select,textarea,a[href]') && initial.tabIndex >= -1 && initial.tabIndex <= 0);
+    const active = records.get(host)?.config.kind === 'drawer' && dialog.matches(':modal');
+    if (!named || targets.length !== 1 || !focusable || !usable(initial) || unavailable(initial)) return null;
+    if (!active && (!openers.length || !openers.some(usable)) || openers.some(node => node.type !== 'button' || node.getAttribute('data-ui-open') !== dialog.id)) return null;
+    if (!closers.length || closers.some(node => node.type !== 'button' && node.form?.method !== 'dialog') || !closers.some(node => usable(node) && (refreshing || !node.hidden || !host.hasAttribute('data-ui-ready')))) return null;
+    return { kind: 'drawer', dialog, openers, closers, initial, placement, returnId: dialog.getAttribute('data-ui-return-focus') || '' };
+  }
+  function sameDrawer(a, b) {
+    return b && a.dialog === b.dialog && a.initial === b.initial && a.openers.length === b.openers.length && a.closers.length === b.closers.length && ['openers', 'closers'].every(key => a[key].every((node, i) => node === b[key][i]));
+  }
+  function releaseDrawer(record, recover) {
+    const { surface, config } = record, dialog = config.dialog;
+    const held = dialog.contains(doc.activeElement) || config.openers.includes(doc.activeElement);
+    record.generation++;
+    record.events.abort();
+    for (const child of deepestRecords()) if (child !== record && dialog.contains(child.surface)) release(child, false);
+    if (dialog.open && dialog.matches(':modal')) dialog.close();
+    // Native open is jointly owned for the active modal's lifetime; baseline is authored open.
+    const state = record.writes.get(dialog)?.get('open');
+    if (state) state.last = dialog.getAttribute('open');
+    restore(record); records.delete(surface); monitor();
+    if (recover && held && (!visible(doc.activeElement) || doc.activeElement === doc.body || config.openers.includes(doc.activeElement))) focus(config.initial);
+  }
+  function installDrawer(surface, config) {
+    const dialog = config.dialog;
+    if (surface.hasAttribute('data-ui-ready') || !dialog.open || dialog.matches(':modal') || dialog.contains(doc.activeElement) || config.openers.some(node => !node.hidden) || config.closers.some(node => !node.hidden)) return;
+    const record = { surface, config, events: new AbortController(), writes: new Map(), alive: true, generation: 0, opener: null, pendingOpener: null };
+    const listen = (node, name, callback) => node.addEventListener(name, callback, { signal: record.events.signal });
+    records.set(surface, record);
+    const fail = () => release(record);
+    try {
+      listen(dialog, 'beforetoggle', event => {
+        if (event.target !== dialog || !record.alive) return;
+        const generation = ++record.generation;
+        if (event.newState !== 'open') return;
+        record.openEvent = event;
+        record.opener = record.pendingOpener;
+        record.previousFocus = doc.activeElement;
+        queueMicrotask(() => {
+          if (!record.alive || record.generation !== generation || !dialog.matches(':modal')) return;
+          dialog.returnValue = '';
+          focus(record.config.initial); dialog.scrollTop = 0;
+        });
+      });
+      listen(surface, 'click', event => {
+        const opener = event.target.closest?.('button');
+        if (!record.config.openers.includes(opener) || !record.alive || event.defaultPrevented || opener.disabled || dialog.matches(':modal')) return;
+        // Do not stack a second modal task or promote an independently opened non-modal dialog.
+        if (dialog.open || doc.querySelector('dialog:modal')) return;
+        opener.focus(); record.pendingOpener = opener; record.openEvent = null;
+        try {
+          dialog.showModal();
+          if (dialog.matches(':modal')) { dialog.returnValue = ''; focus(record.config.initial); dialog.scrollTop = 0; }
+          else if (dialog.open) fail();
+          else if (!record.openEvent?.defaultPrevented) fail();
+        } catch { fail(); }
+        finally { record.pendingOpener = null; record.openEvent = null; }
+      });
+      listen(surface, 'click', event => {
+        const closer = event.target.closest?.('button');
+        if (!record.config.closers.includes(closer) || event.defaultPrevented || !record.alive || closer.disabled || !own(closer, surface) || closer.form?.method === 'dialog') return;
+        if (dialog.matches(':modal')) dialog.close(closer.value || 'close');
+      });
+      listen(dialog, 'close', event => {
+        if (event.target !== dialog || !record.alive || dialog.open) return;
+        const active = doc.activeElement;
+        if (dialog.contains(active) || active === doc.body || !visible(active)) {
+          const destination = record.opener || record.previousFocus;
+          if (!focus(destination) && !focus(uniqueID(record.config.returnId))) fail();
+        }
+        if (record.alive && !drawerStructure(surface)) release(record, false);
+      });
+      listen(globalThis, 'beforeprint', () => { printedDrawers.add(surface); release(record, false); });
+      write(record, dialog, 'open', null);
+      write(record, surface, 'data-ui-ready', '');
+      for (const node of [...config.openers, ...config.closers]) write(record, node, 'hidden', null);
+      monitor();
+    } catch { release(record, false); }
+  }
+  function reconcileDrawer(record, explicit) {
+    const config = drawerStructure(record.surface, explicit);
+    if (sameDrawer(record.config, config)) { record.config = config; return; }
+    if (explicit && config?.dialog === record.config.dialog) {
+      const next = [...config.openers, ...config.closers];
+      for (const node of [...record.config.openers, ...record.config.closers]) if (!next.includes(node)) {
+        const state = record.writes.get(node)?.get('hidden');
+        if (state && node.getAttribute('hidden') === state.last) {
+          if (state.before === null) node.removeAttribute('hidden'); else node.setAttribute('hidden', state.before);
+        }
+        record.writes.delete(node);
+      }
+      for (const node of next) write(record, node, 'hidden', null);
+      record.config = config;
+      return;
+    }
+    // Losing invokers does not interrupt an active modal; close recovery uses a surviving target.
+    if (!explicit && config?.dialog === record.config.dialog && config.initial === record.config.initial && config.closers.length === record.config.closers.length && config.closers.every((node, i) => node === record.config.closers[i]) && record.config.dialog.matches(':modal')) return;
+    release(record);
+    if (explicit && config) installDrawer(record.surface, config);
+  }
   function structure(surface) {
+    if (surface.localName === 'ui-drawer') return drawerStructure(surface);
     if (surface.localName === 'ui-menu') return menuStructure(surface);
     if (surface.localName === 'ui-tabs') return tabsStructure(surface);
     if (surface.localName === 'ui-accordion') return accordionStructure(surface);
     const kind = surface.getAttribute('data-ui'), id = surface.id;
+    if (kind === 'dialog' && surface.parentElement?.localName === 'ui-drawer') return null;
     if (!['dialog', 'popover', 'popup'].includes(kind) || !id || !surface.isConnected || surface.ownerDocument !== doc || doc.getElementById(id) !== surface || [...doc.querySelectorAll('[id]')].filter(node => node.id === id).length !== 1) return null;
     const modal = kind === 'dialog';
     if (modal && (surface.localName !== 'dialog' || typeof surface.showModal !== 'function' || typeof surface.close !== 'function')) return null;
@@ -516,6 +631,7 @@
     if (records.size && !lifetime) {
       lifetime = new MutationObserver(() => {
         for (const record of deepestRecords()) {
+          if (record.config.kind === 'drawer') { reconcileDrawer(record, false); continue; }
           if (record.config.kind === 'menu') { reconcileMenu(record); continue; }
           if (record.config.kind === 'tabs') {
             if (!same(record.config, tabsStructure(record.surface))) reconcileTabs(record, false);
@@ -529,13 +645,14 @@
           if (!record.surface.isConnected || record.surface.ownerDocument !== doc || record.config.kind === 'popup' && missing.length || !record.config.modal && missing.length === record.config.openers.length) release(record, false);
         }
       });
-      lifetime.observe(doc.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['type', 'popover', 'popovertarget', 'popovertargetaction', 'aria-checked', 'aria-haspopup', 'lang', 'dir', 'name', 'id', 'href', 'hidden', 'inert', 'tabindex', 'target', 'download', 'contenteditable', 'disabled', 'aria-busy', 'aria-label', 'aria-labelledby', 'aria-selected', 'aria-orientation', 'aria-current', 'data-ui-tabs-inactive', 'data-ui-ready', 'data-activation', 'data-orientation', 'data-ui', ...accordionARIA] });
+      lifetime.observe(doc.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['type', 'popover', 'popovertarget', 'popovertargetaction', 'aria-checked', 'aria-haspopup', 'lang', 'dir', 'name', 'id', 'href', 'hidden', 'inert', 'tabindex', 'target', 'download', 'contenteditable', 'disabled', 'aria-busy', 'aria-label', 'aria-labelledby', 'aria-selected', 'aria-orientation', 'aria-current', 'data-ui-tabs-inactive', 'data-ui-ready', 'data-activation', 'data-orientation', 'data-placement', 'data-ui-focus', 'data-ui-return-focus', 'data-ui-close', 'data-ui-open', 'data-ui', ...accordionARIA] });
     } else if (!records.size && lifetime) { lifetime.disconnect(); lifetime = null; }
   }
   function release(record, recover = true) {
     if (!record.alive) return;
     record.alive = false;
     const { surface, config } = record;
+    if (config.kind === 'drawer') { releaseDrawer(record, recover); return; }
     if (config.kind === 'menu') {
       record.events.abort(); clearMenuInput(record);
       record.tasks?.forEach(clearTimeout);
@@ -592,6 +709,7 @@
     if (installed && surviving < 0) surface.dispatchEvent(new CustomEvent('ui-select', { bubbles: true, composed: true, detail: { tab: next.tabs[index], panel: next.panels[index], previousTab: selectedTab, previousPanel: config.panels[record.selected], source: 'reconcile' } }));
   }
   function install(surface, config) {
+    if (config.kind === 'drawer') { installDrawer(surface, config); return; }
     if (config.kind === 'menu') { installMenu(surface, config); return; }
     if (config.kind === 'tabs') { installTabs(surface, config); return; }
     if (config.kind === 'accordion') { installAccordion(surface, config); return; }
@@ -647,10 +765,11 @@
     rootNode(root);
     globalThis[Symbol.for('ui.icons.runtime')]?.enhance(root, automatic);
     for (const node of within(root, 'ui-error-summary,ui-form')) if (node.isConnected && (!automatic || !node._uiSuspended)) node._uiResume?.();
-    for (const surface of within(root, '[data-ui],ui-tabs,ui-accordion,ui-menu')) {
+    for (const surface of within(root, '[data-ui],ui-tabs,ui-accordion,ui-menu,ui-drawer')) {
       if (automatic && stopped.has(surface)) continue;
       stopped.delete(surface);
       const config = structure(surface), previous = records.get(surface);
+      if (previous?.config.kind === 'drawer') { reconcileDrawer(previous, true); continue; }
       if (previous?.config.kind === 'menu') { reconcileMenu(previous, true); continue; }
       if (previous && same(previous.config, config) && surface.hasAttribute('data-ui-ready') && (['accordion', 'tabs'].includes(config.kind) || config.modal || surface.popover === 'auto')) continue;
       if (previous?.config.kind === 'tabs') { reconcileTabs(previous, true); continue; }
@@ -661,13 +780,18 @@
   function enhance(root = doc) { initialize(root); }
   function destroy(root = doc) {
     rootNode(root);
+    for (const surface of printedDrawers) if (surface === root || root.contains(surface)) printedDrawers.delete(surface);
     globalThis[Symbol.for('ui.icons.runtime')]?.destroy(root);
-    for (const surface of within(root, '[data-ui],ui-tabs,ui-accordion,ui-menu')) stopped.add(surface);
+    for (const surface of within(root, '[data-ui],ui-tabs,ui-accordion,ui-menu,ui-drawer')) stopped.add(surface);
     for (const record of deepestRecords()) if (record.surface === root || root.contains(record.surface)) release(record);
     for (const node of within(root, 'ui-form,ui-error-summary').reverse()) node._uiSuspend?.();
   }
   globalThis[revealKey] = target => revealTarget(target, 'reveal', true);
   globalThis.UI = globalThis[key] = Object.freeze({ enhance, destroy, popup: globalThis.UIPopup });
+  globalThis.addEventListener('afterprint', () => {
+    const surfaces = [...printedDrawers]; printedDrawers.clear();
+    for (const surface of surfaces) if (surface.isConnected && surface.ownerDocument === doc && !stopped.has(surface)) initialize(surface);
+  });
   if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', () => initialize(doc, true), { once: true });
   else queueMicrotask(() => initialize(doc, true));
 })();

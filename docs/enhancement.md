@@ -1,13 +1,13 @@
 # Shared UI JavaScript
 
-Load `js/ui.js` once for the behaviors UI currently ships. It includes forms/error summaries, native modal-dialog setup, native popover help, anchored Popup help, native-disclosure Accordion groups, linked-section Tabs and command menus. Static pages need HTML and this script; no per-example initialization code is required. Ordinary controls and CSS-only layouts keep working without JavaScript.
+Load `js/ui.js` once for the behaviors UI currently ships. It includes forms/error summaries, native modal-dialog setup, native popover help, anchored Popup help, native-disclosure Accordion groups, linked-section Tabs, command menus and modal Drawers. Static pages need HTML and this script; no per-example initialization code is required. Ordinary controls and CSS-only layouts keep working without JavaScript.
 
 ```html
 <link rel="stylesheet" href="css/ui.css">
 <script src="js/ui.js" defer></script>
 ```
 
-The combined file registers only the existing `ui-form` and `ui-error-summary` elements. Native overlays use explicit `data-ui` markers. The `ui-accordion`, `ui-tabs`, `ui-menu` and `ui-icon` elements opt in by element name; tooltips and other planned widgets remain unavailable. CSS-only ui- wrappers need no initializer. Keep data attributes for actual configuration, relationships and runtime state rather than repeating a custom element name. The shared API and overlay convenience patterns are experimental; existing component APIs retain their contracts.
+The combined file registers only the existing `ui-form` and `ui-error-summary` elements. Native overlays use explicit `data-ui` markers. The `ui-accordion`, `ui-tabs`, `ui-menu`, `ui-icon` and `ui-drawer` elements opt in by element name; tooltips and other planned widgets remain unavailable. CSS-only ui- wrappers need no initializer. Keep data attributes for actual configuration, relationships and runtime state rather than repeating a custom element name. The shared API and overlay convenience patterns are experimental; existing component APIs retain their contracts.
 
 ## What UI initializes
 
@@ -20,6 +20,7 @@ The combined file registers only the existing `ui-form` and `ui-error-summary` e
 | Accordion | ui-accordion around direct native details/summary items | Optional summary navigation, fragment reveal and collapsed-content focus recovery; expansion stays native |
 | Tabs | ui-tabs with a named direct native nav, fragment anchors and paired sections | Selection, keyboard navigation, coordinated fragment/form-error reveal and readable teardown; see [Tabs](tabs.md) |
 | Command menus | ui-menu with one hidden native trigger and named ul of button/link commands | Native popover dismissal, Popup geometry, keyboard/typeahead and inline recovery; see [Dropdown](dropdown.md) |
+| Drawer | ui-drawer around hidden direct opening buttons and an open named native dialog | Modal edge placement, initial/return focus, native dismissal and inline fallback; see [Drawer](drawer.md) |
 | Icons | ui-icon with name and optional library/label/inline SVG fallback | Local SVG loading and validation, decorative/meaningful naming, asynchronous stale-result guards and fallback; see [Icon](icon.md) |
 | Pagination | ui-pagination around named native nav/list/links | CSS/native navigation only; no initializer, teardown or library requests; see [Pagination](pagination.md) |
 | Stepper / Step | ui-steps around a native ol of li stages | CSS/native text and reachable links only; application owns progression and validation; see [Stepper](stepper.md) |
@@ -67,7 +68,7 @@ Escape and background inertness stay native; no duplicate focus trap or document
 
 ## Dynamic applications
 
-The bundle initializes once after parsing. Newly connected ui-form/ui-error-summary elements continue using their native custom-element lifecycle. Newly inserted marked native overlays and ui-accordion/ui-tabs/ui-menu/ui-icon elements require an explicit scoped call after insertion:
+The bundle initializes once after parsing. Newly connected ui-form/ui-error-summary elements continue using their native custom-element lifecycle. Newly inserted marked native overlays and ui-accordion/ui-tabs/ui-menu/ui-icon/ui-drawer elements require an explicit scoped call after insertion:
 
 ```js
 container.append(newSection);
@@ -80,7 +81,7 @@ newSection.remove();
 
 | API | Contract |
 | --- | --- |
-| UI.enhance(root = document) | Synchronous, idempotent; returns undefined. Includes the root and descendants. Resumes/refreshes forms and summaries and installs/reconciles supported marked native surfaces and ui-accordion/ui-tabs/ui-menu/ui-icon elements. Unchanged active patterns remain open. |
+| UI.enhance(root = document) | Synchronous, idempotent; returns undefined. Includes the root and descendants. Resumes/refreshes forms and summaries and installs/reconciles supported marked native surfaces and ui-accordion/ui-tabs/ui-menu/ui-icon/ui-drawer elements. Unchanged active patterns remain open. |
 | UI.destroy(root = document) | Synchronous, idempotent; returns undefined. Releases Icon loading and owned overlays/Accordion/Tabs/Menu groups (groups deepest first), restores readable presentation and suspends contained form/summary automatic behavior. Answers remain on their native controls. |
 | UI.popup.attach(options) | The same lower-level geometry adapter as UIPopup.attach; see the complete Popup contract. |
 
@@ -111,3 +112,7 @@ The [focused shared-entry harness](../tests/enhancement.html) and [full browser 
 ## Local SVG icons
 
 The [Icon loader](icon.md) initializes static ui-icon elements by name. New/reinserted hosts need UI.enhance; name/library/label changes are observed on existing hosts. UI.enhance is synchronous while SVG fetch/render is asynchronous; UI.destroy invalidates pending results and restores authored fallback. Shared fetches may finish for other consumers. Configure an optional same-origin icon directory with data-ui-icons-base on the shared script.
+
+## Modal Drawer
+
+Use ui-drawer with the [Drawer markup](drawer.md), without data-ui on its dialog. It owns that dialog once; do not also attach the native dialog adapter. Scoped enhance/destroy includes Drawer. Initial enhancement defers when fallback content holds focus; explicitly enhance again after focus leaves. Structural changes require refresh; narrow safety observation releases invalid active structure. Drawer requires native dialog beforetoggle support, MutationObserver and AbortController; unsupported platforms retain inline content.

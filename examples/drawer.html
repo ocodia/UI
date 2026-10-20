@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Visit note — UI Drawer</title><link rel="stylesheet" href="../css/ui.css"><link rel="stylesheet" href="../themes/forest.css"><script src="../js/ui.js" defer></script><script src="drawer.js" defer></script></head>
+<body><header><a href="index.html">UI examples</a></header><main><h1>Prepare a visit note</h1><p>This demonstration does not save data. Without JavaScript, the note stays inline and submits a native GET to this example page.</p><section aria-labelledby="survey-task">
+  <h2 id="survey-task" tabindex="-1">Survey arrangements</h2>
+  <p>Read the briefing before travelling. Opening or closing it sends nothing.</p>
+  <ui-drawer data-placement="inline-start">
+    <button type="button" data-ui-open="survey-drawer" hidden>Read survey briefing</button>
+    <dialog id="survey-drawer" open aria-labelledby="survey-drawer-title" data-ui-return-focus="survey-task">
+      <h3 id="survey-drawer-title" tabindex="-1" data-ui-focus>Survey briefing</h3>
+      <button type="button" data-ui-close hidden>Close briefing</button>
+      <p>This local preview sends nothing while scripts run. The first attempt demonstrates a recoverable failure; retry succeeds. Closing cancels pending preview work and preserves your answers.</p>
+      <ui-form>
+        <form id="drawer-form" action="drawer.html" method="get">
+          <ui-error-summary hidden><h2>There is a problem</h2><ul></ul></ui-error-summary>
+          <ui-field><label for="drawer-note">Visit note</label><input id="drawer-note" name="note" required autocomplete="off"></ui-field>
+          <button type="submit" name="action" value="preview">Preview note</button>
+          <button type="reset">Reset note</button>
+          <p id="drawer-status" role="status"></p>
+        </form>
+      </ui-form>
+      <form method="dialog"><button type="submit" value="finished" hidden>Finish reading</button></form>
+    </dialog>
+  </ui-drawer>
+  <a id="after-drawer" href="index.html">More UI examples</a>
+</section></main></body></html>

@@ -401,11 +401,17 @@
       "name": "Drawer",
       "category": "Layout",
       "reference": "https://webawesome.com/docs/components/drawer/",
-      "ui": "ui-drawer with dialog (proposed)",
-      "status": "planned",
+      "ui": "ui-drawer around native dialog",
+      "status": "foundation",
       "phase": 2,
-      "contract": "Define modal and non-modal modes separately; modal drawer builds on native dialog.",
-      "acceptance": "Escape, focus trapping only in modal mode, return focus, edge placement in RTL, and reduced motion."
+      "contract": "Modal viewport-edge task with native dialog ownership, single-copy inline fallback and four logical placements. Non-modal panels are outside this implementation.",
+      "acceptance": "Native modality/Escape, initial and return focus, four logical edges/RTL, long-content scrolling, native forms, nested help, lifecycle/failure recovery, reduced motion and platform evidence.",
+      "specification": "docs/specs/drawer.md",
+      "maturity": "experimental",
+      "elements": [
+        "ui-drawer"
+      ],
+      "exampleNote": "[Drawer guide](drawer.md) · [Visit-note task](../examples/drawer.html) · [Focused checks](../tests/drawer.html). Experimental; manual/platform release evidence remains open."
     },
     {
       "id": "page",

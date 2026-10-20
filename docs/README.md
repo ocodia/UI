@@ -64,3 +64,5 @@ The [Stepper guide](stepper.md) covers CSS-only ordered task stages, current/com
 The experimental [Dropdown command menu guide](dropdown.md) covers native command lists, popover dismissal, keyboard/typeahead, form/link activation and inline fallback.
 
 The experimental [Icon guide](icon.md) covers local SVG libraries, meaningful/decorative names, authored fallbacks and a [searchable Fluent browser](../examples/icons.html).
+
+[Drawer](drawer.md) presents a supporting modal task at a logical viewport edge with native dialog ownership and readable inline fallback.

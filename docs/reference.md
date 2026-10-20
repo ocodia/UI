@@ -16,7 +16,7 @@ See the [roadmap](../ROADMAP.md) for planned custom elements and interface conve
 
 ## Shared JavaScript entry
 
-Load optional `js/ui.js` once for all currently shipped behavior. It registers the same two form elements and exposes `UI.enhance(root = document)` and `UI.destroy(root = document)`. Both are synchronous/idempotent and return undefined. Roots include their descendants and must belong to the current document. The bundle initializes static marked native overlays and ui-accordion/ui-tabs/ui-menu/ui-icon elements after parsing; applications explicitly enhance newly inserted overlays and destroy before removal/replacement. Forms retain their native custom-element connection lifecycle.
+Load optional `js/ui.js` once for all currently shipped behavior. It registers the same two form elements and exposes `UI.enhance(root = document)` and `UI.destroy(root = document)`. Both are synchronous/idempotent and return undefined. Roots include their descendants and must belong to the current document. The bundle initializes static marked native overlays and ui-accordion/ui-tabs/ui-menu/ui-icon/ui-drawer elements after parsing; applications explicitly enhance newly inserted overlays and destroy before removal/replacement. Forms retain their native custom-element connection lifecycle.
 
 Use `data-ui="dialog"` on an authored open native dialog, or `data-ui="popover|popup"` on one readable inline help container. Hidden native buttons provide the opening/closing relationships. UI installs standard focus/fallback/cleanup before hiding baseline content or revealing actions. `UI.popup.attach` aliases the existing lower-level `UIPopup.attach` geometry API. See [shared UI JavaScript](enhancement.md) for exact markup, lifecycle, limits and no-script fallback. The experimental [Accordion pattern](accordion.md) uses `ui-accordion` around native disclosures for summary navigation, fragment reveal and focus recovery. The experimental [Tabs pattern](tabs.md) uses `ui-tabs` with a named native `nav` around fragment anchors and paired sections, with manual/automatic activation, keyboard navigation, deep links and form-error reveal. No additional custom elements are registered. Other planned widgets gain no placeholder behavior.
 
@@ -25,6 +25,10 @@ Use `data-ui="dialog"` on an authored open native dialog, or `data-ui="popover|p
 ## Dropdown command menus
 
 The experimental [Dropdown family](dropdown.md) enhances ui-menu by element name around one hidden native trigger and a named ul of native button/link commands. Native auto popover owns visibility/dismissal; Popup supplies geometry; UI owns menu roles, keyboard/typeahead and guarded focus recovery. Commands retain native navigation, submitters, validation and reset. Buttons and links share menu-item presentation; native li/hr dividers separate nonempty groups without a keyboard stop. No item registration, submenu, checked state, custom event or open property is added. Use UI.enhance/UI.destroy for dynamic refresh and cleanup to the inline list.
+
+## Drawer
+
+The experimental [Drawer](drawer.md) enhances ui-drawer by element name around hidden direct native openers and one open native dialog as inline fallback. data-placement selects inline-start/inline-end (default)/block-start/block-end. Native modal state, Escape and forms retain ownership. UI supplies focus/scroll initialization, guarded recovery and scoped cleanup. Local --ui-drawer-size (24rem) and --ui-drawer-padding (space-5) control geometry. No registration, element method, custom event or non-modal mode is added.
 
 ## Icons
 

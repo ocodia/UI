@@ -51,7 +51,7 @@ These are design rules for future work; they do not add APIs to existing element
 
 ## Delivery shape
 
-Keep the current copyable files working. The generated `js/ui.js` combines existing form behavior, geometry and opt-in enhancement without runtime loading. `UI.enhance` and `UI.destroy` provide the [shared lifecycle API](enhancement.md); implemented native overlays and ui-accordion/ui-tabs/ui-menu/ui-icon elements are initialized. Later split behavior into optional per-component ES modules, publish versioned packages and generated manifests, and support SSR markup without requiring a framework. Do not advertise imports, CDN URLs, package names, autoloaders or a `dist/` directory before they exist.
+Keep the current copyable files working. The generated `js/ui.js` combines existing form behavior, geometry and opt-in enhancement without runtime loading. `UI.enhance` and `UI.destroy` provide the [shared lifecycle API](enhancement.md); implemented native overlays and ui-accordion/ui-tabs/ui-menu/ui-icon/ui-drawer elements are initialized. Later split behavior into optional per-component ES modules, publish versioned packages and generated manifests, and support SSR markup without requiring a framework. Do not advertise imports, CDN URLs, package names, autoloaders or a `dist/` directory before they exist.
 
 All visual tokens remain in the named `ui` cascade layer; unlayered application CSS can override them. Future sublayers and component styles must have declared order. Dependency selection requires a concrete benefit, license review, payload measurement and fallback plan; optional charts/Markdown/QR libraries must not enter the CSS foundation bundle.
 
@@ -60,3 +60,5 @@ All visual tokens remain in the named `ui` cascade layer; unlayered application 
 Keep current APIs in [reference.md](reference.md), scope in [components.json](components.json), sequence in [the roadmap](../ROADMAP.md), and results in [ACCESSIBILITY.md](../ACCESSIBILITY.md). Proposed names can change until implemented and documented. Before v1, record breaking changes and migration instructions; after v1 use semantic versioning with deprecations. A checklist tick means implemented, not independently audited.
 
 The experimental [Icon loader](icon.md) also enhances ui-icon by element name through the shared entry. Its internal js/icons.js source owns bounded local SVG fetching, validation, naming, fallback and teardown. It adds no custom-element registration. Local SVG libraries are separate assets under icons/ and stay outside the JavaScript bundle.
+
+The experimental [Drawer](drawer.md) enhances ui-drawer around a native dialog, sharing the native overlay ownership rules without a second dialog adapter. Four logical viewport edges use CSS; modality, dismissal and native form values stay platform-owned. No registration or entry file is added.

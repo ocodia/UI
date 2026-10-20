@@ -284,7 +284,7 @@
     }
     :where(dialog > :first-child, [popover] > :first-child) { margin-block-start: 0; }
     dialog::backdrop { background: #0009; }
-    :where(dialog[open][data-ui="dialog"]:not([data-ui-ready])) {
+    :where(dialog[open][data-ui="dialog"]:not([data-ui-ready]), ui-drawer:not([data-ui-ready]) > dialog[open]:not(:modal)) {
       position: static;
       inline-size: auto;
       max-inline-size: 100%;
@@ -292,6 +292,32 @@
       margin-inline: 0;
       box-shadow: none;
     }
+    :where(ui-drawer) { display: block; --ui-drawer-size: 24rem; --ui-drawer-padding: var(--ui-space-5); }
+    :where(ui-drawer[data-ui-ready] > dialog:modal) {
+      position: fixed;
+      inset: 0;
+      inset-inline-start: auto;
+      margin: 0;
+      inline-size: var(--ui-drawer-size);
+      block-size: 100%;
+      max-inline-size: 100%;
+      max-block-size: 100%;
+      block-size: 100dvb;
+      max-block-size: 100dvb;
+      padding: var(--ui-drawer-padding);
+      padding-block-start: max(var(--ui-drawer-padding), env(safe-area-inset-top, 0px));
+      padding-block-end: max(var(--ui-drawer-padding), env(safe-area-inset-bottom, 0px));
+      padding-left: max(var(--ui-drawer-padding), env(safe-area-inset-left, 0px));
+      padding-right: max(var(--ui-drawer-padding), env(safe-area-inset-right, 0px));
+      border-radius: 0;
+      overflow: auto;
+      overscroll-behavior: contain;
+      overflow-wrap: anywhere;
+    }
+    :where(ui-drawer[data-ui-ready][data-placement="inline-start"] > dialog:modal) { inset-inline-start: 0; inset-inline-end: auto; }
+    :where(ui-drawer[data-ui-ready]:is([data-placement="block-start"], [data-placement="block-end"]) > dialog:modal) { inset-inline: 0; inline-size: 100%; block-size: var(--ui-drawer-size); }
+    :where(ui-drawer[data-ui-ready][data-placement="block-start"] > dialog:modal) { inset-block-end: auto; }
+    :where(ui-drawer[data-ui-ready][data-placement="block-end"] > dialog:modal) { inset-block-start: auto; }
   }
 
   @layer forms {

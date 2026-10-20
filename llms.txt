@@ -36,3 +36,5 @@ Only ui-form and ui-error-summary are registered behavior elements today. CSS-on
 - [Stepper / Step](docs/stepper.md): CSS-only ui-steps around native ol/li stages; real links only to reachable tasks. No JavaScript progression API.
 
 - [Icon](docs/icon.md): Experimental ui-icon, local Fluent/custom SVG libraries, decorative/meaningful naming, safe loading and inline fallback. [Icon browser](examples/icons.html).
+
+- [Drawer](docs/drawer.md): Experimental modal ui-drawer around native dialog; four logical viewport edges, single-copy inline fallback, native forms and scoped lifecycle. No non-modal mode or new registration.
